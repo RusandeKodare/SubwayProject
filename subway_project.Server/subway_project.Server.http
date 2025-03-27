@@ -1,0 +1,6 @@
+@subway_project.Server_HostAddress = http://localhost:5039
+
+GET {{subway_project.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
