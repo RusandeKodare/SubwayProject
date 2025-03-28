@@ -11,6 +11,9 @@ namespace subway_project.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -40,7 +43,9 @@ namespace subway_project.Server
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
-            }
+                app.UseSwagger();
+                app.UseSwaggerUI();
+			}
 
             app.UseHttpsRedirection();
 

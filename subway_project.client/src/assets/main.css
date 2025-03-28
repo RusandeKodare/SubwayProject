@@ -66,18 +66,40 @@ a,
 }
 
 /* The navigation menu links */
-.sidenav a {
+.bigmenuitem {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
   color: #F2B700;
   display: block;
 }
-
 /* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
+.bigmenuitem:hover {
   color: #f1f1f1;
 }
+
+.sublist a {
+  width: 4.5rem;
+  padding: 4px 0px 2px 7px;
+  text-decoration: none;
+  color: #F2B700;
+  font-size: 15px;
+  display: block;
+  border: solid #F2B700 2px;
+  margin: 3px;
+}
+
+
+.mainlist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sublist {
+  list-style: none;
+}
+
 .cart{
   bottom: 100px;
   top: 120px;
