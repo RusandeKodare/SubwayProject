@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/src/assets/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subway</title>
+</head>
+
+<body>
+  <header class="topnav">
+    <h2>Welcome to subway</h2>
+  </header>
+  <div id="app">
+    <div class="sidenav">
+      <a href="#">Bröd</a>
+      <a href="#">Protein</a>
+      <a href="#">Grönsaker</a>
+      <a href="#">Dressing</a>
+      <a href="#">Dryck</a>
+    </div>
+    <div class="cart">
+      <p>Cart</p>
+      <ul>
+        <li>fullkornsbröd</li>
+        <li>kyckling</li>
+        <li>sallad</li>
+        <li>tomat</li>
+        <li>Rhode island dressing</li>
+        <li>chokladkaka</li>
+        <li>Cola Zero</li>
+      </ul>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
