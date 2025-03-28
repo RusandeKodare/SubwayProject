@@ -1,7 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using subway_project.Server.Data;
-using System;
 
 namespace subway_project.Server
 {
@@ -34,6 +33,7 @@ namespace subway_project.Server
 
                 db.Database.EnsureDeleted(); 
                 db.Database.EnsureCreated();
+                DbSeeder.Seed(db);
             }
 
             app.UseDefaultFiles();
@@ -57,6 +57,8 @@ namespace subway_project.Server
             app.MapFallbackToFile("/index.html");
             Console.WriteLine("Program is about to run");
             Console.WriteLine("");
+
+
 
             app.Run();
         }
