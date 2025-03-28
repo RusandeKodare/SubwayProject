@@ -51,6 +51,7 @@ namespace subway_project.Server
 
             app.MapFallbackToFile("/index.html");
             Console.WriteLine("Program is about to run");
+            Console.WriteLine("");
 
             app.Run();
         }
