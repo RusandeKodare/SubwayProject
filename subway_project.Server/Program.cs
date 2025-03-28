@@ -21,6 +21,8 @@ namespace subway_project.Server
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+        
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -48,6 +50,7 @@ namespace subway_project.Server
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
+            Console.WriteLine("Program is about to run");
 
             app.Run();
         }
