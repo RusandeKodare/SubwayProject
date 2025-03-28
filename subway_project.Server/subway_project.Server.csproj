@@ -7,6 +7,7 @@
     <SpaRoot>..\subway_project.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:52591</SpaProxyServerUrl>
+    <UserSecretsId>5c4aef32-f93c-4a6d-b7c8-61dc02870222</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,12 +15,17 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>9.*-*</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\subway_project.client\subway_project.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
