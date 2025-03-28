@@ -23,15 +23,13 @@ namespace subway_project.Server
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-        
-
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                db.Database.EnsureDeleted(); 
+                db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
                 DbSeeder.Seed(db);
             }
@@ -45,9 +43,13 @@ namespace subway_project.Server
                 app.MapOpenApi();
                 app.UseSwagger();
                 app.UseSwaggerUI();
-			}
+            }
 
             app.UseHttpsRedirection();
+
+            //<img :src="'https://yourapi.com' + product.ImageUrl" alt="Product Image">
+            //https://localhost:5001/images/no-image-available.jpg
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
