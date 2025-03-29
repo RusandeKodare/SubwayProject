@@ -1,4 +1,4 @@
-﻿namespace subway_project.Server.Models
+﻿namespace subway_shared.Models
 {
     public class Category
     {

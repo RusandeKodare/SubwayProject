@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using subway_project.Server.Models;
+using subway_shared.Models;
 
 
 namespace subway_project.Server.Data
