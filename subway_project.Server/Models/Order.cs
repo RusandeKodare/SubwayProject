@@ -1,4 +1,4 @@
-﻿namespace subway_shared.Models
+﻿namespace subway_project.Server.Models
 {
     public class Order
     {

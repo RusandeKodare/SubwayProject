@@ -1,5 +1,5 @@
 ﻿using subway_project.Server.Data;
-using subway_shared.Models;
+using subway_project.Server.Models;
 
 namespace subway_project.Server
 {
