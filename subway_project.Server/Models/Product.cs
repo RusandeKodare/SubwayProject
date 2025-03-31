@@ -7,7 +7,7 @@
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
-        public string? ImageUrl { get; set; } = "images\\no-image-available.jpg";
+        public string ImageUrl { get; set; } = "images\\no-image-available.jpg";
         public List<Order> Orders { get; set; } = new();
     }
 }
