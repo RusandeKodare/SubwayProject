@@ -4,3 +4,20 @@ GET {{subway_project.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{subway_project.Server_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
+GET {{subway_project.Server_HostAddress}}/api/categories/1
+Accept: application/json
+
+###
+
+
+POST {{subway_project.Server_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
