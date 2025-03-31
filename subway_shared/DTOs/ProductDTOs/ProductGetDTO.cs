@@ -1,6 +1,4 @@
-﻿using subway_shared.DTOs.CategoryDTOs;
-
-namespace subway_shared.DTOs.ProductDTOs;
+﻿namespace subway_shared.DTOs.ProductDTOs;
 
 public class ProductGetDTO
 {
