@@ -1,7 +1,4 @@
-﻿using subway_shared.DTOs.CategoryDTOs;
-using subway_shared.DTOs.OrderDTOs;
-
-namespace subway_shared.DTOs.ProductDTOs;
+﻿namespace subway_shared.DTOs.ProductDTOs;
 
 public class ProductPostDTO
 {
