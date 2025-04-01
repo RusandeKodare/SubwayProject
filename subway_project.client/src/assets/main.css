@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 /* #app {
   max-width: 1280px;
@@ -34,7 +34,7 @@ a,
     padding: 0 2rem;
   }
 } */
-.topnav{
+/* .topnav{
   height: 100px;
   width: 100%;
   background-color: #008938;
@@ -53,32 +53,32 @@ a,
 }
 
 .sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%; 
+  width: 160px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0; 
   left: 0;
-  background-color: #008938; /* yellow */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: #008938; 
+  overflow-x: hidden; 
   padding-top: 120px;
 
-}
+} */
 
 /* The navigation menu links */
-.bigmenuitem {
+/* .bigmenuitem {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
   color: #F2B700;
   display: block;
-}
+} */
 /* When you mouse over the navigation links, change their color */
-.bigmenuitem:hover {
+/* .bigmenuitem:hover {
   color: #f1f1f1;
-}
+} */
 
-.sublist a {
+/* .sublist a {
   width: 4.5rem;
   padding: 4px 0px 2px 7px;
   text-decoration: none;
@@ -103,15 +103,15 @@ a,
 .cart{
   bottom: 100px;
   top: 120px;
-  width: 250px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
+  width: 250px; 
+  position: fixed;
+  z-index: 1; 
   margin-right: 10px;
   right: 0;
-  background-color: black; /* yellow */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: black; 
+  overflow-x: hidden; 
   border-radius: 10px;
-  overflow-y: auto; /* Enables scrolling if content overflows */
+  overflow-y: auto; 
   box-shadow: 5px 10px #bebdbd;
 
 }
@@ -125,4 +125,4 @@ a,
 }
 .cart li{
   color: white;
-}
+} */

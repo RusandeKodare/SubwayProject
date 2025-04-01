@@ -4,74 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/src/assets/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Subway</title>
+  <title>Vite App</title>
 </head>
 
 <body>
-  <header class="topnav">
-    <h2>Welcome to subway</h2>
-  </header>
-
-  <div id="app">
-    <div class="sidenav">
-      <ul class="mainlist">
-        <li v-for="(item, index) in menuItems" :key="index">
-          <div class="menu-item" @click="toggleDropdown(index)">
-            {{ item.title }}
-          </div>
-          <ul class="dropdown sublist" :class="{ show: item.open }">
-            <li v-for="(subItem, subIndex) in item.submenu" :key="subIndex">
-              {{ subItem }}
-            </li>
-          </ul>
-        </li>
-
-        <li><a class="bigmenuitem" href="#">Dryck</a></li>
-        <li><a class="bigmenuitem" href="#">Kakor/Chips</a></li>
-      </ul>
-
-    </div>
-    <div class="cart">
-      <p>Cart</p>
-      <ul>
-        <li>fullkornsbröd</li>
-        <li>kyckling</li>
-        <li>sallad</li>
-        <li>tomat</li>
-        <li>Rhode island dressing</li>
-        <li>chokladkaka</li>
-        <li>Cola Zero</li>
-      </ul>
-    </div>
-
-    <form @submit.prevent="addTodo">
-      <input v-model="newTodo" required placeholder="new todo">
-      <button>Add Todo</button>
-    </form>
-    <ul>
-      <li v-for="todo in filteredTodos" :key="todo.id">
-        <input type="checkbox" v-model="todo.done">
-        <span :class="{ done: todo.done }">{{ todo.text }}</span>
-        <button @click="removeTodo(todo)">X</button>
-      </li>
-    </ul>
-    <button @click="hideCompleted = !hideCompleted">
-      {{ hideCompleted ? 'Show all' : 'Hide completed' }}
-    </button>
-
-    <p>Todo id: {{ todoId }}</p>
-    <button @click="todoId++" :disabled="!todoData">Fetch next todo</button>
-    <p v-if="!todoData">Loading...</p>
-    <pre v-else>{{ todoData }}</pre>
-    <br>
-    <button @click="Counting++">
-      Hit Me!
-    </button>
-    <p>Count is: {{Counting}}</p>
-
-  </div>
+  <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
 
