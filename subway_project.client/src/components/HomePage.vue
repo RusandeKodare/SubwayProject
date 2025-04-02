@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="homepage">
     <Header />
     <div class="main-content">
@@ -66,4 +66,4 @@ export default {
   text-align: center;
   height: 30px;
 }
-</style>
+</style> -->

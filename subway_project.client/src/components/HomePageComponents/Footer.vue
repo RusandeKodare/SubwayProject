@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <footer class="subway-footer">
     <div class="footer-container">
       <div class="footer-logo">
@@ -26,4 +26,4 @@ h2 {
   display: flex;
   justify-content: center;
 }
-</style>
+</style> -->

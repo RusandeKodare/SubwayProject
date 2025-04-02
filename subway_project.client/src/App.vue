@@ -1,16 +1,25 @@
 <script setup>
-  import HomePage from "./components/HomePage.vue";
-  import KitchenPage from "./components/KitchenPage.vue";
+import TopNav from './components/TopNav.vue';
+import SideNav from './components/SideNav.vue';
+import MainPage from './components/MainPage.vue';
+import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
 <template>
-  <HomePage />
-  <KitchenPage />
-</template>
+  <div class="page-container">
+    <nav>
+      <TopNav />
+    </nav>
+    <aside>
+      <SideNav />
+    </aside>
+    <section>
+      <MainPage />
+    </section>
+    
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+     <KitchenPage />
+  </div>
 
-<style scoped>
-/* Styling kan vara här om det behövs */
-h1 {
-  color: blue;
-}
-</style>
+</template>

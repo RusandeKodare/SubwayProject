@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup>
 import { ref } from "vue";
 
 const baseUrl = "https://localhost:7193";
@@ -47,4 +47,4 @@ const toggleSubCategories = async (category) => {
         </div>
         </div>
     </div>
-  </template> -->
+  </template>

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <ul>
       <li v-for="category in categories" :key="category.id">
@@ -45,4 +45,4 @@ a {
   font-size: 70px;
   text-decoration: none;
 }
-</style>
+</style> -->
