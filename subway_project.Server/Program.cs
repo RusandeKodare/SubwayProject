@@ -1,68 +1,79 @@
-
 using Microsoft.EntityFrameworkCore;
 using subway_project.Server.Data;
 
 namespace subway_project.Server
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+			builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddSwaggerGen();
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+			// Add services to the container.
+			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connectionString));
+			builder.Services.AddDbContext<AppDbContext>(options =>
+				options.UseSqlServer(connectionString));
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+			builder.Services.AddControllers();
 
-            var app = builder.Build();
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAnyOrigin", policy =>
+				{
+					policy.AllowAnyOrigin()   // Allow any origin
+						.AllowAnyHeader()   // Allow any header
+						.AllowAnyMethod();  // Allow any HTTP method (GET, POST, etc.)
+				});
+			});
+			// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+			builder.Services.AddOpenApi();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+			var app = builder.Build();
 
-                db.Database.EnsureDeleted();
-                db.Database.EnsureCreated();
-                DbSeeder.Seed(db);
-            }
+			using (var scope = app.Services.CreateScope())
+			{
+				var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            app.UseDefaultFiles();
-            app.MapStaticAssets();
+				db.Database.EnsureDeleted();
+				db.Database.EnsureCreated();
+				DbSeeder.Seed(db);
+			}
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+			app.UseDefaultFiles();
+			app.MapStaticAssets();
 
-            app.UseHttpsRedirection();
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
+			{
+				app.MapOpenApi();
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
 
-            //<img :src="'https://yourapi.com' + product.ImageUrl" alt="Product Image">
-            //https://localhost:5001/images/no-image-available.jpg
-            app.UseStaticFiles();
+			app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+			//<img :src="'https://yourapi.com' + product.ImageUrl" alt="Product Image">
+			//https://localhost:5001/images/no-image-available.jpg
+			app.UseStaticFiles();
 
+			app.UseCors("AllowAnyOrigin");
 
-            app.MapControllers();
-
-            app.MapFallbackToFile("/index.html");
-            Console.WriteLine("Program is about to run");
-            Console.WriteLine("");
+			app.UseAuthorization();
 
 
+			app.MapControllers();
 
-            app.Run();
-        }
-    }
+			app.MapFallbackToFile("/index.html");
+			Console.WriteLine("Program is about to run");
+			Console.WriteLine("");
+
+
+
+			app.Run();
+		}
+	}
 }

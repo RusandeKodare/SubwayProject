@@ -1,14 +1,19 @@
 <script setup>
-import HomePage from "./components/HomePage.vue";
+import TopNav from './components/TopNav.vue';
+import SideNav from './components/SideNav.vue';
+import MainPage from './components/MainPage.vue';
 </script>
 
 <template>
-  <HomePage />
+  <div class="page-container">
+    <nav>
+      <TopNav />
+    </nav>
+    <aside>
+      <SideNav />
+    </aside>
+    <section>
+      <MainPage />
+    </section>
+  </div>
 </template>
-
-<style scoped>
-/* Styling kan vara här om det behövs */
-h1 {
-  color: blue;
-}
-</style>

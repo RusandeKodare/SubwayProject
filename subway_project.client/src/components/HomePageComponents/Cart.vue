@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="cart">
     <h1 class="cart-title">Cart</h1>
     <ul>
@@ -25,4 +25,4 @@ export default {
   background-color: green;
   border-radius: 55px;
 }
-</style>
+</style> -->

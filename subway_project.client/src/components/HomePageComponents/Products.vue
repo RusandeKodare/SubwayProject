@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="products">
     <h1>Products</h1>
     <p>List of products will be displayed here.</p>
@@ -18,4 +18,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped></style> -->
