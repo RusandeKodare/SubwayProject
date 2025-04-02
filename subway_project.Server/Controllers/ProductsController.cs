@@ -27,17 +27,17 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductGetDTO >>> GetProducts()
         {
-	        var products = await _context.Products.Include(p => p.Category).ToListAsync();
+	        var products = await _context.Products.Include(p => p.SubCategory).ToListAsync();
 
 	        var productDTOs = products.Select(p => new ProductGetDTO()
 	        {
 		        Id = p.Id,
 		        Name = p.Name,
 		        Price = p.Price,
-		        CategoryId = p.CategoryId,
-		        Category = p.Category != null ? new CategoryDTO
+		        CategoryId = p.SubCategoryId,
+		        Category = p.SubCategory != null ? new CategoryDTO
 		        {
-			        Name = p.Category.Name
+			        Name = p.SubCategory.Name
 		        } : null,
 				ImageUrl = p.ImageUrl ?? "images\\no-image-available.jpg"
 	        }).ToList();
@@ -48,7 +48,7 @@ namespace subway_project.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductGetDTO>> GetProduct(int id)
         {
-            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context.Products.Include(p => p.SubCategory).FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
@@ -60,10 +60,10 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            CategoryId = product.CategoryId,
-	            Category = product.Category != null ? new CategoryDTO
+	            CategoryId = product.SubCategoryId,
+	            Category = product.SubCategory != null ? new CategoryDTO
 	            {
-		            Name = product.Category.Name
+		            Name = product.SubCategory.Name
 	            } : null,
 	            ImageUrl = product.ImageUrl
 			};
@@ -85,7 +85,7 @@ namespace subway_project.Server.Controllers
 
 	        product.Name = productDTO.Name;
 	        product.Price = productDTO.Price;
-	        product.CategoryId = productDTO.CategoryId;
+	        product.SubCategoryId = productDTO.CategoryId;
 	        product.ImageUrl = productDTO.ImageUrl;
 
             _context.Entry(product).State = EntityState.Modified;
@@ -125,7 +125,7 @@ namespace subway_project.Server.Controllers
             {
                 Name = productDTO.Name,
                 Price = productDTO.Price,
-                CategoryId = productDTO.CategoryId,
+                SubCategoryId = productDTO.CategoryId,
                 ImageUrl = productDTO.ImageUrl,
             };
 
@@ -137,7 +137,7 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            CategoryId = product.CategoryId,
+	            CategoryId = product.SubCategoryId,
 	            Category = new CategoryDTO
 	            {
 		            Name = category.Name
