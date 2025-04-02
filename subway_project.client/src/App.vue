@@ -1,9 +1,11 @@
 <script setup>
-import HomePage from "./components/HomePage.vue";
+  import HomePage from "./components/HomePage.vue";
+  import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
 <template>
   <HomePage />
+  <KitchenPage />
 </template>
 
 <style scoped>
