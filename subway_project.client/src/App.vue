@@ -1,7 +1,7 @@
 <script setup>
-import TopNav from './components/TopNav.vue';
-import SideNav from './components/SideNav.vue';
-import MainPage from './components/MainPage.vue';
+import TopNav from "./components/TopNav.vue";
+import SideNav from "./components/SideNav.vue";
+import MainPage from "./components/MainPage.vue";
 import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
@@ -16,10 +16,9 @@ import KitchenPage from "./components/KitchenPage.vue";
     <section>
       <MainPage />
     </section>
-    
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    
-     <KitchenPage />
   </div>
 
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+  <KitchenPage />
 </template>
