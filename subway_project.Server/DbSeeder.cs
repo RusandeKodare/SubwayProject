@@ -11,7 +11,7 @@ namespace subway_project.Server
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
-                    new Category { Name = "Bread" },
+                    new Category { Name = "Sub" },
                     new Category { Name = "Drinks" },
                     new Category { Name = "Snacks" },
                     new Category { Name = "Desserts" }
