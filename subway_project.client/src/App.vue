@@ -6,7 +6,8 @@ import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
 <template>
-  <div class="page-container">
+  <router-view/>
+  <!-- <div class="page-container">
     <nav>
       <TopNav />
     </nav>
@@ -20,5 +21,5 @@ import KitchenPage from "./components/KitchenPage.vue";
 
   <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-  <KitchenPage />
+  <KitchenPage /> -->
 </template>
