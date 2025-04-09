@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink, RouterView } from "vue-router";
 import TopNav from "./components/TopNav.vue";
 import SideNav from "./components/SideNav.vue";
 import MainPage from "./components/MainPage.vue";
@@ -6,6 +7,9 @@ import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
 <template>
+
+  <router-link to="/">Home</router-link>
+  <router-link to="/order">About</router-link>
   <router-view/>
   <!-- <div class="page-container">
     <nav>
