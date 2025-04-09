@@ -9,7 +9,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: [
+    {path: '/', name: 'StartPage', component: StartPage},
+  {path: '/order', name: 'OrderPage', component: OrderPage},
+  ]
 });
 
 export default router;
