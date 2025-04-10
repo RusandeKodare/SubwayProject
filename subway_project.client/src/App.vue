@@ -7,10 +7,15 @@ import KitchenPage from "./components/KitchenPage.vue";
 </script>
 
 <template>
+  <nav>
+    <RouterLink to="/">Home</RouterLink>
+  </nav>
 
-  <router-link to="/">Home</router-link>
+  <RouterView />
+
+  <!-- <router-link to="/">Home</router-link>
   <router-link to="/order">About</router-link>
-  <router-view/>
+  <router-view/> -->
   <!-- <div class="page-container">
     <nav>
       <TopNav />
