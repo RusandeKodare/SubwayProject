@@ -122,5 +122,18 @@ img {
   color: white;
   border-radius: 5px;
   text-decoration: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
+.bottom-link-products {
+  position: fixed;
+  bottom: 20px; /* Adjust as needed */
+  right: 5%;
+  transform: translateX(-50%); /* Center horizontally */
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+
+}
+

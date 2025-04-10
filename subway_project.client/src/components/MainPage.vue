@@ -18,7 +18,7 @@ const getProducts = async () => {
 </script>
 
 <template>
-  <button @click="getProducts">Click Me</button>
+  <button class="bottom-link-products" @click="getProducts">Click Me</button>
   <div v-if="showProducts" class="products-container">
     <div v-for="p in products" :key="p.id" :id="`product-` + p.id" class="product">
       <div class="product"></div>
