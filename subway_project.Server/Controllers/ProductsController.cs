@@ -9,6 +9,7 @@ using subway_project.Server.Data;
 using subway_project.Server.Models;
 using subway_shared.DTOs.CategoryDTOs;
 using subway_shared.DTOs.ProductDTOs;
+using subway_shared.DTOs.SubCategoryDTO;
 
 namespace subway_project.Server.Controllers
 {
@@ -34,8 +35,8 @@ namespace subway_project.Server.Controllers
 		        Id = p.Id,
 		        Name = p.Name,
 		        Price = p.Price,
-		        CategoryId = p.SubCategoryId,
-		        Category = p.SubCategory != null ? new CategoryDTO
+		        SubCategoryId = p.SubCategoryId,
+		        SubCategory = p.SubCategory != null ? new SubCategoryDTO
 		        {
 			        Name = p.SubCategory.Name
 		        } : null,
@@ -60,8 +61,8 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            CategoryId = product.SubCategoryId,
-	            Category = product.SubCategory != null ? new CategoryDTO
+	            SubCategoryId = product.SubCategoryId,
+	            SubCategory = product.SubCategory != null ? new SubCategoryDTO
 	            {
 		            Name = product.SubCategory.Name
 	            } : null,
@@ -137,8 +138,8 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            CategoryId = product.SubCategoryId,
-	            Category = new CategoryDTO
+	            SubCategoryId = product.SubCategoryId,
+	            SubCategory = new SubCategoryDTO
 	            {
 		            Name = category.Name
 	            },

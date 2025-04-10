@@ -1,10 +1,14 @@
 <script setup>
-
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 const baseUrl = "https://localhost:7193";
 
-const products = ref([{ id: 1, name: "Hello" }]);
+const props = defineProps({
+  selectedSubCategory: Object
+});
+
+const products = ref([]);
+const filteredProducts = ref([]);
 
 var showProducts = ref(false);
 
@@ -15,12 +19,32 @@ const getProducts = async () => {
 
   showProducts.value = !showProducts.value;
 };
+
+watch(
+  () => props.selectedSubCategory,
+  (newSubCat) => {
+    if (!newSubCat) {
+      filteredProducts.value = [];
+      return;
+    }
+
+    filteredProducts.value = products.value.filter(
+      (p) => p.subCategoryId === newSubCat.id
+    );
+  },
+  { immediate: true } 
+);
+
+onMounted(() => {
+  getProducts();
+})
+
 </script>
 
 <template>
-  <button class="bottom-link-products" @click="getProducts">Click Me</button>
+  <!-- <button class="bottom-link-products" @click="getProducts">Click Me</button> -->
   <div v-if="showProducts" class="products-container">
-    <div v-for="p in products" :key="p.id" :id="`product-` + p.id" class="product">
+    <div v-for="p in filteredProducts" :key="p.id" :id="`product-` + p.id" class="product">
       <div class="product"></div>
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
