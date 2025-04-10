@@ -112,3 +112,15 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
+.bottom-link {
+  position: fixed;
+  bottom: 20px; /* Adjust as needed */
+  right: 0%;
+  transform: translateX(-50%); /* Center horizontally */
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

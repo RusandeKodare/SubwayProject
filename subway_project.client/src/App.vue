@@ -1,4 +1,5 @@
 <script setup>
+import './assets/main.css';
 import { RouterLink, RouterView } from "vue-router";
 import TopNav from "./components/TopNav.vue";
 import SideNav from "./components/SideNav.vue";
@@ -9,7 +10,7 @@ import CustomerOrderListPage from "./components/CustomerOrderListPage.vue";
 
 <template>
   <nav>
-    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/" class="bottom-link">Home</RouterLink>
   </nav>
 
   <RouterView />
@@ -71,3 +72,4 @@ import CustomerOrderListPage from "./components/CustomerOrderListPage.vue";
 
   <KitchenPage /> -->
 </template>
+
