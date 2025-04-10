@@ -47,5 +47,27 @@ import CustomerOrderListPage from "./components/CustomerOrderListPage.vue";
   <br />
   <br />
 
+  <KitchenPage />
+
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+
+  <CustomerOrderListPage />
+
   <KitchenPage /> -->
 </template>
