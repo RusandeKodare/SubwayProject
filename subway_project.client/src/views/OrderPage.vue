@@ -4,6 +4,7 @@ import { ref } from "vue";
 import MainPage from "../components/MainPage.vue";
 import SideNav from "../components/SideNav.vue";
 import TopNav from "../components/TopNav.vue";
+import CartNav from '@/components/CartNav.vue';
 
 </script>
 
@@ -18,6 +19,9 @@ import TopNav from "../components/TopNav.vue";
     <section>
       <MainPage />
     </section>
+    <div >
+      <CartNav />
+    </div>
   </div>
 
 

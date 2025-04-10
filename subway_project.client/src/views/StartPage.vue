@@ -12,33 +12,32 @@ const GoToMainPage = () => {
 </script>
 
 <template>
-  <div class="top-nav-container">
+
+  <div class="page-container">
     <nav>
       <TopNav />
     </nav>
-  </div>
-  <div class="page-container">
+
     <div class="btn-container">
       <button class="btn eat-here" @click="GoToMainPage">Eat here</button>
       <button class="btn to-go" @click="GoToMainPage">To Go</button>
     </div>
   </div>
+
 </template>
 
 <style scoped>
-.page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center horizontally */
-  justify-content: center; /* center vertically */
-  height: 100vh; /* full viewport height */
-}
 .btn-container {
   display: flex;
-  justify-content: center; /* horizontal center */
+  justify-self: center; /* horizontal center */
   align-items: center;     /* vertical center */
-  height: 100vh;           /* full viewport height */
+  height: 100%;           /* full viewport height */
   gap: 40px;               /* space between buttons */
+  place-self: center; /* center the container */;
+  margin: 0 auto; /* center the container */
+  width: fit-content;
+  margin-left: 380px;
+
 }
 
 .btn {
@@ -55,18 +54,15 @@ const GoToMainPage = () => {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease;
 }
-
 .btn:hover {
   transform: scale(1.05);
 }
-
 .eat-here {
   background-color: #F4C12C;
   /* gul */
   color: #215B35;
   /* mörkgrön text */
 }
-
 .to-go {
   background-color: #215B35;
   /* mörkgrön bakgrund */
