@@ -6,6 +6,14 @@ import SideNav from "../components/SideNav.vue";
 import TopNav from "../components/TopNav.vue";
 import CartNav from '@/components/CartNav.vue';
 
+const selectedSubCategory = ref(null)
+
+const handleSubCategorySelected = (subcat) => {
+  selectedSubCategory.value = subcat;
+}
+
+console.log(selectedSubCategory)
+
 </script>
 
 <template>
@@ -14,10 +22,10 @@ import CartNav from '@/components/CartNav.vue';
       <TopNav />
     </nav>
     <aside>
-      <SideNav />
+      <SideNav @subcategory-selected="handleSubCategorySelected"/>
     </aside>
     <section>
-      <MainPage />
+      <MainPage :selected-sub-category="selectedSubCategory" />
     </section>
     <div >
       <CartNav />

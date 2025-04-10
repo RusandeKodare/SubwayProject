@@ -22,6 +22,12 @@ const subsToShow = ref([]);
 //   { name: "Proteins" },
 // ]);
 
+const emit = defineEmits(["subcategorySelected"]);
+
+const handleSubCategoryClick = (subCategory) => {
+  emit("subcategorySelected", subCategory);
+};
+
 const GetCategories = async () => {
   const response = await fetch(baseUrl + "/api/categories");
   const data = await response.json();
@@ -56,6 +62,7 @@ const toggleSubCategories = async (category) => {
 
   console.log(category.showSubCategories);
 };
+
 </script>
 
 <template>
@@ -74,6 +81,7 @@ const toggleSubCategories = async (category) => {
             :key="subIndex"
             href="#"
             class="subcat-btn"
+            @click="handleSubCategoryClick(subCategory)"
           >
             {{ subCategory.name }}
           </button>
