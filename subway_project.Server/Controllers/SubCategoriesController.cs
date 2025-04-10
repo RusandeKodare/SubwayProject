@@ -26,7 +26,7 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubCategory>>> GetSubCategories()
         {
-            return await _context.SubCategories.ToListAsync();
+            return await _context.SubCategories.OrderBy(sc => sc.Id).ToListAsync();
         }
 
         // GET: api/SubCategories/5
