@@ -9,67 +9,10 @@ import CustomerOrderListPage from "./components/CustomerOrderListPage.vue";
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/" class="bottom-link">Home</RouterLink>
-  </nav>
+
 
   <RouterView />
 
-  <!-- <router-link to="/">Home</router-link>
-  <router-link to="/order">About</router-link>
-  <router-view/> -->
-  <!-- <div class="page-container">
-    <nav>
-      <TopNav />
-    </nav>
-    <aside>
-      <SideNav />
-    </aside>
-    <section>
-      <MainPage />
-    </section>
-  </div>
 
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-
-  <KitchenPage />
-
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-
-  <CustomerOrderListPage />
-
-  <KitchenPage /> -->
 </template>
 
