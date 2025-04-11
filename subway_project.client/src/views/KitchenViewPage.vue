@@ -10,13 +10,13 @@
 
 <template>
 
-  <div class="page-container">
+  <div>
     <nav>
       <TopNav />
     </nav>
-    <section>
+    <div>
       <KitchenPage />
-    </section>
+    </div>
   </div>
 
 </template>
