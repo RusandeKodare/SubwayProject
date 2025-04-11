@@ -34,3 +34,14 @@ console.log(selectedSubCategory)
 
 
 </template>
+
+<style scoped>
+section {
+  grid-column: 2/3;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
+</style>

@@ -32,12 +32,13 @@ watch(
       (p) => p.subCategoryId === newSubCat.id
     );
   },
-  { immediate: true } 
+  { immediate: true }
 );
 
 onMounted(() => {
   getProducts();
 })
+
 
 </script>
 
@@ -49,6 +50,9 @@ onMounted(() => {
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
       <img :src="p.imageUrl" alt="Product Image" />
+      <button>
+        click me
+      </button>
     </div>
   </div>
 </template>
@@ -58,6 +62,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow-y: auto;
 }
 
 .product {
@@ -73,8 +78,8 @@ onMounted(() => {
   box-shadow: 3px 10px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
   transform: scale(1);
+  flex-direction: column;
+
 }
-.product:hover {
-  transform: scale(1.05); /* Added scaling effect on hover */
-}
+
 </style>

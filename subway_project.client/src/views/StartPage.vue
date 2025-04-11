@@ -13,10 +13,11 @@ const GoToMainPage = () => {
 
 <template>
 
-  <div>
+  <div class="page-container">
     <nav>
       <TopNav />
     </nav>
+
 
     <div class="btn-container">
       <button class="btn eat-here" @click="GoToMainPage">Eat here</button>
@@ -24,15 +25,16 @@ const GoToMainPage = () => {
     </div>
   </div>
 
+
 </template>
 
 <style scoped>
 .btn-container {
   display: flex;
   justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
-  height: 50vh;           /* full viewport height */
+  align-items: center;   /* vertical center */
   gap: 40px;               /* space between buttons */
+  grid-column: 1/3;
 }
 .btn {
   width: 150px;
