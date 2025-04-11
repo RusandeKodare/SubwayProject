@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 
 const baseUrl = "https://localhost:7193";
 
@@ -7,7 +7,7 @@ const props = defineProps({
   selectedSubCategory: Object
 });
 
-const products = ref([]);
+const products = reactive([]);
 const filteredProducts = ref([]);
 
 var showProducts = ref(false);
@@ -40,46 +40,65 @@ onMounted(() => {
 })
 
 
+let items = reactive([]);
+const emit = defineEmits(["emittedList"]);
+
+function AddToCart(emittedProduct)
+{
+  items.push(emittedProduct);
+  emit("emittedList", [...items]);
+}
+
+
+
+
 </script>
 
 <template>
-  <!-- <button class="bottom-link-products" @click="getProducts">Click Me</button> -->
   <div v-if="showProducts" class="products-container">
     <div v-for="p in filteredProducts" :key="p.id" :id="`product-` + p.id" class="product">
-      <div class="product"></div>
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <img :src="p.imageUrl" alt="Product Image" />
-      <button>
-        click me
+      <img class="image" :src="'https://dynl.mktgcdn.com/p/pnVqdWjzy9d8pi1-lxQK-eV3NDIZQVAPliizLM7nG_A/1900x1520.jpg'" alt="Product Image" />
+      <button class="button" @click="AddToCart(p)">
+        Buy me
       </button>
     </div>
   </div>
 </template>
 
 <style>
+
+.image{
+  width: 55%;
+  height: auto;
+  border-radius: 5px;
+}
 .products-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow-y: auto;
+  margin: 20px;
+  height: 100vh;
 }
 
 .product {
-  border: 1px solid #ccc;
-  padding: 40px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 90px;
-  flex-wrap: wrap;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 3px 10px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-  transform: scale(1);
   flex-direction: column;
+  height: 30vh;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  flex-wrap: wrap;
+  background-color: rgb(90, 190, 128);
+  border-radius: 25px;
+}
 
+.button{
+  background-color: rgb(223, 230, 137);
+  height: 30px;
+  width: 100px;
+  border-radius: 50px;
+  margin: 10px;
+  cursor: pointer;
 }
 
 </style>
