@@ -7,6 +7,11 @@ import TopNav from "../components/TopNav.vue";
 import CartNav from '@/components/CartNav.vue';
 
 const selectedSubCategory = ref(null)
+let list = ref([]);
+
+function setList(emittedList) {
+  list.value = [...emittedList];
+}
 
 const handleSubCategorySelected = (subcat) => {
   selectedSubCategory.value = subcat;
@@ -25,10 +30,10 @@ console.log(selectedSubCategory)
       <SideNav @subcategory-selected="handleSubCategorySelected"/>
     </aside>
     <section>
-      <MainPage :selected-sub-category="selectedSubCategory" />
+      <MainPage :selected-sub-category="selectedSubCategory" @emitted-list="setList" />
     </section>
-    <div >
-      <CartNav />
+    <div class="cart" >
+      <CartNav :received-list="list" />
     </div>
   </div>
 
@@ -37,11 +42,6 @@ console.log(selectedSubCategory)
 
 <style scoped>
 section {
-  grid-column: 2/3;
-  margin: 0 auto;
-  padding: 20px;
-  width: 100%;
-  height: 100vh;
   overflow-y: auto;
 }
 </style>
