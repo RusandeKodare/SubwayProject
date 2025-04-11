@@ -15,11 +15,11 @@
 .page-container {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 1fr;
-  grid-template-rows: auto 1fr; 
-  grid-template-areas: 
-    "nav nav nav nav"   
-    "aside section section cart"; 
-  height: 100vh; 
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "nav nav nav nav"
+    "aside section section cart";
+  height: 100vh;
 }
 
 nav {
@@ -130,14 +130,6 @@ section{
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
-/* .bottom-link {
-  position: fixed;
 
-  background-color: #f3f705;
-  color: white;
-  border-radius: 5px;
-  text-decoration: none;
-
-} */
 
 
