@@ -13,7 +13,7 @@ const GoToMainPage = () => {
 
 <template>
 
-  <div class="page-container">
+  <div>
     <nav>
       <TopNav />
     </nav>
@@ -29,17 +29,11 @@ const GoToMainPage = () => {
 <style scoped>
 .btn-container {
   display: flex;
-  justify-self: center; /* horizontal center */
+  justify-content: center; /* horizontal center */
   align-items: center;     /* vertical center */
-  height: 100%;           /* full viewport height */
+  height: 50vh;           /* full viewport height */
   gap: 40px;               /* space between buttons */
-  place-self: center; /* center the container */;
-  margin: 0 auto; /* center the container */
-  width: fit-content;
-  margin-left: 380px;
-
 }
-
 .btn {
   width: 150px;
   height: 150px;
