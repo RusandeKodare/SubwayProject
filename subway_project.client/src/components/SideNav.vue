@@ -46,7 +46,14 @@ onBeforeMount(async () => {
   await GetSubCategories();
 });
 
+
 const toggleSubCategories = async (category) => {
+  if (category.showSubCategories) {
+    category.showSubCategories = false;
+    subsToShow.value = [];
+    return;
+  }
+
   categories.value.forEach((cat) => {
     cat.showSubCategories = false;
   });
@@ -54,15 +61,9 @@ const toggleSubCategories = async (category) => {
   subsToShow.value = subCategories.value.filter(
     (subCategory) => subCategory.categoryId === category.id
   );
-  const currentCategory = category.name;
 
-  if (category.name === currentCategory) {
-    category.showSubCategories = !category.showSubCategories;
-  }
-
-  console.log(category.showSubCategories);
+  category.showSubCategories = true;
 };
-
 </script>
 
 <template>
