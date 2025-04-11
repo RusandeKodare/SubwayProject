@@ -23,19 +23,20 @@ import { useRouter } from "vue-router";
 
 <style scoped>
 .cart {
-  position: fixed;
-  top: 150px;
+  position:fixed;
+  grid-column: 3/4;
+  top:15vh;
   bottom: 150px;
-  right: 330px;
+
   width: 250px;
-  height: 500px;
+  height: 400px;
   background-color: #015643;
   box-shadow: -2px 0 8px rgba(0, 0, 0.1, 0.1);
   padding: 20px;
   overflow-y: auto;
-  z-index: 1000;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(100%);
+  /* z-index: 1000; */
+  /* transition: transform 0.3s ease-in-out;
+  transform: translateX(100%); */
   border-radius: 10px;
   font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
