@@ -90,8 +90,9 @@ namespace subway_project.Server
                     new Product { Name = "Brownie", Price = 15.00m, SubCategoryId = 9 },
 
                     new Product { Name = "Ice Cream", Price = 20.00m, SubCategoryId = 10 },
-                    new Product { Name = "Apple Pie", Price = 18.00m, SubCategoryId = 10 },
-                    new Product { Name = "Cheesecake", Price = 22.00m, SubCategoryId = 10 }
+
+                    new Product { Name = "Apple Pie", Price = 18.00m, SubCategoryId = 11 },
+                    new Product { Name = "Cheesecake", Price = 22.00m, SubCategoryId = 11 }
                 );
 
                 context.SaveChanges();
