@@ -32,7 +32,44 @@ export default {
 </template>
 
 <style scoped>
-.kitchenpage {
-  display: flex;
-}
+  .kitchenpage {
+
+  }
+  .header-div {
+    width: 100%;
+    height: 50px;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+  }
+  .main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .left-div {
+    width: 50%;
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin-left: 1.5rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+    float: left;
+    border: solid 5px blue;
+  }
+  .right-div {
+    width: 50%;
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin-left: 1.5rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+    float: left;
+    border: solid 5px yellow;
+  }
 </style>
