@@ -16,16 +16,16 @@ let price = ref(0);
 </script>
 
 <template>
-  
+
   <div class="cart">
     <div class="cart-footer">
 
-      
-      <button @click="checkout">Till kassan</button>
+
+      <button @click="checkout">Order here</button>
     </div>
     <div class="cart-header">
       <span>
-        Totalt: {{ price }} kr
+        Total: {{ price }} kr
       </span>
     </div>
 

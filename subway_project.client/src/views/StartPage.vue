@@ -12,20 +12,13 @@ const GoToMainPage = () => {
 </script>
 
 <template>
-
- 
     <nav>
       <TopNav />
     </nav>
-
-
     <div class="btn-container">
       <button class="btn eat-here" @click="GoToMainPage">Eat here</button>
       <button class="btn to-go" @click="GoToMainPage">To Go</button>
     </div>
- 
-
-
 </template>
 
 <style scoped>
@@ -34,10 +27,10 @@ nav{
 }
 .btn-container {
   display: flex;
-  justify-content: center; 
-  align-items: center;   
-  gap: 40px;     
-  height: 60vh;         
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  height: 60vh;
 }
 .btn {
   width: 150px;
@@ -58,14 +51,10 @@ nav{
 }
 .eat-here {
   background-color: #F4C12C;
-  /* gul */
-  color: #215B35;
-  /* mörkgrön text */
+  color: #015643;
 }
 .to-go {
-  background-color: #215B35;
-  /* mörkgrön bakgrund */
+  background-color: #015643;
   color: #F4C12C;
-  /* gul text */
 }
 </style>
