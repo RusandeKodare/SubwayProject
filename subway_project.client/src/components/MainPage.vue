@@ -76,7 +76,7 @@ function AddToCart(emittedProduct)
 }
 .products-container {
   margin: 20px;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .product {
@@ -90,6 +90,7 @@ function AddToCart(emittedProduct)
   flex-wrap: wrap;
   background-color: rgb(90, 190, 128);
   border-radius: 25px;
+  max-width: 20vw;
 }
 
 .button{

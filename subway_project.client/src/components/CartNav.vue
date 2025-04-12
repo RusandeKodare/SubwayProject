@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, reactive, watch } from "vue";
+import { defineProps, ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 
 
@@ -11,7 +11,19 @@ const props = defineProps({
 });
 
 
-let price = ref(0);
+const totalPrice = computed(() => {
+  let sum = 0;
+  for (const item of props.receivedList) {
+    sum += item.price || 0;
+  }
+
+  return sum;
+});
+
+const removeItem = (item) => {
+  const index = props.receivedList.indexOf(item);
+  props.receivedList.splice(index, 1);
+}
 
 </script>
 
@@ -25,14 +37,14 @@ let price = ref(0);
     </div>
     <div class="cart-header">
       <span>
-        Total: {{ price }} kr
+        Total: {{ totalPrice }} kr
       </span>
     </div>
 
 
     <div v-for="item in receivedList" class="cart-item">
-      {{ item.name }}
-      {{ item.price }} kr
+      <span> {{ item.name }} {{ item.price }} kr </span>
+      <button @click="removeItem">X</button>
     </div>
 
 
@@ -43,7 +55,7 @@ let price = ref(0);
 .cart {
   position:fixed;
   height: 100vh;
-  width: 100vh;
+  width: 15%;
   background-color: #015643;
   box-shadow: -2px 0 8px rgba(0, 0, 0.1, 0.1);
   padding: 20px;
@@ -69,6 +81,17 @@ let price = ref(0);
   margin-bottom: 15px;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
+}
+
+.cart-item button {
+  background-color: red;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+  width: 2vw;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
 }
 .cart-footer {
   margin-bottom: 20px;
