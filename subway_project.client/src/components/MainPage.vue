@@ -55,51 +55,70 @@ function AddToCart(emittedProduct)
 </script>
 
 <template>
+
   <div v-if="showProducts" class="products-container">
     <div v-for="p in filteredProducts" :key="p.id" :id="`product-` + p.id" class="product">
+      <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <img class="image" :src="'https://dynl.mktgcdn.com/p/pnVqdWjzy9d8pi1-lxQK-eV3NDIZQVAPliizLM7nG_A/1900x1520.jpg'" alt="Product Image" />
       <button class="button" @click="AddToCart(p)">
-        Buy me
+        EAT ME!
       </button>
     </div>
   </div>
+
 </template>
 
 <style>
-
+h1 {
+  font-size: 1.2rem;
+  margin: 12px 0 6px;
+  text-align: center;
+}
 .image{
-  width: 55%;
+  width: 100%;
   height: auto;
-  border-radius: 5px;
+  object-fit: cover;
+  height: 160px;
 }
 .products-container {
   margin: 20px;
-  /* height: 100vh; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .product {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: 30vh;
-  margin: 10px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
-  flex-wrap: wrap;
-  background-color: rgb(90, 190, 128);
-  border-radius: 25px;
-  max-width: 20vw;
+  flex: 1 1 22vw;
+  max-width: 22vw;
+  padding: 16px;
+  margin: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+.product .button {
+  background-color: #38a169;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
 }
 
-.button{
-  background-color: rgb(223, 230, 137);
-  height: 30px;
-  width: 100px;
-  border-radius: 50px;
-  margin: 10px;
-  cursor: pointer;
+.product .button:hover {
+  background-color: #2f855a;
 }
 
 </style>
