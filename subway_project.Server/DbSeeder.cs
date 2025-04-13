@@ -80,22 +80,23 @@ namespace subway_project.Server
                     new Product { Name = "Steak", Price = 30.00m, SubCategoryId = 5, ImageUrl = "https://i.redd.it/03zxsyqc6otb1.jpg" },
                     new Product { Name = "Tofu", Price = 18.00m, SubCategoryId = 5, ImageUrl = "https://alegumeaday.com/wp-content/uploads/2021/08/Creamy-sun-dried-tomato-tofu-spread-A-Legume-a-Day-20210805-1.jpg" },
 
-                    new Product { Name = "Coca-Cola", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Fanta", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Sprite", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Water", Price = 10.00m, SubCategoryId = 7, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
+                    new Product { Name = "Coca-Cola", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://www.shutterstock.com/shutterstock/videos/1065268699/thumb/1.jpg?ip=x480" },
+                    new Product { Name = "Fanta", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://t4.ftcdn.net/jpg/03/57/78/97/360_F_357789751_uno2v0tEYXqgPW1AGcXsVWLqSRp9Q5bA.jpg" },
+                    new Product { Name = "Sprite", Price = 15.00m, SubCategoryId = 6, ImageUrl = "https://www.hdwallpapers.in/download/sprite_pouring_on_glass_hd_sprite_cranberry-HD.jpg" },
 
-                    new Product { Name = "Lays Original", Price = 10.00m, SubCategoryId = 8, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Lays Paprika", Price = 10.00m, SubCategoryId = 8, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
+                    new Product { Name = "Water", Price = 10.00m, SubCategoryId = 7, ImageUrl = "https://media.gettyimages.com/id/1243369052/sv/video/tr%C3%A4dg%C3%A5rdsslang-vattning-en-lummig-gr%C3%B6n-tr%C3%A4dg%C3%A5rd.jpg?s=640x640&k=20&c=uepVUNvnv1DO0sKeEC4j0LV_GVY0UtgEsQBmE0ymSFk=" },
 
-                    new Product { Name = "Chocolate Chip Cookies", Price = 12.00m, SubCategoryId = 9, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Cookie", Price = 10.00m, SubCategoryId = 9, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Brownie", Price = 15.00m, SubCategoryId = 9, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
+                    new Product { Name = "Lays Original", Price = 10.00m, SubCategoryId = 8, ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Potato-Chips.jpg/960px-Potato-Chips.jpg" },
+                    new Product { Name = "Lays Paprika", Price = 10.00m, SubCategoryId = 8, ImageUrl = "https://www.shutterstock.com/image-photo/bbq-potato-chips-on-white-600nw-1054938998.jpg" },
 
-                    new Product { Name = "Ice Cream", Price = 20.00m, SubCategoryId = 10, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
+                    new Product { Name = "Chocolate Chip Cookies", Price = 12.00m, SubCategoryId = 9, ImageUrl = "https://media.istockphoto.com/id/1411089766/sv/foto/pile-of-homemade-cookies.jpg?s=612x612&w=0&k=20&c=F6WFEHfumZI0EENWVYNZZu9B0jVAvJgI7JqDg1BlgDc=" },
+                    new Product { Name = "Cookie", Price = 10.00m, SubCategoryId = 9, ImageUrl = "https://krollskorner.com/wp-content/uploads/2023/10/Chocolate-Chipless-Cookies_LowRes-017-1.jpg" },
+                    new Product { Name = "Brownie", Price = 15.00m, SubCategoryId = 9, ImageUrl = "https://shared.cdn.smp.schibsted.com/v2/images/66339597-1216-4afb-b5ff-0a550ccf7ecf?fit=crop&h=1426&w=1900&s=a52df5a58314385584212b791d039917dd56d58d" },
 
-                    new Product { Name = "Apple Pie", Price = 18.00m, SubCategoryId = 11, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" },
-                    new Product { Name = "Cheesecake", Price = 22.00m, SubCategoryId = 11, ImageUrl = "https://i.guim.co.uk/img/media/02088fb2247b13df646907d47f552dc69a236bc7/0_93_3235_3304/master/3235.jpg?width=445&dpr=1&s=none&crop=none" }
+                    new Product { Name = "Ice Cream", Price = 20.00m, SubCategoryId = 10, ImageUrl = "https://shared.cdn.smp.schibsted.com/v2/images/539eab90-b586-4397-8331-fe1c304d202b?fit=crop&h=1425&w=1900&s=f1969e391b4d00af2bb88340ffae4edbf37637c5" },
+
+                    new Product { Name = "Apple Pie", Price = 18.00m, SubCategoryId = 11, ImageUrl = "https://media.istockphoto.com/id/450752471/sv/foto/homemade-organic-apple-pie-dessert.jpg?s=612x612&w=0&k=20&c=Lw-t-f6DoNwerNFNTdQ9emEhcCcD7aPIBAf5nLhWDNw=" },
+                    new Product { Name = "Cheesecake", Price = 22.00m, SubCategoryId = 11, ImageUrl = "https://images3.alphacoders.com/600/600689.jpg" }
                 );
 
                 context.SaveChanges();
