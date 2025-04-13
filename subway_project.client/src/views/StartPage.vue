@@ -4,11 +4,28 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TopNav from "@/components/TopNav.vue";
 
-const router = useRouter();
+const order = {
+  takeAway: false,
+  totalPrice: 0,
+  products: []
+};
 
-const GoToMainPage = () => {
+
+const router = useRouter();
+const eatHere = () =>{
+  order.takeAway = false;
+  localStorage.setItem("order", JSON.stringify(order));
+  console.log(order);
   router.push("/order");
 };
+
+const takeAway = () =>{
+  order.takeAway = true;
+  localStorage.setItem("order", JSON.stringify(order));
+  console.log(order);
+  router.push("/order");
+};
+
 </script>
 
 <template>
@@ -16,8 +33,8 @@ const GoToMainPage = () => {
       <TopNav />
     </nav>
     <div class="btn-container">
-      <button class="btn eat-here" @click="GoToMainPage">Eat here</button>
-      <button class="btn to-go" @click="GoToMainPage">To Go</button>
+      <button class="btn eat-here" @click="eatHere">Eat here</button>
+      <button class="btn to-go" @click="takeAway">To Go</button>
     </div>
 </template>
 
