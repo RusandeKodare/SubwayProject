@@ -77,9 +77,9 @@ h1 {
 }
 .image{
   width: 100%;
-  height: auto;
+  height: 300px;
   object-fit: cover;
-  height: 160px;
+
 }
 .products-container {
   margin: 20px;
