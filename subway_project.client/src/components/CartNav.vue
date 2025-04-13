@@ -57,7 +57,7 @@ const addItem = (item) => {
     <div class="cart-header">
       <span v-if="props.receivedList.length > 0">
         <div class="cart-footer">
-          <button @click="checkout">Order here</button>
+          <button @click="checkout">Finalize order</button>
         </div>
         Total: {{ totalPrice }} kr
       </span>
@@ -97,7 +97,7 @@ const addItem = (item) => {
 .cart-footer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .cart-footer button {
