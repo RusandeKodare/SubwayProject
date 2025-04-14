@@ -8,7 +8,8 @@ onMounted(() => {
 const baseUrl = "https://localhost:7193";
 
 const props = defineProps({
-  selectedSubCategory: Object
+  selectedSubCategory: Object,
+  cartLimits: Object
 });
 
 const products = reactive([]);
@@ -55,6 +56,10 @@ function AddToCart(emittedProduct)
   emit("emittedList", [...items]);
 }
 
+const IsDisabled = (subCatId) => {
+  const itemCount = items.filter(item => item.subCategoryId === subCatId).length;
+  return itemCount >= props.cartLimits[subCatId];
+};
 
 
 
@@ -67,7 +72,9 @@ function AddToCart(emittedProduct)
       <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <button class="button" @click="AddToCart(p)">
+      <button class="button" @click="AddToCart(p)" :disabled="IsDisabled(p.subCategoryId)">
+        <!-- Visual Studio says "'IsDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
+          but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
         EAT ME!
       </button>
     </div>
@@ -126,5 +133,11 @@ h1 {
 .product .button:hover {
   background-color: #2f855a;
 }
+
+  .product .button:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
 
 </style>

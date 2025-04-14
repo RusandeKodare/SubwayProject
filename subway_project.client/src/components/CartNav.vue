@@ -9,6 +9,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  cartLimits: Object
 });
 
 
@@ -65,6 +66,12 @@ const addItem = (item) => {
   props.receivedList.push(item);
 };
 
+
+  const IsDisabled = (subCatId) => {
+    const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
+    return itemCount >= props.cartLimits[subCatId];
+  };
+
 </script>
 
 <template>
@@ -89,7 +96,9 @@ const addItem = (item) => {
 
     <div v-for="item in groupedList" :key="item.name" class="cart-item">
       <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
-      <button @click="addItem(item)">+</button>
+      <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
+      <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
+      but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
       <button @click="removeItem(item)">-</button>
     </div>
 
@@ -170,4 +179,10 @@ const addItem = (item) => {
 .cart-item button:active {
   background-color: #cbd5e0;
 }
+
+  .cart-item button:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
 </style>
