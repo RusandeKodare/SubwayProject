@@ -55,6 +55,23 @@ function AddToCart(emittedProduct)
   emit("emittedList", [...items]);
 }
 
+  //var disabledButton = ref(false);
+
+  function IsDisabled(subCatId) {
+    const itemCount = items.filter(item => item.subCategoryId === subCatId).length;
+    const limits = {
+      1: 1, //bread
+      2: 5, //vegetables
+      3: 1, //sauces
+      4: 2, //cheese
+      5: 2, //proteins
+      6: 5, //snacks
+      7: 5, //drinks
+      8: 5, //desserts
+    };
+
+    return itemCount >= limits[subCatId];
+  }
 
 
 
@@ -67,7 +84,9 @@ function AddToCart(emittedProduct)
       <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <button class="button" @click="AddToCart(p)">
+      <button class="button" @click="AddToCart(p)" :disabled="IsDisabled(p.subCategoryId)">
+        <!-- Visual Studio says "'IsDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
+          but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
         EAT ME!
       </button>
     </div>
@@ -126,5 +145,11 @@ h1 {
 .product .button:hover {
   background-color: #2f855a;
 }
+
+  .product .button:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
 
 </style>
