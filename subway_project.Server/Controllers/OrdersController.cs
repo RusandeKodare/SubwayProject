@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using subway_project.Server.Data;
 using subway_project.Server.Models;
+using subway_shared.DTOs.OrderDTOs;
 
 namespace subway_project.Server.Controllers
 {
@@ -15,10 +17,12 @@ namespace subway_project.Server.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public OrdersController(AppDbContext context)
+        public OrdersController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Orders
@@ -76,8 +80,9 @@ namespace subway_project.Server.Controllers
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder(OrderDTO orderDTO)
         {
+            Order order = _mapper.Map<Order>(orderDTO);
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
