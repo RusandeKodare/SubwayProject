@@ -86,7 +86,7 @@ namespace subway_project.Server.Controllers
 
 	        product.Name = productDTO.Name;
 	        product.Price = productDTO.Price;
-	        product.SubCategoryId = productDTO.CategoryId;
+	        product.SubCategoryId = productDTO.SubCategoryId;
 	        product.ImageUrl = productDTO.ImageUrl;
 
             _context.Entry(product).State = EntityState.Modified;
@@ -115,7 +115,7 @@ namespace subway_project.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(ProductPostDTO productDTO)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == productDTO.CategoryId);
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == productDTO.SubCategoryId);
 
             if (category == null)
             {
@@ -126,7 +126,7 @@ namespace subway_project.Server.Controllers
             {
                 Name = productDTO.Name,
                 Price = productDTO.Price,
-                SubCategoryId = productDTO.CategoryId,
+                SubCategoryId = productDTO.SubCategoryId,
                 ImageUrl = productDTO.ImageUrl,
             };
 
