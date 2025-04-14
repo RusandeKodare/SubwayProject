@@ -2,7 +2,7 @@
 import { defineProps, ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 
-const storedOrder = JSON.parse(localStorage.getItem("order"));
+let storedOrder = JSON.parse(localStorage.getItem("order"));
 
 const props = defineProps({
   receivedList: {
@@ -36,6 +36,7 @@ const groupedList = computed(() => {
 });
 
 const checkout = () => {
+  storedOrder = JSON.parse(localStorage.getItem("order"));
   console.log(storedOrder);
   fetch("api/Orders", {
   method: "POST",
@@ -64,11 +65,21 @@ const removeItem = (item) => {
     console.error("Item not found in receivedList");
     return;
   }
+  storedOrder = JSON.parse(localStorage.getItem("order"));
+  storedOrder.products.splice(index, 1);
+  storedOrder.totalPrice -= item.price;
+  localStorage.setItem("order", JSON.stringify(storedOrder));
+  console.log(storedOrder);
   props.receivedList.splice(index, 1);
   emit("emittedList", [...props.receivedList]);
 };
 
-const addItem = (item) => {
+  const addItem = (item) => {
+    storedOrder = JSON.parse(localStorage.getItem("order"));
+    storedOrder.products.push(item);
+    storedOrder.totalPrice += item.price;
+    localStorage.setItem("order", JSON.stringify(storedOrder));
+    console.log(storedOrder);
   const index = props.receivedList.indexOf(item);
   props.receivedList.push(item);
   emit("emittedList", [...props.receivedList]);

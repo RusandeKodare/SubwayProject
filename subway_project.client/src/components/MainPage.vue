@@ -18,7 +18,7 @@ const props = defineProps({
 
 const products = reactive([]);
 const filteredProducts = ref([]);
-const storedOrder = JSON.parse(localStorage.getItem("order"));
+let storedOrder = JSON.parse(localStorage.getItem("order"));
 let showProducts = ref(false);
 
 const getProducts = async () => {
@@ -51,6 +51,7 @@ const emit = defineEmits(["emittedList"]);
 
 function AddToCart(emittedProduct)
 {
+  storedOrder = JSON.parse(localStorage.getItem("order"));
   storedOrder.products.push(emittedProduct);
   storedOrder.totalPrice += emittedProduct.price;
   localStorage.setItem("order", JSON.stringify(storedOrder));
