@@ -8,7 +8,8 @@ onMounted(() => {
 const baseUrl = "https://localhost:7193";
 
 const props = defineProps({
-  selectedSubCategory: Object
+  selectedSubCategory: Object,
+  cartLimits: Object
 });
 
 const products = reactive([]);
@@ -55,23 +56,10 @@ function AddToCart(emittedProduct)
   emit("emittedList", [...items]);
 }
 
-  //var disabledButton = ref(false);
-
-  function IsDisabled(subCatId) {
-    const itemCount = items.filter(item => item.subCategoryId === subCatId).length;
-    const limits = {
-      1: 1, //bread
-      2: 5, //vegetables
-      3: 1, //sauces
-      4: 2, //cheese
-      5: 2, //proteins
-      6: 5, //snacks
-      7: 5, //drinks
-      8: 5, //desserts
-    };
-
-    return itemCount >= limits[subCatId];
-  }
+const IsDisabled = (subCatId) => {
+  const itemCount = items.filter(item => item.subCategoryId === subCatId).length;
+  return itemCount >= props.cartLimits[subCatId];
+};
 
 
 

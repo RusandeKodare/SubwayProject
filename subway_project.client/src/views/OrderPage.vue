@@ -19,6 +19,18 @@ const handleSubCategorySelected = (subcat) => {
 
 console.log(selectedSubCategory)
 
+
+const cartLimits = {
+    1: 1, //bread
+    2: 5, //vegetables
+    3: 1, //sauces
+    4: 2, //cheese
+    5: 2, //proteins
+    6: 5, //snacks
+    7: 5, //drinks
+    8: 5, //desserts
+  };
+
 </script>
 
 <template>
@@ -30,10 +42,10 @@ console.log(selectedSubCategory)
       <SideNav @subcategory-selected="handleSubCategorySelected"/>
     </aside>
     <section>
-      <MainPage :selected-sub-category="selectedSubCategory" @emitted-list="setList" />
+      <MainPage :selected-sub-category="selectedSubCategory" :cart-limits="cartLimits" @emitted-list="setList" />
     </section>
     <div class="cart" >
-      <CartNav :received-list="list" />
+      <CartNav :received-list="list" :cart-limits="cartLimits" />
     </div>
   </div>
 
