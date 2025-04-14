@@ -6,6 +6,8 @@ import SideNav from "../components/SideNav.vue";
 import TopNav from "../components/TopNav.vue";
 import CartNav from '@/components/CartNav.vue';
 
+const storedOrder = JSON.parse(localStorage.getItem("order"));
+console.log(storedOrder);
 const selectedSubCategory = ref(null)
 let list = ref([]);
 

@@ -20,9 +20,31 @@ const totalPrice = computed(() => {
   return sum;
 });
 
+
+const groupedList = computed(() => {
+  const map = {}
+  for (const item of props.receivedList) {
+    if (!map[item.name]) {
+      map[item.name] = { ...item, quantity: 1 }
+    } else {
+      map[item.name].quantity += 1
+    }
+  }
+  return Object.values(map)
+})
+
+const checkout = () => {
+  
+}
+
 const removeItem = (item) => {
   const index = props.receivedList.indexOf(item);
   props.receivedList.splice(index, 1);
+}
+
+const addItem = (item) => {
+  const index = props.receivedList.indexOf(item);
+  props.receivedList.push(item);
 }
 
 </script>
@@ -30,85 +52,102 @@ const removeItem = (item) => {
 <template>
 
   <div class="cart">
-    <div class="cart-footer">
 
 
-      <button @click="checkout">Order here</button>
-    </div>
     <div class="cart-header">
-      <span>
+      <span v-if="props.receivedList.length > 0">
+        <div class="cart-footer">
+          <button @click="checkout">Finalize order</button>
+        </div>
         Total: {{ totalPrice }} kr
+      </span>
+      <span v-else>
+        Welcome
+        
       </span>
     </div>
 
-
-    <div v-for="item in receivedList" class="cart-item">
-      <span> {{ item.name }} {{ item.price }} kr </span>
-      <button @click="removeItem">X</button>
+    <div v-for="item in groupedList" :key="item.name" class="cart-item">
+      <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
+      <button @click="addItem(item)">+</button>
+      <button @click="removeItem(item)">-</button>
     </div>
-
 
   </div>
 </template>
 
 <style scoped>
 .cart {
-  position:fixed;
-  height: 100vh;
-  width: 15%;
-  background-color: #015643;
-  box-shadow: -2px 0 8px rgba(0, 0, 0.1, 0.1);
-  padding: 20px;
-  overflow-y: auto;
-  font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  color: white;
-}
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 500;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  text-decoration-line: underline;
-  text-decoration-color: yellow;
-  font-size: 20px;
-}
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  width: 90%;
+  max-width: 600px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.cart-item button {
-  background-color: red;
+.cart-header {
   text-align: center;
-  font-size: 1rem;
-  color: white;
-  width: 2vw;
-  border: none;
-  border-radius: 8px;
+  font-size: 1.5rem;
   font-weight: bold;
+  margin: 10px;
+  color: #333;
 }
+
 .cart-footer {
-  margin-bottom: 20px;
-  text-align: left;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
 }
 
 .cart-footer button {
-  display: block;
-  background-color: #F4C12C;
-  color: #215B35;
-  padding: 10px 15px;
+  background-color: #38a169;
+  color: white;
+  padding: 12px 24px;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 15px;
-  margin-top: 10px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-</style>
+.cart-footer button:hover {
+  background-color: #2f855a;
+}
 
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+}
+
+.cart-item span {
+  font-weight: 500;
+  color: #555;
+}
+
+.cart-item button {
+  background-color: #e2e8f0;
+  border: none;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cart-item button:hover {
+  background-color: #edf2f7;
+  color: #2d3748;
+}
+
+.cart-item button:active {
+  background-color: #cbd5e0;
+}
+</style>
