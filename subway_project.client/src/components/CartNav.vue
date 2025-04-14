@@ -59,7 +59,11 @@ const checkout = () => {
   const emit = defineEmits(["emittedList"]);
 
 const removeItem = (item) => {
-  const index = props.receivedList.indexOf(item);
+  const index = props.receivedList.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
+  if (index === -1) {
+    console.error("Item not found in receivedList");
+    return;
+  }
   props.receivedList.splice(index, 1);
   emit("emittedList", [...props.receivedList]);
 };
