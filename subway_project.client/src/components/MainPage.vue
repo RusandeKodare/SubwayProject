@@ -1,6 +1,10 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
 
+onMounted(() => {
+  getProducts();
+});
+
 const baseUrl = "https://localhost:7193";
 
 const props = defineProps({
@@ -9,8 +13,8 @@ const props = defineProps({
 
 const products = reactive([]);
 const filteredProducts = ref([]);
-
-var showProducts = ref(false);
+const storedOrder = JSON.parse(localStorage.getItem("order"));
+let showProducts = ref(false);
 
 const getProducts = async () => {
   const response = await fetch(baseUrl + "/api/products");
@@ -35,9 +39,7 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
-  getProducts();
-})
+
 
 
 let items = reactive([]);
@@ -45,6 +47,10 @@ const emit = defineEmits(["emittedList"]);
 
 function AddToCart(emittedProduct)
 {
+  storedOrder.products.push(emittedProduct);
+  storedOrder.totalPrice += emittedProduct.price;
+  localStorage.setItem("order", JSON.stringify(storedOrder));
+  console.log(storedOrder);
   items.push(emittedProduct);
   emit("emittedList", [...items]);
 }

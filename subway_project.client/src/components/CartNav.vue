@@ -2,6 +2,7 @@
 import { defineProps, ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 
+const storedOrder = JSON.parse(localStorage.getItem("order"));
 
 const props = defineProps({
   receivedList: {
@@ -31,21 +32,38 @@ const groupedList = computed(() => {
     }
   }
   return Object.values(map)
-})
+});
 
 const checkout = () => {
+  console.log(storedOrder);
+  fetch("api/Orders", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(storedOrder),
+})
+.then ((response) => {
+  if (response.ok){
+    console.log("order was saved successfully to database");
+    localStorage.removeItem("order");
+  }
+  else{
+    console.log("Something went wrong when saving the order to the database");
+  }
   
-}
+});
+};
 
 const removeItem = (item) => {
   const index = props.receivedList.indexOf(item);
   props.receivedList.splice(index, 1);
-}
+};
 
 const addItem = (item) => {
   const index = props.receivedList.indexOf(item);
   props.receivedList.push(item);
-}
+};
 
 </script>
 
@@ -62,7 +80,9 @@ const addItem = (item) => {
         Total: {{ totalPrice }} kr
       </span>
       <span v-else>
-        Welcome
+        Welcome!
+        <br><br>
+        Choose between our delicious dishes!
         
       </span>
     </div>
