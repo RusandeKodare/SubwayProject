@@ -17,8 +17,9 @@ namespace subway_project.Server
 
 			builder.Services.AddDbContext<AppDbContext>(options =>
 				options.UseSqlServer(connectionString));
+            builder.Services.AddAutoMapper(typeof(Program));
 
-			builder.Services.AddControllers();
+            builder.Services.AddControllers();
 
 			builder.Services.AddCors(options =>
 			{
