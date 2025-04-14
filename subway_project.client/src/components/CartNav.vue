@@ -56,14 +56,18 @@ const checkout = () => {
 });
 };
 
+  const emit = defineEmits(["emittedList"]);
+
 const removeItem = (item) => {
   const index = props.receivedList.indexOf(item);
   props.receivedList.splice(index, 1);
+  emit("emittedList", [...props.receivedList]);
 };
 
 const addItem = (item) => {
   const index = props.receivedList.indexOf(item);
   props.receivedList.push(item);
+  emit("emittedList", [...props.receivedList]);
 };
 
 

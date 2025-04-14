@@ -6,11 +6,11 @@ import SideNav from "../components/SideNav.vue";
 import TopNav from "../components/TopNav.vue";
 import CartNav from '@/components/CartNav.vue';
 
-const selectedSubCategory = ref(null)
-let list = ref([]);
+const selectedSubCategory = ref(null);
+let cartItems = ref([]);
 
-function setList(emittedList) {
-  list.value = [...emittedList];
+const handleUpdatedCartItems = (updatedItems) => {
+  cartItems.value = updatedItems;
 }
 
 const handleSubCategorySelected = (subcat) => {
@@ -42,10 +42,10 @@ const cartLimits = {
       <SideNav @subcategory-selected="handleSubCategorySelected"/>
     </aside>
     <section>
-      <MainPage :selected-sub-category="selectedSubCategory" :cart-limits="cartLimits" @emitted-list="setList" />
+      <MainPage :selected-sub-category="selectedSubCategory" :received-list="cartItems" :cart-limits="cartLimits" @emitted-list="handleUpdatedCartItems" />
     </section>
-    <div class="cart" >
-      <CartNav :received-list="list" :cart-limits="cartLimits" />
+    <div class="cart">
+      <CartNav :received-list="cartItems" :cart-limits="cartLimits" @emitted-list="handleUpdatedCartItems" />
     </div>
   </div>
 

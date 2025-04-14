@@ -9,6 +9,10 @@ const baseUrl = "https://localhost:7193";
 
 const props = defineProps({
   selectedSubCategory: Object,
+  receivedList: {
+    type: Array,
+    default: () => [],
+  },
   cartLimits: Object
 });
 
@@ -43,7 +47,6 @@ watch(
 
 
 
-let items = reactive([]);
 const emit = defineEmits(["emittedList"]);
 
 function AddToCart(emittedProduct)
@@ -52,12 +55,12 @@ function AddToCart(emittedProduct)
   storedOrder.totalPrice += emittedProduct.price;
   localStorage.setItem("order", JSON.stringify(storedOrder));
   console.log(storedOrder);
-  items.push(emittedProduct);
-  emit("emittedList", [...items]);
+  props.receivedList.push(emittedProduct);
+  emit("emittedList", [...props.receivedList]);
 }
 
 const IsDisabled = (subCatId) => {
-  const itemCount = items.filter(item => item.subCategoryId === subCatId).length;
+  const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
   return itemCount >= props.cartLimits[subCatId];
 };
 
