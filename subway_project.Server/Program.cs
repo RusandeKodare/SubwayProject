@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using subway_project.Server.Data;
+using System.Text.Json.Serialization;
 
 namespace subway_project.Server
 {
@@ -19,7 +20,8 @@ namespace subway_project.Server
 				options.UseSqlServer(connectionString));
             builder.Services.AddAutoMapper(typeof(Program));
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 			builder.Services.AddCors(options =>
 			{
