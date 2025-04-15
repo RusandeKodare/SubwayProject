@@ -86,10 +86,22 @@ const removeItem = (item) => {
 };
 
 
-  const IsDisabled = (subCatId) => {
-    const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
-    return itemCount >= props.cartLimits[subCatId];
-  };
+const IsDisabled = (subCatId) => {
+  if (!props.cartLimits || !props.receivedList) {
+    return false; // No limits or receivedList, so not disabled
+  }
+
+  const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+  if (!cartHasBread) { //if there is no bread in the cart
+    if(subCatId >= 2 && subCatId <= 5){ //if subcategory is vegetables/sauces/cheese/proteins
+      return true; //return true to disable the button
+    }
+  }
+
+  //if there is bread in the cart check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
+  const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
+  return itemCount >= props.cartLimits[subCatId];
+};
 
 </script>
 

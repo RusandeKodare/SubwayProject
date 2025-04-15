@@ -61,6 +61,20 @@ function AddToCart(emittedProduct)
 }
 
 const IsDisabled = (subCatId) => {
+  if (!props.cartLimits || !props.receivedList) {
+    return false; // No limits or receivedList, so not disabled
+  }
+
+  if (props.selectedSubCategory.categoryId === 1 && props.selectedSubCategory.id !== 1) { //if category is "Sub", and subcategory is not "Bread"
+    const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+    if (cartHasBread) { //if there is bread in the cart
+      const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length; //check number of items of the subcategory in the cart
+      return itemCount >= props.cartLimits[subCatId]; //return true/false depending on if the limit is reached
+    }
+    return true; //if there is no bread in the cart, return true to disable the button
+  }
+
+  //for any other subcategories check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
   const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
   return itemCount >= props.cartLimits[subCatId];
 };
