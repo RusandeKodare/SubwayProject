@@ -1,10 +1,12 @@
 <script>
-import MealOrders from "@/components/QueueComponents/MealOrders.vue";
+  import MealOrders from "@/components/QueueComponents/MealOrders.vue";
+  import GetOrders from "@/components/QueueComponents/GetOrders.vue";
 
 export default {
   name: "KitchenPage",
   components: {
     MealOrders,
+    GetOrders,
   },
   data() {
     return {
@@ -21,11 +23,14 @@ export default {
   <div class="kitchenpage">
     <div class="header-div"></div>
     <div class="main-content">
-      <div class="left-div">
+      <!--<div class="left-div">
         <MealOrders :list-title="listOneTitle" :list-items="listOneItems"></MealOrders>
       </div>
       <div class="right-div">
         <MealOrders :list-title="listTwoTitle" :list-items="listTwoItems"></MealOrders>
+      </div>-->
+      <div>
+        <GetOrders />
       </div>
     </div>
   </div>
