@@ -103,6 +103,17 @@ const IsDisabled = (subCatId) => {
   return itemCount >= props.cartLimits[subCatId];
 };
 
+  const IsCheckoutDisabled = () => {
+    const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+    if (!cartHasBread) { //if there is no bread in the cart
+      const itemCount = props.receivedList.filter(item => item.subCategoryId >= 2 && item.subCategoryId <= 5).length;
+      if (itemCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
+        return true; //return true to disable the button
+      }
+    }
+    return false;
+  };
+
 </script>
 
 <template>
@@ -113,7 +124,10 @@ const IsDisabled = (subCatId) => {
     <div class="cart-header">
       <span v-if="props.receivedList.length > 0">
         <div class="cart-footer">
-          <button @click="checkout">Finalize order</button>
+          <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
+          <div  v-if="IsCheckoutDisabled()">
+            <p>You need to add bread to your order to be able to checkout.</p>
+          </div>
         </div>
         Total: {{ totalPrice }} kr
       </span>
@@ -157,7 +171,8 @@ const IsDisabled = (subCatId) => {
 .cart-footer {
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 20px 5px;
+  flex-direction: column;
 }
 
 .cart-footer button {
@@ -175,7 +190,18 @@ const IsDisabled = (subCatId) => {
   background-color: #2f855a;
 }
 
-.cart-item {
+  .cart-footer button:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
+
+  .cart-footer p {
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+  .cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
