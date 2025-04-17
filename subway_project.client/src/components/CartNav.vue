@@ -144,11 +144,10 @@ const IsDisabled = (subCatId) => {
         <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
       </div>
       <div>
-
+        <button @click="removeItem(item)">-</button>
         <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
         <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
         but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
-        <button @click="removeItem(item)">-</button>
       </div>
     </div>
 
