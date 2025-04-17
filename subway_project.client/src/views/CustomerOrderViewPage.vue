@@ -10,7 +10,7 @@
 
 <template>
 
-  <div class="page-container">
+  <div class="kitchen-queue-page-container">
     <nav>
       <TopNav />
     </nav>

@@ -125,7 +125,7 @@ const IsDisabled = (subCatId) => {
       <span v-if="props.receivedList.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
-          <div  v-if="IsCheckoutDisabled()">
+          <div v-if="IsCheckoutDisabled()">
             <p>You need to add bread to your order to be able to checkout.</p>
           </div>
         </div>
@@ -135,16 +135,21 @@ const IsDisabled = (subCatId) => {
         Welcome!
         <br><br>
         Choose between our delicious dishes!
-        
+
       </span>
     </div>
 
     <div v-for="item in groupedList" :key="item.name" class="cart-item">
-      <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
-      <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
-      <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
-      but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
-      <button @click="removeItem(item)">-</button>
+      <div>
+        <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
+      </div>
+      <div>
+
+        <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
+        <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
+        <button @click="removeItem(item)">-</button>
+      </div>
     </div>
 
   </div>
@@ -214,7 +219,7 @@ const IsDisabled = (subCatId) => {
 }
 
 .cart-item span {
-  font-weight: 500;
+/*  font-weight: 500;*/
   color: #555;
 }
 
@@ -223,6 +228,7 @@ const IsDisabled = (subCatId) => {
   border: none;
   color: #333;
   padding: 6px 12px;
+  margin: 0 2px;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -241,5 +247,10 @@ const IsDisabled = (subCatId) => {
     background-color: #e2e8f0;
     color: #a0aec0;
     cursor: not-allowed;
+  }
+
+  .cart-item div {
+      display: flex;
+      flex-wrap: nowrap;
   }
 </style>
