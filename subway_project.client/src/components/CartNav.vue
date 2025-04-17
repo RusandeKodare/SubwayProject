@@ -1,7 +1,9 @@
 <script setup>
-import {ref, reactive, watch, computed } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useOrderStore } from "@/stores/useOrderStore";
 
+const orderStore = useOrderStore();
 let storedOrder = JSON.parse(localStorage.getItem("order"));
 
 const props = defineProps({
@@ -39,25 +41,46 @@ const checkout = () => {
   storedOrder = JSON.parse(localStorage.getItem("order"));
   console.log(storedOrder);
   fetch("api/Orders", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(storedOrder),
-})
-.then ((response) => {
-  if (response.ok){
-    console.log("order was saved successfully to database");
-    localStorage.removeItem("order");
-  }
-  else{
-    console.log("Something went wrong when saving the order to the database");
-  }
-  
-});
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(storedOrder),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("order was saved successfully to database");
+        localStorage.removeItem("order");
+      }
+      else {
+        console.log("Something went wrong when saving the order to the database");
+      }
+
+    });
+
+
+  fetch("api/Orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderStore.order),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log("The Pinia-order was saved successfully to database");
+        orderStore.resetOrder();
+      }
+      else {
+        console.log("Something went wrong when saving the PINIA-order to the database");
+      }
+
+    });
+
+
 };
 
-  const emit = defineEmits(["emittedList"]);
+const emit = defineEmits(["emittedList"]);
 
 const removeItem = (item) => {
   const index = props.receivedList.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
@@ -74,12 +97,12 @@ const removeItem = (item) => {
   emit("emittedList", [...props.receivedList]);
 };
 
-  const addItem = (item) => {
-    storedOrder = JSON.parse(localStorage.getItem("order"));
-    storedOrder.products.push(item);
-    storedOrder.totalPrice += item.price;
-    localStorage.setItem("order", JSON.stringify(storedOrder));
-    console.log(storedOrder);
+const addItem = (item) => {
+  storedOrder = JSON.parse(localStorage.getItem("order"));
+  storedOrder.products.push(item);
+  storedOrder.totalPrice += item.price;
+  localStorage.setItem("order", JSON.stringify(storedOrder));
+  console.log(storedOrder);
   const index = props.receivedList.indexOf(item);
   props.receivedList.push(item);
   emit("emittedList", [...props.receivedList]);
@@ -93,7 +116,7 @@ const IsDisabled = (subCatId) => {
 
   const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
   if (!cartHasBread) { //if there is no bread in the cart
-    if(subCatId >= 2 && subCatId <= 5){ //if subcategory is vegetables/sauces/cheese/proteins
+    if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
       return true; //return true to disable the button
     }
   }
@@ -103,16 +126,16 @@ const IsDisabled = (subCatId) => {
   return itemCount >= props.cartLimits[subCatId];
 };
 
-  const IsCheckoutDisabled = () => {
-    const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
-    if (!cartHasBread) { //if there is no bread in the cart
-      const itemCount = props.receivedList.filter(item => item.subCategoryId >= 2 && item.subCategoryId <= 5).length;
-      if (itemCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
-        return true; //return true to disable the button
-      }
+const IsCheckoutDisabled = () => {
+  const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+  if (!cartHasBread) { //if there is no bread in the cart
+    const itemCount = props.receivedList.filter(item => item.subCategoryId >= 2 && item.subCategoryId <= 5).length;
+    if (itemCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
+      return true; //return true to disable the button
     }
-    return false;
-  };
+  }
+  return false;
+};
 
 </script>
 
@@ -125,7 +148,7 @@ const IsDisabled = (subCatId) => {
       <span v-if="props.receivedList.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
-          <div  v-if="IsCheckoutDisabled()">
+          <div v-if="IsCheckoutDisabled()">
             <p>You need to add bread to your order to be able to checkout.</p>
           </div>
         </div>
@@ -135,7 +158,7 @@ const IsDisabled = (subCatId) => {
         Welcome!
         <br><br>
         Choose between our delicious dishes!
-        
+
       </span>
     </div>
 
@@ -147,10 +170,34 @@ const IsDisabled = (subCatId) => {
       <button @click="removeItem(item)">-</button>
     </div>
 
+
+    <div class="PiniaCart">
+      <h1>Pinia Cart: </h1>
+      <div v-for="product in orderStore.order.products" :key="product.id" class="cart-item">
+
+        <p>{{ product.name }}</p>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
+
+.PiniaCart{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 600px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .cart {
   width: 90%;
   max-width: 600px;
@@ -190,18 +237,18 @@ const IsDisabled = (subCatId) => {
   background-color: #2f855a;
 }
 
-  .cart-footer button:disabled {
-    background-color: #e2e8f0;
-    color: #a0aec0;
-    cursor: not-allowed;
-  }
+.cart-footer button:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
 
-  .cart-footer p {
-    font-size: 0.9rem;
-    margin-top: 5px;
-  }
+.cart-footer p {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
 
-  .cart-item {
+.cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -237,9 +284,9 @@ const IsDisabled = (subCatId) => {
   background-color: #cbd5e0;
 }
 
-  .cart-item button:disabled {
-    background-color: #e2e8f0;
-    color: #a0aec0;
-    cursor: not-allowed;
-  }
+.cart-item button:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
 </style>
