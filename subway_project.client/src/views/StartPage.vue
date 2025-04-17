@@ -29,6 +29,7 @@ const takeAway = () =>{
 </script>
 
 <template>
+  <div class="kitchen-queue-page-container">
     <nav>
       <TopNav />
     </nav>
@@ -36,6 +37,7 @@ const takeAway = () =>{
       <button class="btn eat-here" @click="eatHere">Eat here</button>
       <button class="btn to-go" @click="takeAway">To Go</button>
     </div>
+  </div>
 </template>
 
 <style scoped>
