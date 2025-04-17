@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, reactive, watch, computed } from "vue";
+import {ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 
 let storedOrder = JSON.parse(localStorage.getItem("order"));
