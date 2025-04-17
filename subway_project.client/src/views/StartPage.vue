@@ -3,6 +3,9 @@ import "../assets/main.css";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TopNav from "@/components/TopNav.vue";
+import { useOrderStore } from "@/stores/useOrderStore";
+
+const orderStore = useOrderStore();
 
 const order = {
   takeAway: false,
@@ -16,6 +19,7 @@ const eatHere = () =>{
   order.takeAway = false;
   localStorage.setItem("order", JSON.stringify(order));
   console.log(order);
+  orderStore.changeTakeAway(false);
   router.push("/order");
 };
 
@@ -23,6 +27,7 @@ const takeAway = () =>{
   order.takeAway = true;
   localStorage.setItem("order", JSON.stringify(order));
   console.log(order);
+  orderStore.changeTakeAway(true);
   router.push("/order");
 };
 
