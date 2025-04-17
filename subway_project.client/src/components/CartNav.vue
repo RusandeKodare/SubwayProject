@@ -163,11 +163,15 @@ const IsCheckoutDisabled = () => {
     </div>
 
     <div v-for="item in groupedList" :key="item.name" class="cart-item">
-      <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
-      <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
-      <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
-      but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
-      <button @click="removeItem(item)">-</button>
+      <div>
+        <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
+      </div>
+      <div>
+        <button @click="removeItem(item)">-</button>
+        <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
+        <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
+      </div>
     </div>
 
 
@@ -261,7 +265,7 @@ const IsCheckoutDisabled = () => {
 }
 
 .cart-item span {
-  font-weight: 500;
+/*  font-weight: 500;*/
   color: #555;
 }
 
@@ -270,6 +274,7 @@ const IsCheckoutDisabled = () => {
   border: none;
   color: #333;
   padding: 6px 12px;
+  margin: 0 2px;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -284,9 +289,14 @@ const IsCheckoutDisabled = () => {
   background-color: #cbd5e0;
 }
 
-.cart-item button:disabled {
-  background-color: #e2e8f0;
-  color: #a0aec0;
-  cursor: not-allowed;
-}
+  .cart-item button:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+  }
+
+  .cart-item div {
+      display: flex;
+      flex-wrap: nowrap;
+  }
 </style>
