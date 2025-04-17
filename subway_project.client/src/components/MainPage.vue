@@ -1,5 +1,8 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
+import {useOrderStore} from "@/stores/useOrderStore";
+
+const orderStore = useOrderStore();
 
 onMounted(() => {
   getProducts();
@@ -58,6 +61,8 @@ function AddToCart(emittedProduct)
   console.log(storedOrder);
   props.receivedList.push(emittedProduct);
   emit("emittedList", [...props.receivedList]);
+  orderStore.addProduct(emittedProduct);
+  orderStore.addToTotalPrice(emittedProduct.price);
 }
 
 const IsDisabled = (subCatId) => {
