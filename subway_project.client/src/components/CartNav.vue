@@ -7,25 +7,12 @@ const orderStore = useOrderStore();
 let storedOrder = JSON.parse(localStorage.getItem("order"));
 
 const props = defineProps({
-  receivedList: {
-    type: Array,
-    default: () => [],
-  },
   cartLimits: Object
 });
 
-
-const totalPrice = computed(() => {
-  let sum = 0;
-  for (const item of props.receivedList) {
-    sum += item.price || 0;
-  }
-
-  return sum;
-});
-
-
-const groupedList = computed(() => {
+  // The computed property groupedList can be removed once adding and removing procucts from Pinia cart is implemented.
+  // Or it can be updated to use the Pinia cart instead of the "props + emits" (i.e. receivedList) cart.
+/*const groupedList = computed(() => {
   const map = {}
   for (const item of props.receivedList) {
     if (!map[item.name]) {
@@ -35,7 +22,7 @@ const groupedList = computed(() => {
     }
   }
   return Object.values(map)
-});
+});*/
 
 const checkout = () => {
   storedOrder = JSON.parse(localStorage.getItem("order"));
@@ -80,41 +67,37 @@ const checkout = () => {
 
 };
 
-const emit = defineEmits(["emittedList"]);
 
+  // The removeItem method can be removed once adding and removing procucts from Pinia cart is implemented.
 const removeItem = (item) => {
-  const index = props.receivedList.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
+  storedOrder = JSON.parse(localStorage.getItem("order"));
+  const index = storedOrder.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
   if (index === -1) {
     console.error("Item not found in receivedList");
     return;
   }
-  storedOrder = JSON.parse(localStorage.getItem("order"));
   storedOrder.products.splice(index, 1);
   storedOrder.totalPrice -= item.price;
   localStorage.setItem("order", JSON.stringify(storedOrder));
   console.log(storedOrder);
-  props.receivedList.splice(index, 1);
-  emit("emittedList", [...props.receivedList]);
 };
 
+  // The addItem method can be removed once adding and removing procucts from Pinia cart is implemented.
 const addItem = (item) => {
   storedOrder = JSON.parse(localStorage.getItem("order"));
   storedOrder.products.push(item);
   storedOrder.totalPrice += item.price;
   localStorage.setItem("order", JSON.stringify(storedOrder));
   console.log(storedOrder);
-  const index = props.receivedList.indexOf(item);
-  props.receivedList.push(item);
-  emit("emittedList", [...props.receivedList]);
 };
 
 
 const IsAddToCartDisabled = (subCatId) => {
-  if (!props.cartLimits || !props.receivedList) {
-    return false; // No limits or receivedList, so not disabled
+  if (!props.cartLimits || !orderStore.order.products) {
+    return false; // No limits or products in orderStore, so not disabled
   }
 
-  const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
   if (!cartHasBread) { //if there is no bread in the cart
     if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
       return true; //return true to disable the button
@@ -122,15 +105,15 @@ const IsAddToCartDisabled = (subCatId) => {
   }
 
   //if there is bread in the cart check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
-  const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
-  return itemCount >= props.cartLimits[subCatId];
+  const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length;
+  return productCount >= props.cartLimits[subCatId];
 };
 
 const IsCheckoutDisabled = () => {
-  const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
   if (!cartHasBread) { //if there is no bread in the cart
-    const itemCount = props.receivedList.filter(item => item.subCategoryId >= 2 && item.subCategoryId <= 5).length;
-    if (itemCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
+    const productCount = orderStore.order.products.filter(product => product.subCategoryId >= 2 && product.subCategoryId <= 5).length;
+    if (productCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
       return true; //return true to disable the button
     }
   }
@@ -145,14 +128,14 @@ const IsCheckoutDisabled = () => {
 
 
     <div class="cart-header">
-      <span v-if="props.receivedList.length > 0">
+      <span v-if="orderStore.order.products.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
           <div v-if="IsCheckoutDisabled()">
             <p>You need to add bread to your order to be able to checkout.</p>
           </div>
         </div>
-        Total: {{ totalPrice }} kr
+        Total: {{ orderStore.order.totalPrice }} kr
       </span>
       <span v-else>
         Welcome!
@@ -162,20 +145,8 @@ const IsCheckoutDisabled = () => {
       </span>
     </div>
 
-    <div v-for="item in groupedList" :key="item.name" class="cart-item">
-      <div>
-        <span>{{ item.name }} x {{ item.quantity }} — {{ item.price }} kr</span>
-      </div>
-      <div>
-        <button @click="removeItem(item)">-</button>
-        <button @click="addItem(item)" :disabled="IsAddToCartDisabled(item.subCategoryId)">+</button>
-        <!-- Visual Studio says "'IsAddToCartDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
-        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
-      </div>
-    </div>
-
-
-    <div> <!--  class="PiniaCart"-->
+    <div>
+      <!--  class="PiniaCart"-->
       <h1>Pinia Cart: </h1>
       <div v-for="product in orderStore.order.products" :key="product.id" class="cart-item">
         <div>
@@ -185,7 +156,7 @@ const IsCheckoutDisabled = () => {
           <button @click="orderStore.removeProduct(product)">-</button> <!-- Name of method to remove product from Pinia cart might need to be updated once the method is implemented. -->
           <button @click="orderStore.addProduct(product)" :disabled="IsAddToCartDisabled(product.subCategoryId)">+</button>
           <!-- Visual Studio says "'IsAddToCartDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-            but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
         </div>
       </div>
     </div>

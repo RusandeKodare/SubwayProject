@@ -12,10 +12,6 @@ const baseUrl = "https://localhost:7193";
 
 const props = defineProps({
   selectedSubCategory: Object,
-  receivedList: {
-    type: Array,
-    default: () => [],
-  },
   cartLimits: Object
 });
 
@@ -48,10 +44,7 @@ watch(
 );
 
 
-
-
-const emit = defineEmits(["emittedList"]);
-
+  // The adding of products to localStorage/storedOrder can be removed once adding and removing procucts from Pinia cart is implemented.
 function AddToCart(emittedProduct)
 {
   storedOrder = JSON.parse(localStorage.getItem("order"));
@@ -59,29 +52,27 @@ function AddToCart(emittedProduct)
   storedOrder.totalPrice += emittedProduct.price;
   localStorage.setItem("order", JSON.stringify(storedOrder));
   console.log(storedOrder);
-  props.receivedList.push(emittedProduct);
-  emit("emittedList", [...props.receivedList]);
   orderStore.addProduct(emittedProduct);
   orderStore.addToTotalPrice(emittedProduct.price);
 }
 
  const IsAddToCartDisabled = (subCatId) => {
-  if (!props.cartLimits || !props.receivedList) {
-    return false; // No limits or receivedList, so not disabled
+   if (!props.cartLimits || !orderStore.order.products) {
+     return false; // No limits or products in orderStore, so not disabled
   }
 
   if (props.selectedSubCategory.categoryId === 1 && props.selectedSubCategory.id !== 1) { //if category is "Sub", and subcategory is not "Bread"
-    const cartHasBread = props.receivedList.findIndex(item => item.subCategoryId === 1) !== -1; //check if there is bread in the cart
+    const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
     if (cartHasBread) { //if there is bread in the cart
-      const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length; //check number of items of the subcategory in the cart
-      return itemCount >= props.cartLimits[subCatId]; //return true/false depending on if the limit is reached
+      const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length; //check number of items of the subcategory in the cart
+      return productCount >= props.cartLimits[subCatId]; //return true/false depending on if the limit is reached
     }
     return true; //if there is no bread in the cart, return true to disable the button
   }
 
   //for any other subcategories check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
-  const itemCount = props.receivedList.filter(item => item.subCategoryId === subCatId).length;
-  return itemCount >= props.cartLimits[subCatId];
+  const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length;
+  return productCount >= props.cartLimits[subCatId];
 };
 
 
