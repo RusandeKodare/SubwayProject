@@ -65,7 +65,7 @@ function AddToCart(emittedProduct)
   orderStore.addToTotalPrice(emittedProduct.price);
 }
 
-const IsDisabled = (subCatId) => {
+ const IsAddToCartDisabled = (subCatId) => {
   if (!props.cartLimits || !props.receivedList) {
     return false; // No limits or receivedList, so not disabled
   }
@@ -95,9 +95,9 @@ const IsDisabled = (subCatId) => {
       <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <button class="button" @click="AddToCart(p)" :disabled="IsDisabled(p.subCategoryId)">
-        <!-- Visual Studio says "'IsDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
-          but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
+      <button class="button" @click="AddToCart(p)" :disabled="IsAddToCartDisabled(p.subCategoryId)">
+        <!-- Visual Studio says "'IsAddToCartDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
         EAT ME!
       </button>
     </div>

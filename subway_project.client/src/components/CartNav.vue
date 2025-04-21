@@ -109,7 +109,7 @@ const addItem = (item) => {
 };
 
 
-const IsDisabled = (subCatId) => {
+const IsAddToCartDisabled = (subCatId) => {
   if (!props.cartLimits || !props.receivedList) {
     return false; // No limits or receivedList, so not disabled
   }
@@ -168,8 +168,8 @@ const IsCheckoutDisabled = () => {
       </div>
       <div>
         <button @click="removeItem(item)">-</button>
-        <button @click="addItem(item)" :disabled="IsDisabled(item.subCategoryId)">+</button>
-        <!-- Visual Studio says "'IsDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
+        <button @click="addItem(item)" :disabled="IsAddToCartDisabled(item.subCategoryId)">+</button>
+        <!-- Visual Studio says "'IsAddToCartDisabled(item.subCategoryId)' is not a valid value of attribute 'disabled'",
         but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList"). -->
       </div>
     </div>
