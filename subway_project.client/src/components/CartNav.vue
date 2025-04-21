@@ -175,12 +175,18 @@ const IsCheckoutDisabled = () => {
     </div>
 
 
-    <div class="PiniaCart">
+    <div> <!--  class="PiniaCart"-->
       <h1>Pinia Cart: </h1>
       <div v-for="product in orderStore.order.products" :key="product.id" class="cart-item">
-
-        <p>{{ product.name }}</p>
-
+        <div>
+          <p>{{ product.name }} — {{ product.price }} kr</p>
+        </div>
+        <div>
+          <button @click="orderStore.removeProduct(product)">-</button> <!-- Name of method to remove product from Pinia cart might need to be updated once the method is implemented. -->
+          <button @click="orderStore.addProduct(product)" :disabled="IsAddToCartDisabled(product.subCategoryId)">+</button>
+          <!-- Visual Studio says "'IsAddToCartDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
+            but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        </div>
       </div>
     </div>
 
