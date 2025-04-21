@@ -136,6 +136,8 @@ const IsCheckoutDisabled = () => {
           </div>
         </div>
         Total: {{ orderStore.order.totalPrice }} kr
+        <p v-if="orderStore.order.takeAway">To Go</p>
+        <p v-else>Eat Here</p>
       </span>
       <span v-else>
         Welcome!
@@ -194,6 +196,11 @@ const IsCheckoutDisabled = () => {
   font-weight: bold;
   margin: 10px;
   color: #333;
+}
+
+.cart-header p {
+  font-size: 1.0rem;
+  font-weight: normal;
 }
 
 .cart-footer {
