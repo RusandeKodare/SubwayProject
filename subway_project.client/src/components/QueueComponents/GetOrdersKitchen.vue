@@ -1,23 +1,24 @@
 <script setup>
   import { ref, onMounted } from 'vue'
 
-const orders = ref([])
-const loading = ref(true)
-const error = ref(null)
+  const orders = ref([])
+  const loading = ref(true)
+  const error = ref(null)
 
-onMounted(async () => {
-  try {
-    const response = await fetch('/api/Orders')
-    if (!response.ok) {
-      throw new Error('Failed to fetch orders')
+  onMounted(async () => {
+    try {
+      const response = await fetch('/api/Orders')
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders')
+      }
+      orders.value = await response.json()
+    } catch (err) {
+      error.value = err.message
+    } finally {
+      loading.value = false
     }
-    orders.value = await response.json()
-  } catch (err) {
-    error.value = err.message
-  } finally {
-    loading.value = false
-  }
-})</script>
+  })
+</script>
 
 <template>
   <div>
@@ -65,6 +66,9 @@ onMounted(async () => {
 
 <style scoped>
   .order-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   .header-div {
@@ -77,42 +81,49 @@ onMounted(async () => {
 
   .main-content {
     display: flex;
+    flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
-    height: 100vh;
     overflow: hidden;
   }
 
-  .left-div {
+  .left-div, .right-div {
     width: 50%;
     background-color: #e0e0e0;
     padding: 20px;
-    margin-left: 1.5rem;
-    margin-right: 2rem;
     margin-bottom: 2rem;
     box-sizing: border-box;
-    float: left;
-    border: solid 5px blue;
+    border: solid 5px;
+    overflow-y: auto;
+    max-height: 100%;
+  }
+
+  .left-div {
+    border-color: blue;
+    margin-right: 1rem;
+    margin-left: 2rem;
   }
 
   .right-div {
-    width: 50%;
-    background-color: #e0e0e0;
-    padding: 20px;
-    margin-left: 1.5rem;
+    border-color: yellow;
+    margin-left: 1rem;
     margin-right: 2rem;
-    margin-bottom: 2rem;
-    box-sizing: border-box;
-    float: left;
-    border: solid 5px yellow;
   }
 
   .order-div {
+    display: inline-block;
     background-color: #f0f0f0;
     padding: 10px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 5px;
     border: solid 1px #ccc;
+    text-align: center;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
   }
 </style>

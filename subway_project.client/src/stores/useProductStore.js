@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 
 export const useProductStore = defineStore('products', {
   state: () => ({
-    selectedProducts: [] as object[] 
+    selectedProducts: [] 
   }),
   actions: {
-    addProduct(product: object) {
+    addProduct(product) {
       this.selectedProducts.push(product)
     },
     checkState(){
@@ -13,19 +13,17 @@ export const useProductStore = defineStore('products', {
         console.log('pinia', product)
       });
     },
-    checkLocalStorage(){
-      this.selectedProducts = localStorage.getItem('selectedProducts')
-      this.selectedProducts = JSON.parse(this.selectedProducts)
-      if(this.selectedProducts){
+    checkLocalStorage() {
+      const stored = localStorage.getItem('selectedProducts')
+      if (stored) {
+        this.selectedProducts = JSON.parse(stored)
         this.selectedProducts.forEach(product => {
-          console.log(product.name);
-        });
-      }
-      else{
-        console.log('No products in local storage');
+          console.log(product.name)
+        })
+      } else {
+        console.log('No products in local storage')
         this.selectedProducts = []
       }
-
     },
     saveToLocalStorage(){
       localStorage.setItem('selectedProducts', JSON.stringify(this.selectedProducts))
