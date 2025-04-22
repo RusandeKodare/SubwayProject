@@ -1,11 +1,19 @@
 <script setup>
+  import { useOrderStore } from "@/stores/useOrderStore";
+  const orderStore = useOrderStore();
+
+  const resetCart = () => {
+    if (orderStore.order.products.length > 0) {
+      orderStore.resetOrder();
+    }
+  }
 </script>
 
 <template>
   <div class="top-nav-container">
     <div>
         <RouterLink to="/" class="bottom-link">
-            <img class="logo" src="../assets/imgs/SubWayNewLogo2.png" alt="Subway Logo">
+            <img class="logo" src="../assets/imgs/SubWayNewLogo2.png" alt="Subway Logo" @click="resetCart">
         </RouterLink>
     </div>
     <div class="page-links">
