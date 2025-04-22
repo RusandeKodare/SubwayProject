@@ -10,6 +10,8 @@ const props = defineProps({
   cartLimits: Object
 });
 
+const router = useRouter();
+
   // The computed property groupedList can be removed once adding and removing procucts from Pinia cart is implemented.
   // Or it can be updated to use the Pinia cart instead of the "props + emits" (i.e. receivedList) cart.
 /*const groupedList = computed(() => {
@@ -56,7 +58,9 @@ const checkout = () => {
     .then((response) => {
       if (response.ok) {
         console.log("The Pinia-order was saved successfully to database");
-        orderStore.resetOrder();
+        //orderStore.resetOrder();
+        //router.push("/orderConfirmation"); //using this redirect to the OrderConfirmation page will result in the default timeout of 30 seconds.
+        router.push({ name: 'OrderConfirmation', query: { timeout: 15 } }); //using this redirect to the OrderConfirmation page will result in a timeout of 15 seconds (or whatever you set the timeout value to).
       }
       else {
         console.log("Something went wrong when saving the PINIA-order to the database");
