@@ -1,6 +1,7 @@
 <script setup>
   import { onMounted } from 'vue'
   import { useOrdersStore } from '@/stores/OrdersStore'
+  import KitchenOrder from './KitchenOrder.vue';
 
   const ordersStore = useOrdersStore();
 
@@ -8,9 +9,9 @@
     await ordersStore.getOrders();
   })
 
-function sortedProducts(products) {
-  return [...products].sort((a, b) => a.SubCategoryId - b.SubCategoryId)
-}
+// function sortedProducts(products) {
+//   return [...products].sort((a, b) => a.SubCategoryId - b.SubCategoryId)
+// }
 
 </script>
 
@@ -25,40 +26,15 @@ function sortedProducts(products) {
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <h2>Orders Received</h2>
-        <ul v-if="ordersStore.ShowOrders">
-            <li v-for="order in ordersStore.FilteredOrdersRecieved" :key="order.id">
-              <div class="order-div">
-                <div class="order-heading">
-                  ID: {{ order.id }} - {{ order.takeAway ? "Take Away" : "Eat Here" }} 
-                </div> 
-                <div v-for="p in sortedProducts(order.products)">
-                  {{ p.name }}
-                </div>
-                <div>
-                  <button>Start</button>
-                </div>
-              </div>
-            </li>
-        </ul>
+        <KitchenOrder :orders="ordersStore.FilteredOrdersRecieved" :show="ordersStore.ShowOrders" title="Orders Recieved"/>
       </div>
+
       <br />
+
       <div class="right-div">
-        <h2>Orders In Progress</h2>
-        <ul v-if="ordersStore.ShowOrders">
-          <li v-for="order in ordersStore.FilteredOrdersInProgress"
-              :key="order.id">
-              <div class="order-div">
-              <div class="order-heading">
-                ID: {{ order.id }} - {{ order.takeAway ? "Take Away" : "Eat Here" }} 
-              </div> 
-              <div v-for="p in order.products">
-                {{ p.name }}
-              </div>
-            </div>
-          </li>
-        </ul>
+        <KitchenOrder :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" title="Orders In Progress"/>
       </div>
+
     </div>
   </div>
 </template>
@@ -109,25 +85,4 @@ function sortedProducts(products) {
     margin-right: 2rem;
   }
 
-  .order-div {
-    display: inline-block;
-    background-color: #f0f0f0;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    border: solid 1px #ccc;
-    text-align: center;
-  }
-
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-  }
-
-  .order-heading {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
 </style>

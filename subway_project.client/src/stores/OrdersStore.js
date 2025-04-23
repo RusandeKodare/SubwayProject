@@ -20,6 +20,36 @@ export const useOrdersStore = defineStore("ordersStore", () => {
           }
     }
 
+    async function progressOrder(id) {
+      try {
+        const response = await fetch(`/api/Orders/progress-order/${id}`, {
+          method: 'PUT'
+        });
+        if(!response.ok) {
+          throw new Error("Failed to update order")
+        }
+        await getOrders();
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+
+    //FUNKAR INTE ÄN
+    async function completeOrder(id) {
+      try {
+        const response = await fetch(`/api/Orders/complete-order/${id}`, {
+          method: 'PUT'
+        });
+        if(!response.ok) {
+          throw new Error("Failed to update order")
+        }
+        await getOrders();
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     const FilteredOrdersRecieved = computed(() => {
         return orders.value.filter(o =>
           o.orderReceived !== null &&
@@ -46,5 +76,5 @@ export const useOrdersStore = defineStore("ordersStore", () => {
         return !loading.value && !error.value
       });
 
-    return {orders, getOrders, loading, error, FilteredOrdersRecieved, FilteredOrdersInProgress, FilteredOrdersCompleted, ShowOrders}
+    return {orders, getOrders, loading, error, FilteredOrdersRecieved, FilteredOrdersInProgress, FilteredOrdersCompleted, ShowOrders, progressOrder, completeOrder}
 })
