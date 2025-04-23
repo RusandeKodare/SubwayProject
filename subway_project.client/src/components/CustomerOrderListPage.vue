@@ -1,6 +1,7 @@
 <script setup>
   import { onMounted } from 'vue'
   import { useOrdersStore } from '@/stores/OrdersStore';
+  import CustomerOrder from './CustomerOrder.vue';
 
 
   const ordersStore = useOrdersStore();
@@ -9,7 +10,7 @@
     await ordersStore.getOrders();
   })
 
-  </script>
+</script>
 
 <template>
   <div>
@@ -22,39 +23,21 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <h2>Orders Received</h2>
-        <ul v-if="ordersStore.ShowOrders">
-          <li v-for="order in ordersStore.FilteredOrdersRecieved"
-              :key="order.id">
-            <div class="order-div">
-              {{ order.id }}
-            </div>
-          </li>
-        </ul>
+        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersRecieved":show="ordersStore.ShowOrders" />
       </div>
+
       <br />
+
       <div class="middle-div">
-        <h2>Orders In Progress</h2>
-        <ul v-if="ordersStore.ShowOrders">
-          <li v-for="order in ordersStore.FilteredOrdersInProgress"
-              :key="order.id">
-            <div class="order-div">
-              {{ order.id }}
-            </div>
-          </li>
-        </ul>
+        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
       </div>
+      
+      <br />
+
       <div class="right-div">
-        <h2>Orders Completed</h2>
-        <ul v-if="ordersStore.ShowOrders">
-          <li v-for="order in ordersStore.FilteredOrdersCompleted"
-              :key="order.id">
-            <div class="order-div">
-              {{ order.id }}
-            </div>
-          </li>
-        </ul>
+        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersCompleted":show="ordersStore.ShowOrders" />
       </div>
+
     </div>
   </div>
 </template>
@@ -111,7 +94,7 @@
     margin-right: 2rem;
   }
 
-  .order-div {
+  /* .order-div {
     background-color: #f0f0f0;
     padding: 10px;
     margin: 5px 0;
@@ -119,13 +102,13 @@
     border: solid 1px #ccc;
     display: inline-block;
     text-align: center;
-  }
+  } */
 
-  ul {
+  /* ul {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     list-style: none;
     padding: 0;
-  }
+  } */
 </style>

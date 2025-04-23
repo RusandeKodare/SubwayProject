@@ -35,6 +35,9 @@ function sortedProducts(products) {
                 <div v-for="p in sortedProducts(order.products)">
                   {{ p.name }}
                 </div>
+                <div>
+                  <button>Start</button>
+                </div>
               </div>
             </li>
         </ul>
