@@ -29,7 +29,7 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(o => o.Products).ToListAsync();
         }
 
         // GET: api/Orders/5
