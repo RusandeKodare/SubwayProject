@@ -16,11 +16,22 @@
   let redirectTimer = null;
   let countdownTimer = null;
 
+  const groupedList = (products) => {
+    const map = {}
+    for (const product of products) {
+      if (!map[product.name]) {
+        map[product.name] = { ...product, quantity: 1 }
+      } else {
+        map[product.name].quantity += 1
+      }
+    }
+    return Object.values(map)
+  };
 
-  const orderProductsSub = orderStore.order.products.filter(prod => prod.subCategoryId >= 1 && prod.subCategoryId <= 5);
-  const orderProductsDrinks = orderStore.order.products.filter(prod => prod.subCategoryId >= 6 && prod.subCategoryId <= 7);
-  const orderProductsSnacks = orderStore.order.products.filter(prod => prod.subCategoryId >= 8 && prod.subCategoryId <= 9);
-  const orderProductsDesserts = orderStore.order.products.filter(prod => prod.subCategoryId >= 10 && prod.subCategoryId <= 11);
+  const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 1 && prod.subCategoryId <= 5));
+  const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 6 && prod.subCategoryId <= 7));
+  const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 8 && prod.subCategoryId <= 9));
+  const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 10 && prod.subCategoryId <= 11));
 
   const startNewOrder = () => {
     orderStore.resetOrder();
@@ -64,25 +75,25 @@
       <div v-if="orderProductsSub.length !== 0">
         <p class="order-item-heading">Sub:</p>
         <ul>
-          <li v-for="product in orderProductsSub" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.price }}kr</li>
+          <li v-for="product in orderProductsSub" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
         </ul>
       </div>
       <div v-if="orderProductsDrinks.length !== 0">
         <p class="order-item-heading">Drinks:</p>
         <ul>
-          <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.price }}kr</li>
+          <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
         </ul>
       </div>
       <div v-if="orderProductsSnacks.length !== 0">
         <p class="order-item-heading">Snacks:</p>
         <ul>
-          <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.price }}kr</li>
+          <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
         </ul>
       </div>
       <div v-if="orderProductsDesserts.length !== 0">
         <p class="order-item-heading">Dessert:</p>
         <ul>
-          <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.price }}kr</li>
+          <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
         </ul>
       </div>
       <div class="order-footer">

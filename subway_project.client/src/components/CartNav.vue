@@ -12,11 +12,9 @@ const props = defineProps({
 
 const router = useRouter();
 
-  // The computed property groupedList can be removed once adding and removing procucts from Pinia cart is implemented.
-  // Or it can be updated to use the Pinia cart instead of the "props + emits" (i.e. receivedList) cart.
-/*const groupedList = computed(() => {
+const groupedList = computed(() => {
   const map = {}
-  for (const item of props.receivedList) {
+  for (const item of orderStore.order.products) {
     if (!map[item.name]) {
       map[item.name] = { ...item, quantity: 1 }
     } else {
@@ -24,7 +22,7 @@ const router = useRouter();
     }
   }
   return Object.values(map)
-});*/
+});
 
 const checkout = () => {
   storedOrder = JSON.parse(localStorage.getItem("order"));
@@ -154,9 +152,9 @@ const IsCheckoutDisabled = () => {
     <div>
       <!--  class="PiniaCart"-->
       <h1>Pinia Cart: </h1>
-      <div v-for="product in orderStore.order.products" :key="product.id" class="cart-item">
+      <div v-for="product in groupedList" :key="product.id" class="cart-item">
         <div>
-          <p>{{ product.name }} — {{ product.price }} kr</p>
+          <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
         </div>
         <div>
           <button @click="orderStore.removeProduct(product)">-</button> <!-- Name of method to remove product from Pinia cart might need to be updated once the method is implemented. -->
