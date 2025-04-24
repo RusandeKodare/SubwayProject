@@ -122,6 +122,11 @@ const IsCheckoutDisabled = () => {
   return false;
 };
 
+  const startNewOrder = () => {
+    orderStore.resetOrder();
+    router.push("/");
+  }
+
 </script>
 
 <template>
@@ -163,6 +168,9 @@ const IsCheckoutDisabled = () => {
         but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
         </div>
       </div>
+    </div>
+    <div v-if="orderStore.order.products.length !== 0" class="cart-footer cancel-button">
+      <button @click="startNewOrder">Cancel order</button>
     </div>
 
   </div>
@@ -237,6 +245,18 @@ const IsCheckoutDisabled = () => {
   font-size: 0.9rem;
   margin-top: 5px;
 }
+
+  .cancel-button button {
+    background-color: #e53e3e;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 40px;
+  }
 
 .cart-item {
   display: flex;
