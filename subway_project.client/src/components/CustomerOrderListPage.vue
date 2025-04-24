@@ -94,21 +94,7 @@
     margin-right: 2rem;
   }
 
-  /* .order-div {
-    background-color: #f0f0f0;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: solid 1px #ccc;
-    display: inline-block;
-    text-align: center;
-  } */
-
-  /* ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    list-style: none;
-    padding: 0;
-  } */
+  ::v-deep(.order-div) {
+    font-size: 35px;
+  } 
 </style>

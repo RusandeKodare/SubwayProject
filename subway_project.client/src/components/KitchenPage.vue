@@ -26,13 +26,19 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <KitchenOrder :orders="ordersStore.FilteredOrdersRecieved" :show="ordersStore.ShowOrders" title="Orders Recieved"/>
+        <KitchenOrder :orders="ordersStore.FilteredOrdersRecieved" :show="ordersStore.ShowOrders" title="Orders Recieved" />
+      </div>
+
+      <br />
+
+      <div class="middle-div">
+        <KitchenOrder :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" title="Orders In Progress" />
       </div>
 
       <br />
 
       <div class="right-div">
-        <KitchenOrder :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" title="Orders In Progress"/>
+        <KitchenOrder :orders="ordersStore.FilteredOrdersCompleted" :show="ordersStore.ShowOrders" title="Orders Completed" />
       </div>
 
     </div>
@@ -62,8 +68,8 @@
     overflow: hidden;
   }
 
-  .left-div, .right-div {
-    width: 50%;
+  .left-div, .middle-div, .right-div {
+    width: 30%;
     background-color: #e0e0e0;
     padding: 20px;
     margin-bottom: 2rem;
@@ -79,8 +85,14 @@
     margin-left: 2rem;
   }
 
-  .right-div {
+  .middle-div {
     border-color: yellow;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .right-div {
+    border-color: green;
     margin-left: 1rem;
     margin-right: 2rem;
   }

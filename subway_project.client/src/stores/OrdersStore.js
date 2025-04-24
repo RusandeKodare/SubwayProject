@@ -50,27 +50,32 @@ export const useOrdersStore = defineStore("ordersStore", () => {
       }
     }
 
-    const FilteredOrdersRecieved = computed(() => {
-        return orders.value.filter(o =>
-          o.orderReceived !== null &&
-          o.orderInProgress == null &&
-          o.orderReady == null &&
-          o.orderCompleted == null
-        )
-      });
+  const FilteredOrdersRecieved = computed(() => {
+    return orders.value
+      .filter(o =>
+        o.orderReceived !== null &&
+        o.orderInProgress == null &&
+        o.orderReady == null &&
+        o.orderCompleted == null
+      )
+      .sort((a, b) => new Date(a.orderReceived) - new Date(b.orderReceived));
+  });
 
-      const FilteredOrdersInProgress = computed(() => {
-        return orders.value.filter(o =>
-          o.orderInProgress !== null &&
-          o.orderReady == null &&
-          o.orderCompleted == null
-        )
-      });
+  const FilteredOrdersInProgress = computed(() => {
+    return orders.value
+      .filter(o =>
+        o.orderInProgress !== null &&
+        o.orderReady == null &&
+        o.orderCompleted == null
+      )
+      .sort((a, b) => new Date(a.orderInProgress) - new Date(b.orderInProgress));
+  });
 
-      const FilteredOrdersCompleted = computed(() => {
-        return orders.value.filter(o => o.orderCompleted !== null &&
-        o.orderCollected == null)
-      });
+  const FilteredOrdersCompleted = computed(() => {
+    return orders.value
+      .filter(o => o.orderCompleted !== null && o.orderCollected == null)
+      .sort((a, b) => new Date(a.orderCompleted) - new Date(b.orderCompleted));
+  });
 
       const ShowOrders = computed(() => {
         return !loading.value && !error.value
