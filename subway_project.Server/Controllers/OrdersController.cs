@@ -46,6 +46,19 @@ namespace subway_project.Server.Controllers
             return order;
         }
 
+        [HttpGet("by-customer/{customerId}")]
+        public async Task<ActionResult<Order>> GetOrderWithCustomerId(string customerId)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(_=>_.CustomerId == customerId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return order;
+        }
+
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
