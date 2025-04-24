@@ -157,6 +157,22 @@ namespace subway_project.Server.Controllers
         public async Task<ActionResult<Order>> PostOrder(OrderDTO orderDTO)
         {
             Order order = _mapper.Map<Order>(orderDTO);
+
+            for (int i = 0; i < order.Products.Count; i++)
+            {
+                var product = order.Products[i];
+                if (product.Id > 0)
+                {
+                    var existingProduct = await _context.Products.FindAsync(product.Id);
+
+                    if (existingProduct != null)
+                        order.Products[i] = existingProduct; // Replace the product in the list
+                    else
+                        _context.Products.Attach(product);
+                }
+            }
+
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
