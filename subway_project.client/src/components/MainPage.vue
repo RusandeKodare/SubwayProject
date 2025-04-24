@@ -17,7 +17,7 @@ const props = defineProps({
 
 const products = reactive([]);
 const filteredProducts = ref([]);
-let storedOrder = JSON.parse(localStorage.getItem("order"));
+// let storedOrder = JSON.parse(localStorage.getItem("order"));
 let showProducts = ref(false);
 
 const getProducts = async () => {
@@ -47,13 +47,13 @@ watch(
   // The adding of products to localStorage/storedOrder can be removed once adding and removing procucts from Pinia cart is implemented.
 function AddToCart(emittedProduct)
 {
-  storedOrder = JSON.parse(localStorage.getItem("order"));
-  storedOrder.products.push(emittedProduct);
-  storedOrder.totalPrice += emittedProduct.price;
-  localStorage.setItem("order", JSON.stringify(storedOrder));
-  console.log(storedOrder);
+  // storedOrder = JSON.parse(localStorage.getItem("order"));
+  // storedOrder.products.push(emittedProduct);
+  // storedOrder.totalPrice += emittedProduct.price;
+  // localStorage.setItem("order", JSON.stringify(storedOrder));
+  // console.log(storedOrder);
   orderStore.addProduct(emittedProduct);
-  orderStore.addToTotalPrice(emittedProduct.price);
+  // orderStore.addToTotalPrice(emittedProduct.price);
 }
 
  const IsAddToCartDisabled = (subCatId) => {

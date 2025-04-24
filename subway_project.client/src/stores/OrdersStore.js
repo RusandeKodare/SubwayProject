@@ -6,6 +6,8 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     const loading = ref(true);
     const error = ref("");
 
+
+
     async function getOrders() {
         try {
             const response = await fetch('/api/Orders')
@@ -19,6 +21,21 @@ export const useOrdersStore = defineStore("ordersStore", () => {
             loading.value = false
           }
     }
+
+    async function ReturnOrderId(customerId) {
+
+      try{
+        const res = await fetch (`/api/Orders/by-customer/${customerId}`);
+        const order = await res.json();
+        console.log(order.id);
+        return order.id;
+      }
+
+      catch(error){
+        console.log("Error fetching order by customer ID", error);
+        return null;
+      }
+    };
 
     async function progressOrder(id) {
       try {
@@ -76,5 +93,5 @@ export const useOrdersStore = defineStore("ordersStore", () => {
         return !loading.value && !error.value
       });
 
-    return {orders, getOrders, loading, error, FilteredOrdersRecieved, FilteredOrdersInProgress, FilteredOrdersCompleted, ShowOrders, progressOrder, completeOrder}
+    return {orders, getOrders, loading, error, FilteredOrdersRecieved, FilteredOrdersInProgress, FilteredOrdersCompleted, ShowOrders, progressOrder, completeOrder, ReturnOrderId}
 })
