@@ -29,7 +29,7 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders.Include(o => o.Products).ToListAsync();
         }
 
         // GET: api/Orders/5
@@ -57,6 +57,67 @@ namespace subway_project.Server.Controllers
             }
 
             _context.Entry(order).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        // PUT: /api/Orders/progress-order/7
+        [HttpPut("progress-order/{id}")]
+        public async Task<IActionResult> ProgressOrder(int id)
+        {
+            var existingOrder = await _context.Orders.FindAsync(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+                
+            existingOrder.OrderInProgress = DateTime.Now;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        
+        // PUT: /api/Orders/complete-order/7
+        [HttpPut("complete-order/{id}")]
+        public async Task<IActionResult> CompleteOrder(int id)
+        {
+            var existingOrder = await _context.Orders.FindAsync(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+            
+            existingOrder.OrderCompleted = DateTime.Now;
 
             try
             {
