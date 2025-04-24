@@ -23,13 +23,13 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersRecieved":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders Received" :orders="ordersStore.FilteredOrdersRecieved":show="ordersStore.ShowOrders" />
       </div>
 
       <br />
 
       <div class="middle-div">
-        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
       </div>
       
       <br />
