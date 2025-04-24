@@ -16,11 +16,14 @@
 }
 
 ul {
-  display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   list-style: none;
   padding: 0;
+}
+
+.order-list {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* .page-container {

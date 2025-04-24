@@ -131,6 +131,7 @@
     </div>
   </div>
 </template>
+
 <style scoped>
   nav {
     height: 11vh;

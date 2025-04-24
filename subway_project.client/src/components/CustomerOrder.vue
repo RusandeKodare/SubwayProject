@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps } from 'vue';
+  import { defineProps } from 'vue';
   const props = defineProps({
     orders: Array,
     title: String,
@@ -10,7 +10,7 @@
 
 <template>
     <h2>{{ props.title }}</h2>
-    <ul v-if="props.show">
+    <ul class="order-list" v-if="props.show">
         <li v-for="order in props.orders" :key="order.id">
             <div class="order-div">
                 {{ order.id }}
