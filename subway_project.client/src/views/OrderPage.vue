@@ -22,12 +22,6 @@ const cartLimits = {
   3: 1, //sauces
   4: 2, //cheese
   5: 2, //proteins
-  6: 5, //carbonated
-  7: 5, //non carbonated
-  8: 5, //chips
-  9: 5, //cookies
-  10: 5, //ice cream
-  11: 5 //pies
 };
 
 </script>
