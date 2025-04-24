@@ -13,6 +13,7 @@ namespace subway_project.Server
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
+                    new Category { Name = "Specials" },
                     new Category { Name = "Sub" },
                     new Category { Name = "Drinks" },
                     new Category { Name = "Snacks" },
@@ -26,17 +27,17 @@ namespace subway_project.Server
             {
 
                 context.SubCategories.AddRange(
-                    new SubCategory { Name = "Bread", CategoryId = 1 },
-                    new SubCategory { Name = "Vegetables", CategoryId = 1 },
-                    new SubCategory { Name = "Sauces", CategoryId = 1 },
-                    new SubCategory { Name = "Cheese", CategoryId = 1 },
-                    new SubCategory { Name = "Proteins", CategoryId = 1 },
-                    new SubCategory { Name = "Carbonated", CategoryId = 2 },
-                    new SubCategory { Name = "Non Carbonated", CategoryId = 2 },
-                    new SubCategory { Name = "Chips", CategoryId = 3 },
-                    new SubCategory { Name = "Cookies", CategoryId = 3 },
-                    new SubCategory { Name = "Ice-Cream", CategoryId = 4 },
-                    new SubCategory { Name = "Pies", CategoryId = 4 }
+                    new SubCategory { Name = "Bread", CategoryId = 2 },
+                    new SubCategory { Name = "Proteins", CategoryId = 2 },
+                    new SubCategory { Name = "Vegetables", CategoryId = 2 },
+                    new SubCategory { Name = "Sauces", CategoryId = 2 },
+                    new SubCategory { Name = "Cheese", CategoryId = 2 },
+                    new SubCategory { Name = "Carbonated", CategoryId = 3 },
+                    new SubCategory { Name = "Non Carbonated", CategoryId = 3 },
+                    new SubCategory { Name = "Chips", CategoryId = 4 },
+                    new SubCategory { Name = "Cookies", CategoryId = 4 },
+                    new SubCategory { Name = "Ice-Cream", CategoryId = 5 },
+                    new SubCategory { Name = "Pies", CategoryId = 5 }
                     );
 
                 context.SaveChanges();
@@ -105,21 +106,14 @@ namespace subway_project.Server
             if (!context.Orders.Any())
             {
                 context.Orders.AddRange(
-                 
+
                     new Order
                     {
                         TakeAway = true,
                         TotalPrice = 300,
                         Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
-                        OrderReceived = DateTime.Now.AddMinutes(10)
-                    },
-                    new Order
-                    {
-                        TakeAway = false,
-                        TotalPrice = 300,
-                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
-                        OrderReceived = DateTime.Now,
-                        OrderInProgress = DateTime.Now.AddMinutes(5)
+                        OrderReceived = DateTime.Now.AddMinutes(10),
+                        CustomerId = "14"
                     },
                     new Order
                     {
@@ -128,7 +122,17 @@ namespace subway_project.Server
                         Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
                         OrderReceived = DateTime.Now,
                         OrderInProgress = DateTime.Now.AddMinutes(5),
-                        OrderCompleted = DateTime.Now.AddMinutes(15)
+                        CustomerId = "13"
+                    },
+                    new Order
+                    {
+                        TakeAway = false,
+                        TotalPrice = 300,
+                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
+                        OrderReceived = DateTime.Now,
+                        OrderInProgress = DateTime.Now.AddMinutes(5),
+                        OrderCompleted = DateTime.Now.AddMinutes(15),
+                        CustomerId = "12"
                     },
                     new Order
                     {
@@ -138,8 +142,9 @@ namespace subway_project.Server
                         OrderReceived = DateTime.Now,
                         OrderInProgress = DateTime.Now.AddMinutes(5),
                         OrderCompleted = DateTime.Now.AddMinutes(15),
-                        OrderCollected = DateTime.Now.AddMinutes(16)
-                   });
+                        OrderCollected = DateTime.Now.AddMinutes(16),
+                        CustomerId = "11"
+                    });
 
                 context.SaveChanges();
             }
