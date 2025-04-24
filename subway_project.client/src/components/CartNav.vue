@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useOrderStore } from "@/stores/useOrderStore";
 
 const orderStore = useOrderStore();
-let storedOrder = JSON.parse(localStorage.getItem("order"));
+// let storedOrder = JSON.parse(localStorage.getItem("order"));
 
 const props = defineProps({
   cartLimits: Object
@@ -25,25 +25,26 @@ const groupedList = computed(() => {
 });
 
 const checkout = () => {
-  storedOrder = JSON.parse(localStorage.getItem("order"));
-  console.log(storedOrder);
-  fetch("api/Orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(storedOrder),
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log("order was saved successfully to database");
-        localStorage.removeItem("order");
-      }
-      else {
-        console.log("Something went wrong when saving the order to the database");
-      }
+  // storedOrder = JSON.parse(localStorage.getItem("order"));
+  // console.log(storedOrder);
 
-    });
+  // fetch("api/Orders", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(storedOrder),
+  // })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       console.log("order was saved successfully to database");
+  //       localStorage.removeItem("order");
+  //     }
+  //     else {
+  //       console.log("Something went wrong when saving the order to the database");
+  //     }
+
+  //   });
 
 
   fetch("api/Orders", {
@@ -62,6 +63,7 @@ const checkout = () => {
       }
       else {
         console.log("Something went wrong when saving the PINIA-order to the database");
+        console.log('Tried to save following order: ', orderStore.order);
       }
 
     });
@@ -70,28 +72,30 @@ const checkout = () => {
 };
 
 
-  // The removeItem method can be removed once adding and removing procucts from Pinia cart is implemented.
-const removeItem = (item) => {
-  storedOrder = JSON.parse(localStorage.getItem("order"));
-  const index = storedOrder.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
-  if (index === -1) {
-    console.error("Item not found in receivedList");
-    return;
-  }
-  storedOrder.products.splice(index, 1);
-  storedOrder.totalPrice -= item.price;
-  localStorage.setItem("order", JSON.stringify(storedOrder));
-  console.log(storedOrder);
-};
+//   // The removeItem method can be removed once adding and removing procucts from Pinia cart is implemented.
+// const removeItem = (item) => {
+//   // storedOrder = JSON.parse(localStorage.getItem("order"));
+//   // const index = storedOrder.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
+//   // if (index === -1) {
+//   //   console.error("Item not found in receivedList");
+//   //   return;
+//   // }
+//   orderStore.order.totalPrice -= item.price;
+//   orderStore.order.products.splice(index, 1);
 
-  // The addItem method can be removed once adding and removing procucts from Pinia cart is implemented.
-const addItem = (item) => {
-  storedOrder = JSON.parse(localStorage.getItem("order"));
-  storedOrder.products.push(item);
-  storedOrder.totalPrice += item.price;
-  localStorage.setItem("order", JSON.stringify(storedOrder));
-  console.log(storedOrder);
-};
+//   // storedOrder.products.splice(index, 1);
+//   // localStorage.setItem("order", JSON.stringify(storedOrder));
+//   console.log(orderStore.order);
+// };
+
+//   // The addItem method can be removed once adding and removing procucts from Pinia cart is implemented.
+// const addItem = (item) => {
+//   storedOrder = JSON.parse(localStorage.getItem("order"));
+//   storedOrder.products.push(item);
+//   storedOrder.totalPrice += item.price;
+//   localStorage.setItem("order", JSON.stringify(storedOrder));
+//   console.log(storedOrder);
+// };
 
 
 const IsAddToCartDisabled = (subCatId) => {
