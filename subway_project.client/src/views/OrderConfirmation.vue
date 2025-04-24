@@ -4,8 +4,30 @@
   import { useRouter, useRoute } from "vue-router";
   import TopNav from "@/components/TopNav.vue";
   import { useOrderStore } from "@/stores/useOrderStore";
+  import {useOrdersStore} from "@/stores/OrdersStore";
 
   const orderStore = useOrderStore();
+  const fetchOrders = useOrdersStore();
+  const orderNumber = ref(0);
+
+//   const fetchOrderNumber = (customerId) => {
+//     console.log(orderStore.order);
+//     console.log(customerId);
+//   fetch(`/api/orders/by-customer/${customerId}`)
+//     .then(response => response.json())
+//     .then(order => {
+//       if (order) {
+//         console.log('Order found:', order);
+//         orderNumber = order.id;
+//       } else {
+//         console.log('Order not found');
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error fetching order:', error);
+//     });
+// };
+
 
   const router = useRouter();
   const route = useRoute();
@@ -51,8 +73,10 @@
     }, 1000);
   };
 
-  onMounted(() => {
+  onMounted(async () => {
     startTimers();
+    orderNumber.value = await fetchOrders.ReturnOrderId(orderStore.order.customerId);
+    console.log('order number: ' , orderNumber.value);
   });
 
   onBeforeUnmount(() => {
@@ -70,7 +94,7 @@
     <div class="order-container">
       <div class="order-header">
         <p>Your order</p>
-        <span>Order number: [order number goes here]</span>
+        <span>Order number: {{ orderNumber }}</span>
       </div>
       <div v-if="orderProductsSub.length !== 0">
         <p class="order-item-heading">Sub:</p>

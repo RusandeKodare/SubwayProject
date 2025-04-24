@@ -155,7 +155,6 @@ const IsCheckoutDisabled = () => {
 
     <div>
       <!--  class="PiniaCart"-->
-      <h1>Pinia Cart: </h1>
       <div v-for="product in groupedList" :key="product.id" class="cart-item">
         <div>
           <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
