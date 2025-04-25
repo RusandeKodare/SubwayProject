@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 export const useOrderStore = defineStore('order', {
   state: () => ({
     order: {
-        takeAway: false,
-        totalPrice: 0,
-        products: [],
-        customerId: uuidv4(),
-
+      takeAway: false,
+      totalPrice: 0,
+      products: [],
+      subs: [],
+      customerId: uuidv4(),
     }
   }),
 
