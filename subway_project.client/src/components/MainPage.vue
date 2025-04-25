@@ -1,8 +1,10 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
-import {useOrderStore} from "@/stores/useOrderStore";
+  import { useOrderStore } from "@/stores/useOrderStore";
+  import { useSubStore } from "@/stores/subStore";
 
-const orderStore = useOrderStore();
+  const orderStore = useOrderStore();
+  const subStore = useSubStore();
 
 onMounted(() => {
   getProducts();
@@ -56,6 +58,10 @@ function AddToCart(emittedProduct)
   // orderStore.addToTotalPrice(emittedProduct.price);
 }
 
+  const addToSub = (product) => {
+    subStore.addProduct(product);
+}
+
  const IsAddToCartDisabled = (subCatId) => {
    if (!props.cartLimits || !orderStore.order.products) {
      return false; // No limits or products in orderStore, so not disabled
@@ -86,7 +92,12 @@ function AddToCart(emittedProduct)
       <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <button class="button" @click="AddToCart(p)" :disabled="IsAddToCartDisabled(p.subCategoryId)">
+      <button v-if="p.categoryId === 2" class="button" @click="addToSub(p)" :disabled="IsAddToCartDisabled(p.subCategoryId)">
+        <!-- Visual Studio says "'IsAddToCartDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
+  but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
+        ADD TO SUB!
+      </button>
+      <button v-else class="button" @click="AddToCart(p)" :disabled="IsAddToCartDisabled(p.subCategoryId)">
         <!-- Visual Studio says "'IsAddToCartDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
         but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
         EAT ME!
