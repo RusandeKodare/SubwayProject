@@ -1,10 +1,12 @@
 <script setup>
 import { ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useOrderStore } from "@/stores/useOrderStore";
+  import { useOrderStore } from "@/stores/useOrderStore";
+  import { useSubStore } from "@/stores/subStore";
 
 const orderStore = useOrderStore();
-// let storedOrder = JSON.parse(localStorage.getItem("order"));
+  // let storedOrder = JSON.parse(localStorage.getItem("order"));
+  const subStore = useSubStore();
 
 const props = defineProps({
   cartLimits: Object
@@ -23,6 +25,18 @@ const groupedList = computed(() => {
   }
   return Object.values(map)
 });
+
+  const groupedSubList = computed(() => {
+    const map = {}
+    for (const item of subStore.sub.products) {
+      if (!map[item.name]) {
+        map[item.name] = { ...item, quantity: 1 }
+      } else {
+        map[item.name].quantity += 1
+      }
+    }
+    return Object.values(map)
+  });
 
 const checkout = () => {
   // storedOrder = JSON.parse(localStorage.getItem("order"));
@@ -98,32 +112,30 @@ const checkout = () => {
 // };
 
 
-const IsAddToCartDisabled = (subCatId) => {
-  if (!props.cartLimits || !orderStore.order.products) {
-    return false; // No limits or products in orderStore, so not disabled
-  }
-
-  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
-  if (!cartHasBread) { //if there is no bread in the cart
-    if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
-      return true; //return true to disable the button
+  const isAddToSubDisabled = (subCatId) => {
+    if (!props.cartLimits || !subStore.sub.products) {
+      return false; // No limits or products in subStore, so not disabled
     }
-  }
 
-  //if there is bread in the cart check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
-  const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length;
-  return productCount >= props.cartLimits[subCatId];
-};
+    const subHasBread = subStore.sub.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the sub
+    if (!subHasBread) { //if there is no bread in the sub
+      if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
+        return true; //return true to disable the button
+      }
+    }
+
+    //if there is bread in the sub check number of items of the subcategory in the sub, and return true/false depending on if the limit is reached
+    const productCount = subStore.sub.products.filter(product => product.subCategoryId === subCatId).length;
+    return productCount >= props.cartLimits[subCatId];
+  };
 
 const IsCheckoutDisabled = () => {
-  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
-  if (!cartHasBread) { //if there is no bread in the cart
-    const productCount = orderStore.order.products.filter(product => product.subCategoryId >= 2 && product.subCategoryId <= 5).length;
-    if (productCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
-      return true; //return true to disable the button
-    }
+  if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
+    return false;
   }
-  return false;
+  else {
+    return true;
+  }
 };
 
   const startNewOrder = () => {
@@ -139,11 +151,11 @@ const IsCheckoutDisabled = () => {
 
 
     <div class="cart-header">
-      <span v-if="orderStore.order.products.length > 0">
+      <span v-if="orderStore.order.products.length > 0 || subStore.sub.products.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
           <div v-if="IsCheckoutDisabled()">
-            <p>You need to add bread to your order to be able to checkout.</p>
+            <p>You need to add a sub or other product to your order to be able to checkout.</p>
           </div>
         </div>
         Total: {{ orderStore.order.totalPrice }} kr
@@ -159,16 +171,26 @@ const IsCheckoutDisabled = () => {
     </div>
 
     <div>
-      <!--  class="PiniaCart"-->
+      <!-- from subStore -->
+      <div v-for="product in groupedSubList" :key="product.id" class="cart-item">
+        <div>
+          <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
+        </div>
+        <div>
+          <button @click="subStore.removeProduct(product)">-</button>
+          <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
+          <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
+  but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        </div>
+      </div>
+      <!-- from orderStore -->
       <div v-for="product in groupedList" :key="product.id" class="cart-item">
         <div>
           <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
         </div>
         <div>
-          <button @click="orderStore.removeProduct(product)">-</button> <!-- Name of method to remove product from Pinia cart might need to be updated once the method is implemented. -->
-          <button @click="orderStore.addProduct(product)" :disabled="IsAddToCartDisabled(product.subCategoryId)">+</button>
-          <!-- Visual Studio says "'IsAddToCartDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+          <button @click="orderStore.removeProduct(product)">-</button>
+          <button @click="orderStore.addProduct(product)">+</button>
         </div>
       </div>
     </div>
