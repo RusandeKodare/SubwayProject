@@ -18,10 +18,10 @@ console.log(selectedSubCategory)
 
 const cartLimits = {
   1: 1, //bread
-  2: 5, //vegetables
-  3: 1, //sauces
-  4: 2, //cheese
-  5: 2, //proteins
+  2: 2, //proteins
+  3: 5, //vegetables
+  4: 1, //sauces
+  5: 2, //cheese
 };
 
 </script>
