@@ -261,17 +261,21 @@ const IsCheckoutDisabled = () => {
     margin-top: 40px;
   }
 
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: white;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  font-size: 1.1rem;
-}
+    .cancel-button button:hover {
+      background-color: #c53030;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1.1rem;
+    }
 
 .cart-item span {
 /*  font-weight: 500;*/

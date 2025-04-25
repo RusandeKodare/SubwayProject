@@ -62,26 +62,51 @@
     router.push("/");
   }
 
-  const startTimers = () => {
-    redirectTimer = setTimeout(() => {
+  let isPaused = false;
+  const pauseButtonMessage = ref("Pause timeout");
+
+  const customInterval = () => {
+    if (!isPaused && secondsLeft.value > 0) {
+      secondsLeft.value--;
+      countdownTimer = setTimeout(customInterval, 1000);
+    }
+    else if (!isPaused && secondsLeft.value === 0) {
       startNewOrder();
-    }, timeoutInMilliseconds);
-    countdownTimer = setInterval(() => {
-      if (secondsLeft.value > 0) {
-        secondsLeft.value--;
-      }
-    }, 1000);
+    }
+  };
+
+  const startTimer = () => {
+    isPaused = false;
+    customInterval();
+  };
+
+  const pauseTimer = () => {
+    clearTimeout(countdownTimer);
+    isPaused = true;
+  };
+
+  const resumeTimer = () => {
+    startTimer();
+  };
+
+  const handleTimerPause = () => {
+    if (isPaused) {
+      resumeTimer();
+      pauseButtonMessage.value = "Pause timeout";
+    } else {
+      pauseTimer();
+      pauseButtonMessage.value = "Resume timeout";
+    }
   };
 
   onMounted(async () => {
-    startTimers();
+    startTimer();
     orderNumber.value = await fetchOrders.ReturnOrderId(orderStore.order.customerId);
     console.log('order number: ' , orderNumber.value);
   });
 
   onBeforeUnmount(() => {
-    clearTimeout(redirectTimer);
-    clearInterval(countdownTimer);
+    clearTimeout(countdownTimer);
   });
 
 </script>
@@ -127,16 +152,17 @@
     </div>
     <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
     <div class="btn-container">
+      <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
+    </div>
+    <div class="btn-container">
       <button class="btn eat-here" @click="startNewOrder">Start new order</button>
     </div>
   </div>
 </template>
-
 <style scoped>
   nav {
     height: 11vh;
   }
-
   .order-container {
     display: flex;
     flex-direction: column;
@@ -150,56 +176,46 @@
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-
     .order-container ul {
       list-style-type: none;
       list-style-position: inside;
     }
-
     .order-container li {
       margin-left: 20px;
     }
-
     .order-container span {
       font-size: 1.2rem;
       font-weight: 500;
       text-align: center;
     }
-
   .order-header {
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
   }
-
     .order-header span {
       font-size: 1.2rem;
       font-weight: 500;
       text-align: center;
     }
-
   .order-item {
     margin-left: 20px;
   }
-
   .order-item-heading {
     font-size: 1.2rem;
     font-weight: 500;
     text-align: left;
   }
-
   .order-footer {
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
   }
-
     .order-footer span {
       font-size: 1.2rem;
       font-weight: 500;
       text-align: center;
     }
-
   .redirect-msg {
     font-size: 1.2rem;
     font-weight: 500;
@@ -213,7 +229,6 @@
     gap: 40px;
     height: 20vh;
   }
-
   .btn {
     padding: 30px 40px;
     border: none;
@@ -227,17 +242,18 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease;
   }
-
     .btn:hover {
       transform: scale(1.05);
     }
-
   .eat-here {
     background-color: #F4C12C;
     color: #015643;
   }
-
   .to-go {
+    background-color: #015643;
+    color: #F4C12C;
+  }
+  .pause-btn {
     background-color: #015643;
     color: #F4C12C;
   }
