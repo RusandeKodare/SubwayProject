@@ -11,6 +11,6 @@
         public DateTime? OrderInProgress { get; set; }
         public DateTime? OrderCompleted { get; set; }
         public DateTime? OrderCollected { get; set; }
-        public string CustomerId { get; set; }
+        public string CustomerId { get; set; } = null!;
     }
 }
