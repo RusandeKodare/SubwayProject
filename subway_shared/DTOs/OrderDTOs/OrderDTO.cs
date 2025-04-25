@@ -7,5 +7,5 @@ public class OrderDTO
 	public bool TakeAway { get; set; }
 	public decimal TotalPrice { get; set; }
 	public List<ProductPostDTO> Products { get; set; } = new();
-	public string customerId { get; set; }
+	public string customerId { get; set; } = null!;
 }
