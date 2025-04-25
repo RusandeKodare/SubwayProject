@@ -8,11 +8,6 @@
   onMounted(async () => {
     await ordersStore.getOrders();
   })
-
-// function sortedProducts(products) {
-//   return [...products].sort((a, b) => a.SubCategoryId - b.SubCategoryId)
-// }
-
 </script>
 
 <template>

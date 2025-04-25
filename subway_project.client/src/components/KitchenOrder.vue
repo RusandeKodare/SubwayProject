@@ -58,7 +58,6 @@
     }
   }
 
-
   const groupedList = (products) => {
     const map = {}
     for (const product of products) {
