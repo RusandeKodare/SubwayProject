@@ -204,6 +204,22 @@ namespace subway_project.Server.Controllers
                 }
             }
 
+            //for (int i = 0; i < order.Subs.Count; i++)
+            //{
+
+            //    var existingSub = order.Subs[i];
+            //    if (existingSub.Id > 0)
+            //    {
+            //        var existingProduct = await _context.Sub.FindAsync(existingSub.Id);
+
+            //        if (existingSub != null)
+            //            order.Subs[i] = existingSub; 
+            //        else
+            //            _context.Sub.Attach(existingSub);
+            //    }
+
+            //}
+
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
