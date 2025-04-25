@@ -1,54 +1,88 @@
 <script setup>
   import { useOrdersStore } from '@/stores/OrdersStore'
-  import { defineProps } from 'vue';
+  import { defineProps, computed } from 'vue';
 
-  const ordersStore = useOrdersStore();
+  const ordersStore = useOrdersStore()
 
   const props = defineProps({
-    orders: Array,
-    title: String,
-    show: Boolean
-  });
+    type: String // "received", "inProgress", or "completed"
+  })
 
-async function updateOrder(order) {
-    if(order.OrderInProgress == null) {
-        await ordersStore.progressOrder(order.id);
-        console.log("Order moved to in progress")
+  const title = computed(() => {
+    switch (props.type) {
+      case 'received':
+        return 'Orders Received'
+      case 'inProgress':
+        return 'Orders In Progress'
+      case 'completed':
+        return 'Orders Completed'
+      case 'collected':
+        return 'Orders Collected'
+      default:
+        return ''
+    }
+  })
+
+  const filteredOrders = computed(() => {
+    switch (props.type) {
+      case 'received':
+        return ordersStore.FilteredOrdersRecieved
+      case 'inProgress':
+        return ordersStore.FilteredOrdersInProgress
+      case 'completed':
+        return ordersStore.FilteredOrdersCompleted
+      case 'collected':
+        return ordersStore.FilteredOrdersCollected
+      default:
+        return []
+    }
+  })
+
+  async function updateOrder(order) {
+    if (order.orderInProgress == null && order.orderCompleted == null && order.orderCollected == null) {
+      await ordersStore.progressOrder(order.id);
+      console.log("Order moved to in progress");
+      return;
     }
 
-    //FUNKAR INTE ÄN
-    else{
-        await ordersStore.completeOrder(order.id)
+    if (order.orderCompleted == null && order.orderCollected == null) {
+      await ordersStore.completeOrder(order.id);
+      console.log("Order moved to completed");
+      return;
     }
-  };
 
-  //   function sortedProducts(products) {
-//   return [...products].sort((a, b) => a.SubCategoryId - b.SubCategoryId)
-  // }
+    if (order.orderCollected == null) {
+      await ordersStore.collectOrder(order.id);
+      console.log("Order moved to collected");
+      return;
+    }
+  }
 
   const groupedList = (products) => {
-    const map = {};
+    const map = {}
     for (const product of products) {
       if (!map[product.name]) {
-        map[product.name] = { ...product, quantity: 1 };
+        map[product.name] = { ...product, quantity: 1 }
       } else {
-        map[product.name].quantity += 1;
+        map[product.name].quantity += 1
       }
     }
-    return Object.values(map);
-  };
+    return Object.values(map)
+  }
 
 </script>
 
 <template>
-  <h2>{{ props.title }}</h2>
-  <ul class="order-list" v-if="props.show">
-    <li v-for="order in props.orders" :key="order.id">
+  <h2>{{ title }}</h2>
+
+  <ul class="order-list" v-if="ordersStore.ShowOrders">
+    <li v-for="order in filteredOrders" :key="order.id">
       <button class="order-div" @click="updateOrder(order)">
         <div class="order-heading">
-          Order: {{ order.id }} - {{ order.takeAway ? "Take Away" : "Eat Here" }}
+          Order: {{ order.id }} - {{ order.takeAway ? 'Take Away' : 'Eat Here' }}
         </div>
 
+        <!-- Sub -->
         <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 1 && p.subCategoryId <= 5)).length">
           <p><strong>Sub:</strong></p>
           <ul>
@@ -58,6 +92,7 @@ async function updateOrder(order) {
           </ul>
         </div>
 
+        <!-- Drinks -->
         <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 6 && p.subCategoryId <= 7)).length">
           <p><strong>Drinks:</strong></p>
           <ul>
@@ -67,6 +102,7 @@ async function updateOrder(order) {
           </ul>
         </div>
 
+        <!-- Snacks -->
         <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 8 && p.subCategoryId <= 9)).length">
           <p><strong>Snacks:</strong></p>
           <ul>
@@ -76,6 +112,7 @@ async function updateOrder(order) {
           </ul>
         </div>
 
+        <!-- Desserts -->
         <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 10 && p.subCategoryId <= 11)).length">
           <p><strong>Desserts:</strong></p>
           <ul>
@@ -84,7 +121,6 @@ async function updateOrder(order) {
             </li>
           </ul>
         </div>
-
       </button>
     </li>
   </ul>

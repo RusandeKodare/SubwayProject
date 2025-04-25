@@ -89,6 +89,7 @@ namespace subway_project.Server.Controllers
 
             return NoContent();
         }
+
         // PUT: /api/Orders/progress-order/7
         [HttpPut("progress-order/{id}")]
         public async Task<IActionResult> ProgressOrder(int id)
@@ -151,12 +152,75 @@ namespace subway_project.Server.Controllers
             return NoContent();
         }
 
+        // PUT: /api/Orders/collect-order/7
+        [HttpPut("collect-order/{id}")]
+        public async Task<IActionResult> CollectedOrder(int id)
+        {
+            var existingOrder = await _context.Orders.FindAsync(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+            existingOrder.OrderCollected = DateTime.Now;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(OrderDTO orderDTO)
         {
             Order order = _mapper.Map<Order>(orderDTO);
+
+            for (int i = 0; i < order.Products.Count; i++)
+            {
+                var product = order.Products[i];
+                if (product.Id > 0)
+                {
+                    var existingProduct = await _context.Products.FindAsync(product.Id);
+
+                    if (existingProduct != null)
+                        order.Products[i] = existingProduct; // Replace the product in the list
+                    else
+                        _context.Products.Attach(product);
+                }
+            }
+
+            //for (int i = 0; i < order.Subs.Count; i++)
+            //{
+
+            //    var existingSub = order.Subs[i];
+            //    if (existingSub.Id > 0)
+            //    {
+            //        var existingProduct = await _context.Sub.FindAsync(existingSub.Id);
+
+            //        if (existingSub != null)
+            //            order.Subs[i] = existingSub; 
+            //        else
+            //            _context.Sub.Attach(existingSub);
+            //    }
+
+            //}
+
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
