@@ -124,6 +124,7 @@ namespace subway_project.Server.Controllers
 
             var product = new Product
             {
+                Id = productDTO.Id,
                 Name = productDTO.Name,
                 Price = productDTO.Price,
                 SubCategoryId = productDTO.SubCategoryId,
