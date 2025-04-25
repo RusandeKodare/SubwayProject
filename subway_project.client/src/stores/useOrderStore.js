@@ -43,6 +43,11 @@ export const useOrderStore = defineStore('order', {
         console.log('PINIA: price added: ', price, 'new total: ', this.order.totalPrice)
     },
 
+    addSubToOrder(sub) {
+      this.order.subs.push(sub);
+      console.log('PINIA: added sub', sub, 'to order:', this.order.subs)
+    },
+
     resetOrder(){
         this.order = {
             takeAway: false,

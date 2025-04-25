@@ -129,6 +129,16 @@ const checkout = () => {
     return productCount >= props.cartLimits[subCatId];
   };
 
+  const isAddSubToCartDisabled = () => {
+    const subHasBread = subStore.sub.products.findIndex(product => product.subCategoryId === 1) !== -1;
+    if (!subHasBread) {
+      return true;
+    }
+    //else {
+      return false;
+    //}
+  };
+
 const IsCheckoutDisabled = () => {
   if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
     return false;
@@ -143,12 +153,36 @@ const IsCheckoutDisabled = () => {
     router.push("/");
   }
 
+  const addSubToCart = () => {
+    orderStore.addSubToOrder(subStore.sub);
+    subStore.resetSub();
+  };
+
 </script>
 
 <template>
 
   <div class="cart">
 
+    <div v-if="subStore.sub.products.length > 0" class="sub-container">
+      <!-- from subStore -->
+      <span>Sub</span>
+      <div v-for="product in groupedSubList" :key="product.id" class="cart-item">
+        <div>
+          <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
+        </div>
+        <div>
+          <button @click="subStore.removeProduct(product)">-</button>
+          <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
+          <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
+      but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        </div>
+      </div>
+      <button class="btn" @click="addSubToCart" :disabled="isAddSubToCartDisabled()">Add sub to cart</button>
+      <div v-if="isAddSubToCartDisabled()">
+        <p class="sub-container-error">You need to add bread to your sub to be able to add it to the cart.</p>
+      </div>
+    </div>
 
     <div class="cart-header">
       <span v-if="orderStore.order.products.length > 0 || subStore.sub.products.length > 0">
@@ -171,18 +205,6 @@ const IsCheckoutDisabled = () => {
     </div>
 
     <div>
-      <!-- from subStore -->
-      <div v-for="product in groupedSubList" :key="product.id" class="cart-item">
-        <div>
-          <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
-        </div>
-        <div>
-          <button @click="subStore.removeProduct(product)">-</button>
-          <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
-          <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-  but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
-        </div>
-      </div>
       <!-- from orderStore -->
       <div v-for="product in groupedList" :key="product.id" class="cart-item">
         <div>
@@ -224,6 +246,46 @@ const IsCheckoutDisabled = () => {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+  .sub-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 5px 60px 5px;
+    flex-direction: column;
+  }
+
+  .sub-container span {
+      font-size: 1.5em;
+      font-weight: bold;
+  }
+
+  .sub-container button {
+    background-color: #38a169;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin: 0 10px;
+  }
+
+    .sub-container button:hover {
+      background-color: #2f855a;
+    }
+
+    .sub-container button:disabled {
+      background-color: #e2e8f0;
+      color: #a0aec0;
+      cursor: not-allowed;
+    }
+
+  .sub-container-error {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: center;
+  }
 
 .cart-header {
   text-align: center;
