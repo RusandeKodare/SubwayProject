@@ -8,37 +8,28 @@
   onMounted(async () => {
     await ordersStore.getOrders();
   })
-
-// function sortedProducts(products) {
-//   return [...products].sort((a, b) => a.SubCategoryId - b.SubCategoryId)
-// }
-
 </script>
 
 <template>
   <div>
 
     <div v-if="ordersStore.loading">Loading orders...</div>
-    <div v-if="ordersStore.error">Error: {{ error }}</div>
+    <div v-if="ordersStore.error">Error: {{ ordersStore.error }}</div>
 
   </div>
   <div class="order-page">
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <KitchenOrder :orders="ordersStore.FilteredOrdersRecieved" :show="ordersStore.ShowOrders" title="Orders Recieved" />
+        <KitchenOrder type="received" />
       </div>
-
-      <br />
 
       <div class="middle-div">
-        <KitchenOrder :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" title="Orders In Progress" />
+        <KitchenOrder type="inProgress" />
       </div>
 
-      <br />
-
       <div class="right-div">
-        <KitchenOrder :orders="ordersStore.FilteredOrdersCompleted" :show="ordersStore.ShowOrders" title="Orders Completed" />
+        <KitchenOrder type="completed" />
       </div>
 
     </div>

@@ -89,6 +89,7 @@ namespace subway_project.Server.Controllers
 
             return NoContent();
         }
+
         // PUT: /api/Orders/progress-order/7
         [HttpPut("progress-order/{id}")]
         public async Task<IActionResult> ProgressOrder(int id)
@@ -131,6 +132,37 @@ namespace subway_project.Server.Controllers
             }
             
             existingOrder.OrderCompleted = DateTime.Now;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // PUT: /api/Orders/collect-order/7
+        [HttpPut("collect-order/{id}")]
+        public async Task<IActionResult> CollectedOrder(int id)
+        {
+            var existingOrder = await _context.Orders.FindAsync(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+            existingOrder.OrderCollected = DateTime.Now;
 
             try
             {
