@@ -110,7 +110,7 @@ namespace subway_project.Server
                     {
                         TakeAway = true,
                         TotalPrice = 300,
-                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
+                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "Coca-Cola")!, context.Products.FirstOrDefault(p => p.Name == "Lays Original")!, context.Products.FirstOrDefault(p => p.Name == "Ice cream")! },
                         OrderReceived = DateTime.Now.AddMinutes(10),
                         CustomerId = "14"
                     },
@@ -118,7 +118,7 @@ namespace subway_project.Server
                     {
                         TakeAway = false,
                         TotalPrice = 300,
-                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
+                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "Coca-Cola")!, context.Products.FirstOrDefault(p => p.Name == "Lays Original")!, context.Products.FirstOrDefault(p => p.Name == "Ice cream")! },
                         OrderReceived = DateTime.Now,
                         OrderInProgress = DateTime.Now.AddMinutes(5),
                         CustomerId = "13"
@@ -127,7 +127,7 @@ namespace subway_project.Server
                     {
                         TakeAway = false,
                         TotalPrice = 300,
-                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
+                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "Coca-Cola")!, context.Products.FirstOrDefault(p => p.Name == "Lays Original")!, context.Products.FirstOrDefault(p => p.Name == "Ice cream")! },
                         OrderReceived = DateTime.Now,
                         OrderInProgress = DateTime.Now.AddMinutes(5),
                         OrderCompleted = DateTime.Now.AddMinutes(15),
@@ -137,7 +137,7 @@ namespace subway_project.Server
                     {
                         TakeAway = true,
                         TotalPrice = 300,
-                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "White Bread")!, context.Products.FirstOrDefault(p => p.Name == "Tomato")!, context.Products.FirstOrDefault(p => p.Name == "Mayonnaise")! },
+                        Products = new List<Product> { context.Products.FirstOrDefault(p => p.Name == "Coca-Cola")!, context.Products.FirstOrDefault(p => p.Name == "Lays Original")!, context.Products.FirstOrDefault(p => p.Name == "Ice cream")! },
                         OrderReceived = DateTime.Now,
                         OrderInProgress = DateTime.Now.AddMinutes(5),
                         OrderCompleted = DateTime.Now.AddMinutes(15),
