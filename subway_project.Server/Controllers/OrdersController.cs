@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using subway_project.Server.Data;
 using subway_project.Server.Models;
 using subway_shared.DTOs.OrderDTOs;
+using subway_shared.DTOs.ProductDTOs;
+using subway_shared.DTOs.SubDTOs;
 
 namespace subway_project.Server.Controllers
 {
@@ -190,36 +192,24 @@ namespace subway_project.Server.Controllers
         {
             Order order = _mapper.Map<Order>(orderDTO);
 
-            for (int i = 0; i < order.Products.Count; i++)
+            foreach (var productDTO in orderDTO.Products)
             {
-                var product = order.Products[i];
-                if (product.Id > 0)
-                {
-                    var existingProduct = await _context.Products.FindAsync(product.Id);
-
-                    if (existingProduct != null)
-                        order.Products[i] = existingProduct; // Replace the product in the list
-                    else
-                        _context.Products.Attach(product);
-                }
+                var productToFind = await _context.Products.FirstOrDefaultAsync(_=>_.Name == productDTO.Name);
+                if (productToFind != null) order.Products.Add(productToFind);
             }
 
-            //for (int i = 0; i < order.Subs.Count; i++)
-            //{
-
-            //    var existingSub = order.Subs[i];
-            //    if (existingSub.Id > 0)
-            //    {
-            //        var existingProduct = await _context.Sub.FindAsync(existingSub.Id);
-
-            //        if (existingSub != null)
-            //            order.Subs[i] = existingSub; 
-            //        else
-            //            _context.Sub.Attach(existingSub);
-            //    }
-
-            //}
-
+            foreach (var sub in order.Subs)
+            {
+                foreach (var subDTO in orderDTO.Subs)
+                {
+                    foreach (var productDTO in subDTO.Products)
+                    {
+                        var existingProduct = await _context.Products.FirstOrDefaultAsync(_ => _.Name == productDTO.Name);
+                        if (existingProduct != null) sub.Products.Add(existingProduct);
+                    }
+                    
+                }
+            }
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
