@@ -52,10 +52,10 @@
     return Object.values(map)
   };
 
-  const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 1 && prod.subCategoryId <= 5));
-  const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 6 && prod.subCategoryId <= 7));
-  const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 8 && prod.subCategoryId <= 9));
-  const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.subCategoryId >= 10 && prod.subCategoryId <= 11));
+  const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 2)); //filter(prod => prod.subCategoryId >= 1 && prod.subCategoryId <= 5));
+  const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3)); //filter(prod => prod.subCategoryId >= 6 && prod.subCategoryId <= 7));
+  const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4)); //filter(prod => prod.subCategoryId >= 8 && prod.subCategoryId <= 9));
+  const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5)); //filter(prod => prod.subCategoryId >= 10 && prod.subCategoryId <= 11));
 
   const startNewOrder = () => {
     orderStore.resetOrder();
