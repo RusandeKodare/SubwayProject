@@ -35,11 +35,12 @@ namespace subway_project.Server.Controllers
 		        Id = p.Id,
 		        Name = p.Name,
 		        Price = p.Price,
-		        SubCategoryId = p.SubCategoryId,
-		        SubCategory = p.SubCategory != null ? new SubCategoryDTO
-		        {
-			        Name = p.SubCategory.Name
-		        } : null,
+                CategoryId = p.CategoryId,
+                SubCategoryId = p.SubCategoryId,
+		        //SubCategory = p.SubCategory != null ? new SubCategoryDTO
+		        //{
+			       // Name = p.SubCategory.Name
+		        //} : null,
 				ImageUrl = p.ImageUrl ?? "images\\no-image-available.jpg"
 	        }).ToList();
 	        return Ok(productDTOs);
@@ -61,11 +62,12 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            SubCategoryId = product.SubCategoryId,
-	            SubCategory = product.SubCategory != null ? new SubCategoryDTO
-	            {
-		            Name = product.SubCategory.Name
-	            } : null,
+                CategoryId = product.CategoryId,
+                SubCategoryId = product.SubCategoryId,
+	            //SubCategory = product.SubCategory != null ? new SubCategoryDTO
+	            //{
+		           // Name = product.SubCategory.Name
+	            //} : null,
 	            ImageUrl = product.ImageUrl
 			};
 
@@ -86,7 +88,8 @@ namespace subway_project.Server.Controllers
 
 	        product.Name = productDTO.Name;
 	        product.Price = productDTO.Price;
-	        product.SubCategoryId = productDTO.SubCategoryId;
+            product.CategoryId = productDTO.CategoryId;
+            product.SubCategoryId = productDTO.SubCategoryId;
 	        product.ImageUrl = productDTO.ImageUrl;
 
             _context.Entry(product).State = EntityState.Modified;
@@ -127,6 +130,7 @@ namespace subway_project.Server.Controllers
                 Id = productDTO.Id,
                 Name = productDTO.Name,
                 Price = productDTO.Price,
+                CategoryId = productDTO.CategoryId,
                 SubCategoryId = productDTO.SubCategoryId,
                 ImageUrl = productDTO.ImageUrl,
             };
@@ -139,11 +143,12 @@ namespace subway_project.Server.Controllers
 	            Id = product.Id,
 	            Name = product.Name,
 	            Price = product.Price,
-	            SubCategoryId = product.SubCategoryId,
-	            SubCategory = new SubCategoryDTO
-	            {
-		            Name = category.Name
-	            },
+                CategoryId = product.CategoryId,
+                SubCategoryId = product.SubCategoryId,
+	            //SubCategory = new SubCategoryDTO
+	            //{
+		           // Name = category.Name
+	            //},
 	            ImageUrl = product.ImageUrl
             };
 

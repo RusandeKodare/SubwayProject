@@ -4,11 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 export const useOrderStore = defineStore('order', {
   state: () => ({
     order: {
-        takeAway: false,
-        totalPrice: 0,
-        products: [],
-        customerId: uuidv4(),
-
+      takeAway: false,
+      totalPrice: 0,
+      products: [],
+      subs: [],
+      customerId: uuidv4(),
     }
   }),
 
@@ -43,11 +43,17 @@ export const useOrderStore = defineStore('order', {
         console.log('PINIA: price added: ', price, 'new total: ', this.order.totalPrice)
     },
 
+    addSubToOrder(sub) {
+      this.order.subs.push(sub);
+      console.log('PINIA: added sub', sub, 'to order:', this.order.subs)
+    },
+
     resetOrder(){
         this.order = {
             takeAway: false,
             totalPrice: 0,
             products: [],
+            subs: [],
             customerId: uuidv4(),
         }
         console.log('PINIA: order has been reset')
