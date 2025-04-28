@@ -89,7 +89,7 @@ namespace subway_project.Server
                     new Product { Name = "Lays Original", Price = 10.00m, SubCategoryId = 8, CategoryId = 4, ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Potato-Chips.jpg/960px-Potato-Chips.jpg" },
                     new Product { Name = "Lays Paprika", Price = 10.00m, SubCategoryId = 8, CategoryId = 4, ImageUrl = "https://www.shutterstock.com/image-photo/bbq-potato-chips-on-white-600nw-1054938998.jpg" },
 
-                    new Product { Name = "Chocolate Chip Cookies", Price = 12.00m, SubCategoryId = 6, CategoryId = 5, ImageUrl = "https://media.istockphoto.com/id/1411089766/sv/foto/pile-of-homemade-cookies.jpg?s=612x612&w=0&k=20&c=F6WFEHfumZI0EENWVYNZZu9B0jVAvJgI7JqDg1BlgDc=" },
+                    new Product { Name = "Chocolate Chip Cookies", Price = 12.00m, SubCategoryId = 9, CategoryId = 5, ImageUrl = "https://media.istockphoto.com/id/1411089766/sv/foto/pile-of-homemade-cookies.jpg?s=612x612&w=0&k=20&c=F6WFEHfumZI0EENWVYNZZu9B0jVAvJgI7JqDg1BlgDc=" },
                     new Product { Name = "Cookie", Price = 10.00m, SubCategoryId = 9, CategoryId = 5, ImageUrl = "https://krollskorner.com/wp-content/uploads/2023/10/Chocolate-Chipless-Cookies_LowRes-017-1.jpg" },
                     new Product { Name = "Brownie", Price = 15.00m, SubCategoryId = 9, CategoryId = 5, ImageUrl = "https://shared.cdn.smp.schibsted.com/v2/images/66339597-1216-4afb-b5ff-0a550ccf7ecf?fit=crop&h=1426&w=1900&s=a52df5a58314385584212b791d039917dd56d58d" },
 
