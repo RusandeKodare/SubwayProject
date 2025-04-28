@@ -8,8 +8,9 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<ProductPostDTO, Product>();
-        CreateMap<OrderDTO, Order>();
+        CreateMap<ProductDTO, Product>();
+        CreateMap<OrderDTO, Order>()
+            .ForMember(dest => dest.Products, opt => opt.Ignore());
         CreateMap<SubDTO, Sub>()
             .ForMember(dest => dest.Products, opt => opt.Ignore());
 
