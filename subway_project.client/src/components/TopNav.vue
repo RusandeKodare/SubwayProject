@@ -8,7 +8,7 @@
   const resetCart = () => {
     if (orderStore.order.products.length > 0) {
       orderStore.resetOrder();
-      subStore.resetSub();
+      subStore.resetSub(false);
     }
   }
 </script>
