@@ -59,7 +59,7 @@
 
   const startNewOrder = () => {
     orderStore.resetOrder();
-    subStore.resetSub();
+    subStore.resetSub(false);
     clearTimeout(redirectTimer);
     clearInterval(countdownTimer);
     router.push("/");

@@ -26,6 +26,25 @@ const groupedList = computed(() => {
   return Object.values(map)
 });
 
+  const groupedCartSubList = computed(() => {
+    return orderStore.order.subs.map(sub => {
+      const map = {};
+
+      for (const product of sub.products) {
+        if (!map[product.name]) {
+          map[product.name] = { ...product, quantity: 1 };
+        } else {
+          map[product.name].quantity += 1;
+        }
+      }
+
+      return {
+        ...sub,
+        products: Object.values(map)
+      };
+    });
+  });
+
   const groupedSubList = computed(() => {
     const map = {}
     for (const item of subStore.sub.products) {
@@ -134,13 +153,16 @@ const checkout = () => {
     if (!subHasBread) {
       return true;
     }
-    //else {
-      return false;
-    //}
+
+    return false;
+
   };
 
 const IsCheckoutDisabled = () => {
   if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
+    if (subStore.sub.products.length > 0) {
+      return true;
+    }
     return false;
   }
   else {
@@ -150,13 +172,13 @@ const IsCheckoutDisabled = () => {
 
   const startNewOrder = () => {
     orderStore.resetOrder();
-    subStore.resetSub();
+    subStore.resetSub(false);
     router.push("/");
   }
 
   const addSubToCart = () => {
     orderStore.addSubToOrder(subStore.sub);
-    subStore.resetSub();
+    subStore.resetSub(false);
   };
 
 </script>
@@ -164,6 +186,26 @@ const IsCheckoutDisabled = () => {
 <template>
 
   <div class="cart">
+
+    <div class="cart-header">
+      <span v-if="orderStore.order.products.length > 0 || orderStore.order.subs.length > 0 || subStore.sub.products.length > 0">
+        <div class="cart-footer">
+          <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
+          <div v-if="IsCheckoutDisabled()">
+            <p v-if="subStore.sub.products.length > 0">You cannot checkout while building your sub. Please add the sub to the cart, or clear the sub, to be able to checkout.</p>
+            <p v-else>You need to add a sub or other product to your order to be able to checkout.</p>
+          </div>
+        </div>
+        Total: {{ orderStore.order.totalPrice }} kr
+        <p v-if="orderStore.order.takeAway">To Go</p>
+        <p v-else>Eat Here</p>
+      </span>
+      <span v-else>
+        Welcome!
+        <br><br>
+        Choose between our delicious dishes!
+      </span>
+    </div>
 
     <div v-if="subStore.sub.products.length > 0" class="sub-container">
       <!-- from subStore -->
@@ -176,33 +218,14 @@ const IsCheckoutDisabled = () => {
           <button @click="subStore.removeProduct(product)">-</button>
           <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
           <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-      but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
         </div>
       </div>
       <button class="btn" @click="addSubToCart" :disabled="isAddSubToCartDisabled()">Add sub to cart</button>
+      <button class="cancel-button" @click="subStore.resetSub(true)">Clear sub</button>
       <div v-if="isAddSubToCartDisabled()">
         <p class="sub-container-error">You need to add bread to your sub to be able to add it to the cart.</p>
       </div>
-    </div>
-
-    <div class="cart-header">
-      <span v-if="orderStore.order.products.length > 0 || subStore.sub.products.length > 0">
-        <div class="cart-footer">
-          <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
-          <div v-if="IsCheckoutDisabled()">
-            <p>You need to add a sub or other product to your order to be able to checkout.</p>
-          </div>
-        </div>
-        Total: {{ orderStore.order.totalPrice }} kr
-        <p v-if="orderStore.order.takeAway">To Go</p>
-        <p v-else>Eat Here</p>
-      </span>
-      <span v-else>
-        Welcome!
-        <br><br>
-        Choose between our delicious dishes!
-
-      </span>
     </div>
 
     <div>
@@ -217,7 +240,23 @@ const IsCheckoutDisabled = () => {
         </div>
       </div>
     </div>
-    <div v-if="orderStore.order.products.length !== 0" class="cart-footer cancel-button">
+    <div>
+      <div v-for="sub in groupedCartSubList" class="cart-item-sub">
+        <!--  orderStore.order.subs -->
+        <div class="cart-item-sub-heading">
+          <div>
+            <p>Sub:</p>
+          </div>
+          <div>
+            <button>-</button> <!-- @click="orderStore.removeSub(sub)" -->
+          </div>
+        </div>
+        <ul>
+          <li v-for="product in sub.products" :key="product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr </li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="orderStore.order.products.length !== 0 || orderStore.order.subs.length !== 0" class="cart-footer cancel-button">
       <button @click="startNewOrder">Cancel order</button>
     </div>
 
@@ -281,6 +320,15 @@ const IsCheckoutDisabled = () => {
       color: #a0aec0;
       cursor: not-allowed;
     }
+
+    .sub-container .cancel-button {
+      background-color: #e53e3e;
+      margin-top: 10px;
+    }
+
+      .sub-container .cancel-button:hover {
+        background-color: #c53030;
+      }
 
   .sub-container-error {
     font-size: 0.9rem;
@@ -397,4 +445,48 @@ const IsCheckoutDisabled = () => {
       display: flex;
       flex-wrap: nowrap;
   }
+
+  .cart-item-sub {
+    display: flex;
+/*    justify-content: space-between;*/
+flex-direction:column;
+/*    align-items: center;*/
+    background-color: white;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+  }
+
+    .cart-item-sub button {
+      background-color: #e2e8f0;
+      border: none;
+      color: #333;
+      padding: 6px 12px;
+      margin: 0 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+  .cart-item-sub p {
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+    .cart-item-sub ul {
+      list-style-type: none;
+      list-style-position: inside;
+    }
+
+    .cart-item-sub li {
+      margin-left: 20px;
+    }
+
+    .cart-item-sub-heading {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 </style>

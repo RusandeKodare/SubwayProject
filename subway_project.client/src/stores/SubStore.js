@@ -35,12 +35,18 @@ export const useSubStore = defineStore("subStore", {
       }
     },
 
-    resetSub() {
+    resetSub(isClearSub) {
+      if (isClearSub) {
+        const orderStore = useOrderStore();
+        // Reset the total price of the order
+        orderStore.order.totalPrice -= this.sub.products.reduce((total, product) => total + product.price, 0);
+      }
+      // Reset the sub
       this.sub = {
         products: [],
       };
       console.log("PINIA: sub has been reset");
     }
-   }
+  }
 
 })
