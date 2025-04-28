@@ -248,7 +248,7 @@ const IsCheckoutDisabled = () => {
             <p>Sub:</p>
           </div>
           <div>
-            <button>-</button> <!-- @click="orderStore.removeSub(sub)" -->
+            <button @click="orderStore.removeSub(sub)">-</button>
           </div>
         </div>
         <ul>

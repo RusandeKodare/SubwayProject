@@ -48,6 +48,17 @@ export const useOrderStore = defineStore('order', {
       console.log('PINIA: added sub', sub, 'to order:', this.order.subs)
     },
 
+    removeSub(sub) {
+      const index = this.order.subs.findIndex(s => s.id === sub.id);
+      if (index !== -1) {
+        this.order.subs.splice(index, 1);
+        this.order.totalPrice -= sub.products.reduce((total, product) => total + product.price * product.quantity, 0);
+        console.log('PINIA: removed sub', sub, 'from order:', this.order.subs)
+      } else {
+        console.log('PINIA: sub not found in order:', sub)
+      }
+    },
+
     resetOrder(){
         this.order = {
             takeAway: false,
