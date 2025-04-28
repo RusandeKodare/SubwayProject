@@ -53,6 +53,7 @@ export const useOrderStore = defineStore('order', {
             takeAway: false,
             totalPrice: 0,
             products: [],
+            subs: [],
             customerId: uuidv4(),
         }
         console.log('PINIA: order has been reset')

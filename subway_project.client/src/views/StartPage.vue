@@ -4,11 +4,12 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import TopNav from "@/components/TopNav.vue";
 import { useOrderStore } from "@/stores/useOrderStore";
-
+  import { useSubStore } from "@/stores/subStore";
 
 
 
 const orderStore = useOrderStore();
+  const subStore = useSubStore();
 
 // const order = {
 //   takeAway: false,

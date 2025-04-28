@@ -1,10 +1,14 @@
 <script setup>
   import { useOrderStore } from "@/stores/useOrderStore";
+  import { useSubStore } from "@/stores/subStore";
+
   const orderStore = useOrderStore();
+  const subStore = useSubStore();
 
   const resetCart = () => {
     if (orderStore.order.products.length > 0) {
       orderStore.resetOrder();
+      subStore.resetSub();
     }
   }
 </script>

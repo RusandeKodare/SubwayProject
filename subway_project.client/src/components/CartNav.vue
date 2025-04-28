@@ -150,6 +150,7 @@ const IsCheckoutDisabled = () => {
 
   const startNewOrder = () => {
     orderStore.resetOrder();
+    subStore.resetSub();
     router.push("/");
   }
 

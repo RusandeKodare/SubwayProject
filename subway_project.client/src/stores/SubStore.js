@@ -36,7 +36,9 @@ export const useSubStore = defineStore("subStore", {
     },
 
     resetSub() {
-      this.sub.products = [];
+      this.sub = {
+        products: [],
+      };
       console.log("PINIA: sub has been reset");
     }
    }

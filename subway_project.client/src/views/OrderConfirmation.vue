@@ -5,6 +5,7 @@
   import TopNav from "@/components/TopNav.vue";
   import { useOrderStore } from "@/stores/useOrderStore";
   import {useOrdersStore} from "@/stores/OrdersStore";
+  import { useSubStore } from "@/stores/subStore";
 
   const orderStore = useOrderStore();
   const fetchOrders = useOrdersStore();
@@ -28,6 +29,7 @@
 //     });
 // };
 
+  const subStore = useSubStore();
 
   const router = useRouter();
   const route = useRoute();
@@ -57,6 +59,7 @@
 
   const startNewOrder = () => {
     orderStore.resetOrder();
+    subStore.resetSub();
     clearTimeout(redirectTimer);
     clearInterval(countdownTimer);
     router.push("/");
