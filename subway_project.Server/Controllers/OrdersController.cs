@@ -192,9 +192,7 @@ namespace subway_project.Server.Controllers
         public async Task<ActionResult<Order>> PostOrder(OrderDTO orderDTO)
         {
             Order order = _mapper.Map<Order>(orderDTO);
-            List<Sub> subs = _mapper.Map<List<Sub>>(orderDTO.Subs);
             _context.Orders.Add(order);
-            //_context.Sub.AddRange(subs);
             await _context.SaveChangesAsync();
 
             foreach (var productDTO in orderDTO.Products)
@@ -221,6 +219,7 @@ namespace subway_project.Server.Controllers
             foreach (var subDTO in orderDTO.Subs)
             {
                 Sub sub = _mapper.Map<Sub>(subDTO);
+                sub.Order = order;
                 _context.Sub.Add(sub);
                 await _context.SaveChangesAsync();
                 foreach (var productDTO in subDTO.Products)
@@ -234,7 +233,6 @@ namespace subway_project.Server.Controllers
                             var subProduct = new SubProduct{ SubId = sub.Id, ProductId = productToFind.Id, Quantity = 1};
                             _context.SubProduct.Add(subProduct);
                             sub.SubProducts.Add(subProduct);
-                            //order.Subs.Add(sub);
                             await _context.SaveChangesAsync();
                         }
                         else
