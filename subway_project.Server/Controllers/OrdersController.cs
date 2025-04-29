@@ -31,7 +31,15 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            var orders = await _context.Orders.Include(_=>_.OrderProducts).ToListAsync();
+            //var orders = await _context.Orders.Include(_=>_.OrderProducts).ToListAsync();
+            var orders = await _context.Orders
+                .Include(o => o.OrderProducts)
+                    .ThenInclude(op => op.Product)
+                .Include(o => o.Subs)
+                    .ThenInclude(s => s.SubProducts)
+                        .ThenInclude(sp => sp.Product)
+                .ToListAsync();
+
             return Ok(orders);
         }
 
@@ -39,13 +47,21 @@ namespace subway_project.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            //var order = await _context.Orders.FindAsync(id);
+
+            var order = await _context.Orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Include(o => o.Subs)
+                .ThenInclude(s => s.SubProducts)
+                .ThenInclude(sp => sp.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
                 return NotFound();
             }
-
+            
             return order;
         }
 
