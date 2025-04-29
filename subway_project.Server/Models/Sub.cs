@@ -3,5 +3,6 @@
     public class Sub
     {
         public int Id { get; set; }
+        public ICollection<SubProduct> SubProducts { get; set; } = [];
     }
 }
