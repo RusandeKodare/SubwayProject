@@ -9,10 +9,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<ProductDTO, Product>();
-        CreateMap<OrderDTO, Order>()
-            .ForMember(dest => dest.Products, opt => opt.Ignore());
-        CreateMap<SubDTO, Sub>()
-            .ForMember(dest => dest.Products, opt => opt.Ignore());
+        CreateMap<OrderDTO, Order>();
+        CreateMap<SubDTO, Sub>();
 
     }
 }

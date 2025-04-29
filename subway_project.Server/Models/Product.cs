@@ -10,7 +10,8 @@
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public string ImageUrl { get; set; } = "images\\no-image-available.jpg";
-        public List<Order> Orders { get; set; } = new();
-        public List<Sub> Subs { get; set; } = new();
+        public ICollection<OrderProduct> OrderProducts { get; set; } = [];
+        //public List<Order> Orders { get; set; } = new();
+        //public List<Sub> Subs { get; set; } = new();
     }
 }

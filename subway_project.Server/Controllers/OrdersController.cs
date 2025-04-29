@@ -31,7 +31,8 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return await _context.Orders.Include(o => o.Products).ToListAsync();
+            var orders = await _context.Orders.Include(_=>_.OrderProducts).ToListAsync();
+            return Ok(orders);
         }
 
         // GET: api/Orders/5
@@ -191,29 +192,31 @@ namespace subway_project.Server.Controllers
         public async Task<ActionResult<Order>> PostOrder(OrderDTO orderDTO)
         {
             Order order = _mapper.Map<Order>(orderDTO);
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
 
             foreach (var productDTO in orderDTO.Products)
             {
                 var productToFind = await _context.Products.FirstOrDefaultAsync(_=>_.Name == productDTO.Name);
-                if (productToFind != null) order.Products.Add(productToFind);
-            }
-
-            foreach (var sub in order.Subs)
-            {
-                foreach (var subDTO in orderDTO.Subs)
+                if (productToFind != null)
                 {
-                    foreach (var productDTO in subDTO.Products)
+                    var orderProductToFind = await _context.OrderProduct.FirstOrDefaultAsync(_ => _.ProductId == productToFind.Id && _.OrderId == order.Id);
+                    if (orderProductToFind == null)
                     {
-                        var existingProduct = await _context.Products.FirstOrDefaultAsync(_ => _.Name == productDTO.Name);
-                        if (existingProduct != null) sub.Products.Add(existingProduct);
+                        var orderProduct = new OrderProduct { OrderId = order.Id, ProductId = productToFind.Id, Quantity = 1 };
+                        _context.OrderProduct.Add(orderProduct);
+                        order.OrderProducts.Add(orderProduct);
+                        await _context.SaveChangesAsync();
+
                     }
-                    
+                    else
+                    {
+                        orderProductToFind.Quantity++;
+                    }
                 }
             }
-
-            _context.Orders.Add(order);
+            
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
 
