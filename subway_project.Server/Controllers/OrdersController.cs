@@ -194,15 +194,13 @@ namespace subway_project.Server.Controllers
             Order order = _mapper.Map<Order>(orderDTO);
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
-            var orderProductToFind = new OrderProduct();
 
             foreach (var productDTO in orderDTO.Products)
             {
-             
                 var productToFind = await _context.Products.FirstOrDefaultAsync(_=>_.Name == productDTO.Name);
                 if (productToFind != null)
                 {
-                     orderProductToFind = await _context.OrderProduct.FirstOrDefaultAsync(_ => _.ProductId == productToFind.Id && _.OrderId == order.Id);
+                    var orderProductToFind = await _context.OrderProduct.FirstOrDefaultAsync(_ => _.ProductId == productToFind.Id && _.OrderId == order.Id);
                     if (orderProductToFind == null)
                     {
                         var orderProduct = new OrderProduct { OrderId = order.Id, ProductId = productToFind.Id, Quantity = 1 };
@@ -215,25 +213,8 @@ namespace subway_project.Server.Controllers
                     {
                         orderProductToFind.Quantity++;
                     }
-                    
                 }
-               
-                
             }
-
-            //foreach (var sub in order.Subs)
-            //{
-            //    foreach (var subDTO in orderDTO.Subs)
-            //    {
-            //        foreach (var productDTO in subDTO.Products)
-            //        {
-            //            var existingProduct = await _context.Products.FirstOrDefaultAsync(_ => _.Name == productDTO.Name);
-            //            if (existingProduct != null) sub.Products.Add(existingProduct);
-            //        }
-
-            //    }
-            //}
-
             
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
