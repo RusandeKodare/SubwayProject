@@ -92,30 +92,30 @@
     </div>
 
         <!-- Drinks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 3)).length">
           <p><strong>Drinks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7))" :key="op.product.id">
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 3))" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Snacks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 4)).length">
           <p><strong>Snacks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9))" :key="op.product.id">
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 4))" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Desserts -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 5)).length">
           <p><strong>Desserts:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11))" :key="op.product.id">
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 5))" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
