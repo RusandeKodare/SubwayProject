@@ -23,12 +23,6 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders Received" :orders="ordersStore.FilteredOrdersRecieved":show="ordersStore.ShowOrders" />
-      </div>
-
-      <br />
-
-      <div class="middle-div">
         <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
       </div>
       
@@ -65,8 +59,8 @@
     overflow: hidden;
   }
 
-  .left-div, .middle-div, .right-div {
-    width: 30%;
+  .left-div, .right-div {
+    width: 50%;
     background-color: #e0e0e0;
     padding: 20px;
     margin-bottom: 2rem;
@@ -80,12 +74,6 @@
     border-color: blue;
     margin-right: 1rem;
     margin-left: 2rem;
-  }
-
-  .middle-div {
-    border-color: yellow;
-    margin-left: 1rem;
-    margin-right: 1rem;
   }
 
   .right-div {

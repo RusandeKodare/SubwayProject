@@ -123,12 +123,20 @@
       </button>
     </li>
   </ul>
-
 </template>
 
-<style>
+<style scoped>
   .order-heading {
     margin-bottom: 0.5rem;
     font-weight: bold;
+  }
+
+  .order-div {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .order-div:hover {
+    background-color: lightgreen;
   }
 </style>
