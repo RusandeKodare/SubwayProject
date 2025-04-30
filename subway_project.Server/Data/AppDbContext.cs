@@ -16,6 +16,7 @@ namespace subway_project.Server.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Sub> Sub { get; set; }
         public DbSet<OrderProduct> OrderProduct { get; set; }
+        public DbSet<SubProduct> SubProduct { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +42,8 @@ namespace subway_project.Server.Data
             modelBuilder.Entity<OrderProduct>()
                 .HasKey(op => new { op.OrderId, op.ProductId });
 
-
+            modelBuilder.Entity<SubProduct>()
+                .HasKey(op => new { op.SubId, op.ProductId });
 
 
 
