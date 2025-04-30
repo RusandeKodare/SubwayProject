@@ -1,10 +1,12 @@
 <script setup>
 import { ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useOrderStore } from "@/stores/useOrderStore";
+  import { useOrderStore } from "@/stores/useOrderStore";
+  import { useSubStore } from "@/stores/subStore";
 
 const orderStore = useOrderStore();
-// let storedOrder = JSON.parse(localStorage.getItem("order"));
+  // let storedOrder = JSON.parse(localStorage.getItem("order"));
+  const subStore = useSubStore();
 
 const props = defineProps({
   cartLimits: Object
@@ -23,6 +25,37 @@ const groupedList = computed(() => {
   }
   return Object.values(map)
 });
+
+  const groupedCartSubList = computed(() => {
+    return orderStore.order.subs.map(sub => {
+      const map = {};
+
+      for (const product of sub.products) {
+        if (!map[product.name]) {
+          map[product.name] = { ...product, quantity: 1 };
+        } else {
+          map[product.name].quantity += 1;
+        }
+      }
+
+      return {
+        ...sub,
+        products: Object.values(map)
+      };
+    });
+  });
+
+  const groupedSubList = computed(() => {
+    const map = {}
+    for (const item of subStore.sub.products) {
+      if (!map[item.name]) {
+        map[item.name] = { ...item, quantity: 1 }
+      } else {
+        map[item.name].quantity += 1
+      }
+    }
+    return Object.values(map)
+  });
 
 const checkout = () => {
   // storedOrder = JSON.parse(localStorage.getItem("order"));
@@ -98,38 +131,55 @@ const checkout = () => {
 // };
 
 
-const IsAddToCartDisabled = (subCatId) => {
-  if (!props.cartLimits || !orderStore.order.products) {
-    return false; // No limits or products in orderStore, so not disabled
-  }
-
-  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
-  if (!cartHasBread) { //if there is no bread in the cart
-    if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
-      return true; //return true to disable the button
+  const isAddToSubDisabled = (subCatId) => {
+    if (!props.cartLimits || !subStore.sub.products) {
+      return false; // No limits or products in subStore, so not disabled
     }
-  }
 
-  //if there is bread in the cart check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
-  const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length;
-  return productCount >= props.cartLimits[subCatId];
-};
+    const subHasBread = subStore.sub.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the sub
+    if (!subHasBread) { //if there is no bread in the sub
+      if (subCatId >= 2 && subCatId <= 5) { //if subcategory is vegetables/sauces/cheese/proteins
+        return true; //return true to disable the button
+      }
+    }
+
+    //if there is bread in the sub check number of items of the subcategory in the sub, and return true/false depending on if the limit is reached
+    const productCount = subStore.sub.products.filter(product => product.subCategoryId === subCatId).length;
+    return productCount >= props.cartLimits[subCatId];
+  };
+
+  const isAddSubToCartDisabled = () => {
+    const subHasBread = subStore.sub.products.findIndex(product => product.subCategoryId === 1) !== -1;
+    if (!subHasBread) {
+      return true;
+    }
+
+    return false;
+
+  };
 
 const IsCheckoutDisabled = () => {
-  const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
-  if (!cartHasBread) { //if there is no bread in the cart
-    const productCount = orderStore.order.products.filter(product => product.subCategoryId >= 2 && product.subCategoryId <= 5).length;
-    if (productCount > 0) { //if there are vegetables/sauces/cheese/proteins in the cart
-      return true; //return true to disable the button
+  if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
+    if (subStore.sub.products.length > 0) {
+      return true;
     }
+    return false;
   }
-  return false;
+  else {
+    return true;
+  }
 };
 
   const startNewOrder = () => {
     orderStore.resetOrder();
+    subStore.resetSub(false);
     router.push("/");
   }
+
+  const addSubToCart = () => {
+    orderStore.addSubToOrder(subStore.sub);
+    subStore.resetSub(false);
+  };
 
 </script>
 
@@ -137,13 +187,13 @@ const IsCheckoutDisabled = () => {
 
   <div class="cart">
 
-
     <div class="cart-header">
-      <span v-if="orderStore.order.products.length > 0">
+      <span v-if="orderStore.order.products.length > 0 || orderStore.order.subs.length > 0 || subStore.sub.products.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
           <div v-if="IsCheckoutDisabled()">
-            <p>You need to add bread to your order to be able to checkout.</p>
+            <p v-if="subStore.sub.products.length > 0">You cannot checkout while building your sub. Please add the sub to the cart, or clear the sub, to be able to checkout.</p>
+            <p v-else>You need to add a sub or other product to your order to be able to checkout.</p>
           </div>
         </div>
         Total: {{ orderStore.order.totalPrice }} kr
@@ -154,25 +204,59 @@ const IsCheckoutDisabled = () => {
         Welcome!
         <br><br>
         Choose between our delicious dishes!
-
       </span>
     </div>
 
+    <div v-if="subStore.sub.products.length > 0" class="sub-container">
+      <!-- from subStore -->
+      <span>Sub</span>
+      <div v-for="product in groupedSubList" :key="product.id" class="cart-item">
+        <div>
+          <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
+        </div>
+        <div>
+          <button @click="subStore.removeProduct(product)">-</button>
+          <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
+          <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
+        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+        </div>
+      </div>
+      <button class="btn" @click="addSubToCart" :disabled="isAddSubToCartDisabled()">Add sub to cart</button>
+      <button class="cancel-button" @click="subStore.resetSub(true)">Clear sub</button>
+      <div v-if="isAddSubToCartDisabled()">
+        <p class="sub-container-error">You need to add bread to your sub to be able to add it to the cart.</p>
+      </div>
+    </div>
+
     <div>
-      <!--  class="PiniaCart"-->
+      <!-- from orderStore -->
       <div v-for="product in groupedList" :key="product.id" class="cart-item">
         <div>
           <p>{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr</p>
         </div>
         <div>
-          <button @click="orderStore.removeProduct(product)">-</button> <!-- Name of method to remove product from Pinia cart might need to be updated once the method is implemented. -->
-          <button @click="orderStore.addProduct(product)" :disabled="IsAddToCartDisabled(product.subCategoryId)">+</button>
-          <!-- Visual Studio says "'IsAddToCartDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+          <button @click="orderStore.removeProduct(product)">-</button>
+          <button @click="orderStore.addProduct(product)">+</button>
         </div>
       </div>
     </div>
-    <div v-if="orderStore.order.products.length !== 0" class="cart-footer cancel-button">
+    <div>
+      <div v-for="sub in groupedCartSubList" class="cart-item-sub">
+        <!--  orderStore.order.subs -->
+        <div class="cart-item-sub-heading">
+          <div>
+            <p>Sub:</p>
+          </div>
+          <div>
+            <button @click="orderStore.removeSub(sub)">-</button>
+          </div>
+        </div>
+        <ul>
+          <li v-for="product in sub.products" :key="product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr </li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="orderStore.order.products.length !== 0 || orderStore.order.subs.length !== 0" class="cart-footer cancel-button">
       <button @click="startNewOrder">Cancel order</button>
     </div>
 
@@ -202,6 +286,55 @@ const IsCheckoutDisabled = () => {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+  .sub-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 5px 60px 5px;
+    flex-direction: column;
+  }
+
+  .sub-container span {
+      font-size: 1.5em;
+      font-weight: bold;
+  }
+
+  .sub-container button {
+    background-color: #38a169;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin: 0 10px;
+  }
+
+    .sub-container button:hover {
+      background-color: #2f855a;
+    }
+
+    .sub-container button:disabled {
+      background-color: #e2e8f0;
+      color: #a0aec0;
+      cursor: not-allowed;
+    }
+
+    .sub-container .cancel-button {
+      background-color: #e53e3e;
+      margin-top: 10px;
+    }
+
+      .sub-container .cancel-button:hover {
+        background-color: #c53030;
+      }
+
+  .sub-container-error {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: center;
+  }
 
 .cart-header {
   text-align: center;
@@ -312,4 +445,48 @@ const IsCheckoutDisabled = () => {
       display: flex;
       flex-wrap: nowrap;
   }
+
+  .cart-item-sub {
+    display: flex;
+/*    justify-content: space-between;*/
+flex-direction:column;
+/*    align-items: center;*/
+    background-color: white;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+  }
+
+    .cart-item-sub button {
+      background-color: #e2e8f0;
+      border: none;
+      color: #333;
+      padding: 6px 12px;
+      margin: 0 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+  .cart-item-sub p {
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+
+    .cart-item-sub ul {
+      list-style-type: none;
+      list-style-position: inside;
+    }
+
+    .cart-item-sub li {
+      margin-left: 20px;
+    }
+
+    .cart-item-sub-heading {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
 </style>

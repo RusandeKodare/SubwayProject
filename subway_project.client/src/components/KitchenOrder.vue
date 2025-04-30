@@ -74,7 +74,6 @@
 
 <template>
   <h2>{{ title }}</h2>
-
   <ul class="order-list" v-if="ordersStore.ShowOrders">
     <li v-for="order in filteredOrders" :key="order.id">
       <button class="order-div" @click="updateOrder(order)">
@@ -83,47 +82,48 @@
         </div>
 
         <!-- Sub -->
-        <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 1 && p.subCategoryId <= 5)).length">
-          <p><strong>Sub:</strong></p>
-          <ul>
-            <li v-for="product in groupedList(order.products.filter(p => p.subCategoryId >= 1 && p.subCategoryId <= 5))" :key="product.id">
-              {{ product.name }} x {{ product.quantity }}
-            </li>
-          </ul>
-        </div>
+    <div v-for="(sub, subIndex) in order.subs" :key="sub.id">
+      <p><strong>Sub: {{ subIndex + 1 }}</strong></p>
+      <div v-for="subprod in sub.subProducts" :key="subprod.productId">
+        <ul>
+          <li> {{ subprod.product.name }} x {{ subprod.quantity }}</li>
+        </ul>
+      </div>
+    </div>
 
         <!-- Drinks -->
-        <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 6 && p.subCategoryId <= 7)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7)).length">
           <p><strong>Drinks:</strong></p>
           <ul>
-            <li v-for="product in groupedList(order.products.filter(p => p.subCategoryId >= 6 && p.subCategoryId <= 7))" :key="product.id">
-              {{ product.name }} x {{ product.quantity }}
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7))" :key="op.product.id">
+              {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Snacks -->
-        <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 8 && p.subCategoryId <= 9)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9)).length">
           <p><strong>Snacks:</strong></p>
           <ul>
-            <li v-for="product in groupedList(order.products.filter(p => p.subCategoryId >= 8 && p.subCategoryId <= 9))" :key="product.id">
-              {{ product.name }} x {{ product.quantity }}
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9))" :key="op.product.id">
+              {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Desserts -->
-        <div v-if="groupedList(order.products.filter(p => p.subCategoryId >= 10 && p.subCategoryId <= 11)).length">
+        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11)).length">
           <p><strong>Desserts:</strong></p>
           <ul>
-            <li v-for="product in groupedList(order.products.filter(p => p.subCategoryId >= 10 && p.subCategoryId <= 11))" :key="product.id">
-              {{ product.name }} x {{ product.quantity }}
+            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11))" :key="op.product.id">
+              {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
       </button>
     </li>
   </ul>
+
 </template>
 
 <style>

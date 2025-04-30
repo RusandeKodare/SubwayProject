@@ -1,8 +1,10 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from "vue";
-import {useOrderStore} from "@/stores/useOrderStore";
+  import { useOrderStore } from "@/stores/useOrderStore";
+  import { useSubStore } from "@/stores/subStore";
 
-const orderStore = useOrderStore();
+  const orderStore = useOrderStore();
+  const subStore = useSubStore();
 
 onMounted(() => {
   getProducts();
@@ -56,24 +58,28 @@ function AddToCart(emittedProduct)
   // orderStore.addToTotalPrice(emittedProduct.price);
 }
 
- const IsAddToCartDisabled = (subCatId) => {
-   if (!props.cartLimits || !orderStore.order.products) {
-     return false; // No limits or products in orderStore, so not disabled
-  }
+  const addToSub = (product) => {
+    subStore.addProduct(product);
+}
 
-  if (props.selectedSubCategory.categoryId === 1 && props.selectedSubCategory.id !== 1) { //if category is "Sub", and subcategory is not "Bread"
-    const cartHasBread = orderStore.order.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the cart
-    if (cartHasBread) { //if there is bread in the cart
-      const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length; //check number of items of the subcategory in the cart
-      return productCount >= props.cartLimits[subCatId]; //return true/false depending on if the limit is reached
+  const isAddToSubDisabled = (subCatId) => {
+    if (!props.cartLimits || !subStore.sub.products) {
+      return false; // No limits or products in subStore, so not disabled
     }
-    return true; //if there is no bread in the cart, return true to disable the button
-  }
 
-  //for any other subcategories check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
-  const productCount = orderStore.order.products.filter(product => product.subCategoryId === subCatId).length;
-  return productCount >= props.cartLimits[subCatId];
-};
+    if (props.selectedSubCategory.categoryId === 2 && props.selectedSubCategory.id !== 1) { //if category is "Sub", and subcategory is not "Bread"
+      const subHasBread = subStore.sub.products.findIndex(product => product.subCategoryId === 1) !== -1; //check if there is bread in the sub
+      if (subHasBread) { //if there is bread in the sub
+        const productCount = subStore.sub.products.filter(product => product.subCategoryId === subCatId).length; //check number of items of the subcategory in the sub
+        return productCount >= props.cartLimits[subCatId]; //return true/false depending on if the limit is reached
+      }
+      return true; //if there is no bread in the sub, return true to disable the button
+    }
+
+    //for any other subcategories check number of items of the subcategory in the cart, and return true/false depending on if the limit is reached
+    const productCount = subStore.sub.products.filter(product => product.subCategoryId === subCatId).length;
+    return productCount >= props.cartLimits[subCatId];
+  };
 
 
 
@@ -86,9 +92,12 @@ function AddToCart(emittedProduct)
       <img class="image" :src="p.imageUrl" alt="Product Image">
       <h1>{{ p.name }}</h1>
       <p>Price: {{ p.price }}kr</p>
-      <button class="button" @click="AddToCart(p)" :disabled="IsAddToCartDisabled(p.subCategoryId)">
-        <!-- Visual Studio says "'IsAddToCartDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
-        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
+      <button v-if="p.categoryId === 2" class="button" @click="addToSub(p)" :disabled="isAddToSubDisabled(p.subCategoryId)">
+        <!-- Visual Studio says "'isAddToSubDisabled(p.subCategoryId)' is not a valid value of attribute 'disabled'",
+  but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "items"). -->
+        ADD TO SUB!
+      </button>
+      <button v-else class="button" @click="AddToCart(p)">
         EAT ME!
       </button>
     </div>
