@@ -179,7 +179,7 @@
       <p>Total: {{ orderStore.order.totalPrice }}kr</p>
       <div class="vat-container">
         <p class="vat">12% VAT:</p>
-        <p>{{orderStore.order.totalPrice * 0.12.toFixed(2)}}kr </p>
+        <p>{{(orderStore.order.totalPrice * 0.12).toFixed(2)}}kr </p>
       </div>
       <span>Thank you for your order!</span>
     </div>
