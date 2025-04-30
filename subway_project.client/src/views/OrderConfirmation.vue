@@ -177,6 +177,10 @@
     </div>
     <div class="order-footer">
       <p>Total: {{ orderStore.order.totalPrice }}kr</p>
+      <div class="vat-container">
+        <p class="vat">12% VAT:</p>
+        <p>{{orderStore.order.totalPrice * 0.12.toFixed(2)}}kr </p>
+      </div>
       <span>Thank you for your order!</span>
     </div>
   </div>
@@ -304,5 +308,16 @@
   .pause-btn {
     background-color: #015643;
     color: #F4C12C;
+  }
+
+  .vat-container {
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .vat {
+    margin-right: 2rem;
   }
 </style>
