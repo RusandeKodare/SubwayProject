@@ -2,7 +2,7 @@
 import { ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
   import { useOrderStore } from "@/stores/useOrderStore";
-  import { useSubStore } from "@/stores/subStore";
+  import { useSubStore } from "@/stores/SubStore";
 
 const orderStore = useOrderStore();
   // let storedOrder = JSON.parse(localStorage.getItem("order"));

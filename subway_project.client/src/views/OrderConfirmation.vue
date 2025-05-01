@@ -5,7 +5,7 @@
   import TopNav from "@/components/TopNav.vue";
   import { useOrderStore } from "@/stores/useOrderStore";
   import { useOrdersStore } from "@/stores/OrdersStore";
-  import { useSubStore } from "@/stores/subStore";
+  import { useSubStore } from "@/stores/SubStore";
 
   const orderStore = useOrderStore();
   const fetchOrders = useOrdersStore();
