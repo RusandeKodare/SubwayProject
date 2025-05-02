@@ -3,13 +3,11 @@
   import { useOrdersStore } from '@/stores/OrdersStore';
   import CustomerOrder from './CustomerOrder.vue';
 
-
   const ordersStore = useOrdersStore();
 
   onMounted(async () => {
     await ordersStore.getOrders();
-  })
-
+  });
 </script>
 
 <template>
@@ -23,13 +21,13 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" />
       </div>
-      
+
       <br />
 
       <div class="right-div">
-        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersCompleted":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersCompleted" :show="ordersStore.ShowOrders" />
       </div>
 
     </div>
@@ -84,5 +82,5 @@
 
   ::v-deep(.order-div) {
     font-size: 35px;
-  } 
+  }
 </style>

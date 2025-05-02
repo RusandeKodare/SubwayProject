@@ -10,30 +10,9 @@
   const orderStore = useOrderStore();
   const fetchOrders = useOrdersStore();
   const orderNumber = ref(0);
-
-  //   const fetchOrderNumber = (customerId) => {
-  //     console.log(orderStore.order);
-  //     console.log(customerId);
-  //   fetch(`/api/orders/by-customer/${customerId}`)
-  //     .then(response => response.json())
-  //     .then(order => {
-  //       if (order) {
-  //         console.log('Order found:', order);
-  //         orderNumber = order.id;
-  //       } else {
-  //         console.log('Order not found');
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching order:', error);
-  //     });
-  // };
-
   const subStore = useSubStore();
-
   const router = useRouter();
   const route = useRoute();
-
   const timeoutSeconds = Number(route.query.timeout) || 30;
   const secondsLeft = ref(timeoutSeconds);
   const timeoutInMilliseconds = timeoutSeconds * 1000;
@@ -71,7 +50,6 @@
     });
   });
 
-  //const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 2));
   const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
   const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
   const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
@@ -82,7 +60,7 @@
     clearTimeout(redirectTimer);
     clearInterval(countdownTimer);
     router.push("/");
-  }
+  };
 
   let isPaused = false;
   const pauseButtonMessage = ref("Pause timeout");
@@ -145,10 +123,6 @@
       </div>
       <div v-if="orderStore.order.subs.length !== 0">
         <p class="order-item-heading">Subs:</p>
-        <!--<ul>
-          <li v-for="product in orderProductsSub" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-        </ul>-->
-
         <div v-for="(sub, index) in groupedSubList" :key="index">
           <p>Sub {{ index + 1 }}</p>
           <ul>
@@ -156,41 +130,40 @@
           </ul>
         </div>
       </div>
-
-    <div v-if="orderProductsDrinks.length !== 0">
-      <p class="order-item-heading">Drinks:</p>
-      <ul>
-        <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div v-if="orderProductsSnacks.length !== 0">
-      <p class="order-item-heading">Snacks:</p>
-      <ul>
-        <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div v-if="orderProductsDesserts.length !== 0">
-      <p class="order-item-heading">Dessert:</p>
-      <ul>
-        <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div class="order-footer">
-      <p>Total: {{ orderStore.order.totalPrice }}kr</p>
-      <div class="vat-container">
-        <p class="vat">12% VAT:</p>
-        <p>{{(orderStore.order.totalPrice * 0.12).toFixed(2)}}kr </p>
+      <div v-if="orderProductsDrinks.length !== 0">
+        <p class="order-item-heading">Drinks:</p>
+        <ul>
+          <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
+        </ul>
       </div>
-      <span>Thank you for your order!</span>
+      <div v-if="orderProductsSnacks.length !== 0">
+        <p class="order-item-heading">Snacks:</p>
+        <ul>
+          <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
+        </ul>
+      </div>
+      <div v-if="orderProductsDesserts.length !== 0">
+        <p class="order-item-heading">Dessert:</p>
+        <ul>
+          <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
+        </ul>
+      </div>
+      <div class="order-footer">
+        <p>Total: {{ orderStore.order.totalPrice }}kr</p>
+        <div class="vat-container">
+          <p class="vat">12% VAT:</p>
+          <p>{{(orderStore.order.totalPrice * 0.12).toFixed(2)}}kr </p>
+        </div>
+        <span>Thank you for your order!</span>
+      </div>
     </div>
-  </div>
-  <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
-  <div class="btn-container">
-    <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
-  </div>
-  <div class="btn-container">
-    <button class="btn eat-here" @click="startNewOrder">Start new order</button>
-  </div>
+    <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
+    <div class="btn-container">
+      <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
+    </div>
+    <div class="btn-container">
+      <button class="btn eat-here" @click="startNewOrder">Start new order</button>
+    </div>
   </div>
 </template>
 
