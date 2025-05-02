@@ -6,7 +6,7 @@
   const subStore = useSubStore();
 
   const resetCart = () => {
-    if (orderStore.order.products.length > 0) {
+    if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
       orderStore.resetOrder();
       subStore.resetSub(false);
     }
@@ -21,10 +21,10 @@
         </RouterLink>
     </div>
     <div class="page-links">
-        <RouterLink to="/kitchen" class="page-link">
+        <RouterLink to="/kitchen" class="page-link" @click="resetCart">
             <p>Kitchen</p>
         </RouterLink>
-        <RouterLink to="/customer" class="page-link">
+        <RouterLink to="/customer" class="page-link" @click="resetCart">
             <p>Order List</p>
         </RouterLink>
       </div>
