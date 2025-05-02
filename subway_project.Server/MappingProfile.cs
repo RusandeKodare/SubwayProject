@@ -11,6 +11,5 @@ public class MappingProfile : Profile
         CreateMap<ProductDTO, Product>();
         CreateMap<OrderDTO, Order>().ForMember(dest => dest.Subs, opt => opt.Ignore());
         CreateMap<SubDTO, Sub>();
-
     }
 }

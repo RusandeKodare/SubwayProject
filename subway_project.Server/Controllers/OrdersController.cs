@@ -31,7 +31,6 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            //var orders = await _context.Orders.Include(_=>_.OrderProducts).ToListAsync();
             var orders = await _context.Orders
                 .Include(o => o.OrderProducts)
                     .ThenInclude(op => op.Product)
@@ -47,8 +46,6 @@ namespace subway_project.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
-            //var order = await _context.Orders.FindAsync(id);
-
             var order = await _context.Orders
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
@@ -61,14 +58,14 @@ namespace subway_project.Server.Controllers
             {
                 return NotFound();
             }
-            
+
             return order;
         }
 
         [HttpGet("by-customer/{customerId}")]
         public async Task<ActionResult<Order>> GetOrderWithCustomerId(string customerId)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(_=>_.CustomerId == customerId);
+            var order = await _context.Orders.FirstOrDefaultAsync(_ => _.CustomerId == customerId);
 
             if (order == null)
             {
@@ -118,7 +115,7 @@ namespace subway_project.Server.Controllers
             {
                 return NotFound();
             }
-                
+
             existingOrder.OrderInProgress = DateTime.Now;
 
             try
@@ -139,7 +136,7 @@ namespace subway_project.Server.Controllers
 
             return NoContent();
         }
-        
+
         // PUT: /api/Orders/complete-order/7
         [HttpPut("complete-order/{id}")]
         public async Task<IActionResult> CompleteOrder(int id)
@@ -149,7 +146,7 @@ namespace subway_project.Server.Controllers
             {
                 return NotFound();
             }
-            
+
             existingOrder.OrderCompleted = DateTime.Now;
 
             try
@@ -213,7 +210,7 @@ namespace subway_project.Server.Controllers
 
             foreach (var productDTO in orderDTO.Products)
             {
-                var productToFind = await _context.Products.FirstOrDefaultAsync(_=>_.Name == productDTO.Name);
+                var productToFind = await _context.Products.FirstOrDefaultAsync(_ => _.Name == productDTO.Name);
                 if (productToFind != null)
                 {
                     var orderProductToFind = await _context.OrderProduct.FirstOrDefaultAsync(_ => _.ProductId == productToFind.Id && _.OrderId == order.Id);
@@ -246,7 +243,7 @@ namespace subway_project.Server.Controllers
                         var subProductToFind = await _context.SubProduct.FirstOrDefaultAsync(_ => _.ProductId == productToFind.Id && _.SubId == sub.Id);
                         if (subProductToFind == null)
                         {
-                            var subProduct = new SubProduct{ SubId = sub.Id, ProductId = productToFind.Id, Quantity = 1};
+                            var subProduct = new SubProduct { SubId = sub.Id, ProductId = productToFind.Id, Quantity = 1 };
                             _context.SubProduct.Add(subProduct);
                             sub.SubProducts.Add(subProduct);
                             await _context.SaveChangesAsync();

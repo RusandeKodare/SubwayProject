@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import StartPage from '@/views/StartPage.vue'
 import OrderPage from '@/views/OrderPage.vue'
 import KitchenPageVue from '@/views/KitchenViewPage.vue';
