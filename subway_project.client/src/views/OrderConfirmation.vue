@@ -1,216 +1,155 @@
 <script setup>
-  import "../assets/main.css";
-  import { onBeforeUnmount, onMounted, ref, computed } from "vue";
-  import { useRouter, useRoute } from "vue-router";
-  import TopNav from "@/components/TopNav.vue";
-  import { useOrderStore } from "@/stores/useOrderStore";
-  import { useOrdersStore } from "@/stores/OrdersStore";
-  import { useSubStore } from "@/stores/SubStore";
+import "../assets/main.css";
+import { onBeforeUnmount, onMounted, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import TopNav from "@/components/TopNav.vue";
+import { useOrderStore } from "@/stores/useOrderStore";
+import { useOrdersStore } from "@/stores/OrdersStore";
+import { useSubStore } from "@/stores/SubStore";
 
-  const orderStore = useOrderStore();
-  const fetchOrders = useOrdersStore();
-  const orderNumber = ref(0);
+const orderStore = useOrderStore();
+const fetchOrders = useOrdersStore();
+const orderNumber = ref(0);
 
-  //   const fetchOrderNumber = (customerId) => {
-  //     console.log(orderStore.order);
-  //     console.log(customerId);
-  //   fetch(`/api/orders/by-customer/${customerId}`)
-  //     .then(response => response.json())
-  //     .then(order => {
-  //       if (order) {
-  //         console.log('Order found:', order);
-  //         orderNumber = order.id;
-  //       } else {
-  //         console.log('Order not found');
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching order:', error);
-  //     });
-  // };
+//   const fetchOrderNumber = (customerId) => {
+//     console.log(orderStore.order);
+//     console.log(customerId);
+//   fetch(`/api/orders/by-customer/${customerId}`)
+//     .then(response => response.json())
+//     .then(order => {
+//       if (order) {
+//         console.log('Order found:', order);
+//         orderNumber = order.id;
+//       } else {
+//         console.log('Order not found');
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error fetching order:', error);
+//     });
+// };
 
-  const subStore = useSubStore();
-  const router = useRouter();
-  const route = useRoute();
+const subStore = useSubStore();
+const router = useRouter();
+const route = useRoute();
 
-  const today = new Date().toLocaleDateString('se-SV', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const timeoutSeconds = Number(route.query.timeout) || 30;
-  const secondsLeft = ref(timeoutSeconds);
-  const timeoutInMilliseconds = timeoutSeconds * 1000;
-  let redirectTimer = null;
-  let countdownTimer = null;
+const today = new Date().toLocaleDateString('se-SV', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+});
+const timeoutSeconds = Number(route.query.timeout) || 30;
+const secondsLeft = ref(timeoutSeconds);
+const timeoutInMilliseconds = timeoutSeconds * 1000;
+let redirectTimer = null;
+let countdownTimer = null;
 
-  const groupedList = (products) => {
-    const map = {}
-    for (const product of products) {
-      if (!map[product.name]) {
-        map[product.name] = { ...product, quantity: 1 }
-      } else {
-        map[product.name].quantity += 1
-      }
-    }
-    return Object.values(map)
-  };
-
-  const groupedSubList = computed(() => {
-    return orderStore.order.subs.map(sub => {
-      const map = {};
-
-      for (const product of sub.products) {
-        if (!map[product.name]) {
-          map[product.name] = { ...product, quantity: 1 };
-        } else {
-          map[product.name].quantity += 1;
-        }
-      }
-
-      return {
-        ...sub,
-        products: Object.values(map)
-      };
-    });
-  });
-
-  //const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 2));
-  const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
-  const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
-  const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
-
-  const startNewOrder = () => {
-    orderStore.resetOrder();
-    subStore.resetSub(false);
-    clearTimeout(redirectTimer);
-    clearInterval(countdownTimer);
-    router.push("/");
-  }
-
-  let isPaused = false;
-  const pauseButtonMessage = ref("Pause timeout");
-
-  const customInterval = () => {
-    if (!isPaused && secondsLeft.value > 0) {
-      secondsLeft.value--;
-      countdownTimer = setTimeout(customInterval, 1000);
-    }
-    else if (!isPaused && secondsLeft.value === 0) {
-      startNewOrder();
-    }
-  };
-
-  const startTimer = () => {
-    isPaused = false;
-    customInterval();
-  };
-
-  const pauseTimer = () => {
-    clearTimeout(countdownTimer);
-    isPaused = true;
-  };
-
-  const resumeTimer = () => {
-    startTimer();
-  };
-
-  const handleTimerPause = () => {
-    if (isPaused) {
-      resumeTimer();
-      pauseButtonMessage.value = "Pause timeout";
+const groupedList = (products) => {
+  const map = {}
+  for (const product of products) {
+    if (!map[product.name]) {
+      map[product.name] = { ...product, quantity: 1 }
     } else {
-      pauseTimer();
-      pauseButtonMessage.value = "Resume timeout";
+      map[product.name].quantity += 1
     }
-  };
+  }
+  return Object.values(map)
+};
 
-  onMounted(async () => {
-    startTimer();
-    orderNumber.value = await fetchOrders.ReturnOrderId(orderStore.order.customerId);
-    console.log('order number: ', orderNumber.value);
-  });
+const groupedSubList = computed(() => {
+  return orderStore.order.subs.map(sub => {
+    const map = {};
 
-  onBeforeUnmount(() => {
-    clearTimeout(countdownTimer);
+    for (const product of sub.products) {
+      if (!map[product.name]) {
+        map[product.name] = { ...product, quantity: 1 };
+      } else {
+        map[product.name].quantity += 1;
+      }
+    }
+
+    return {
+      ...sub,
+      products: Object.values(map)
+    };
   });
+});
+
+//const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 2));
+const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
+const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
+const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
+
+const startNewOrder = () => {
+  orderStore.resetOrder();
+  subStore.resetSub(false);
+  clearTimeout(redirectTimer);
+  clearInterval(countdownTimer);
+  router.push("/");
+}
+
+let isPaused = false;
+const pauseButtonMessage = ref("Pause timeout");
+
+const customInterval = () => {
+  if (!isPaused && secondsLeft.value > 0) {
+    secondsLeft.value--;
+    countdownTimer = setTimeout(customInterval, 1000);
+  }
+  else if (!isPaused && secondsLeft.value === 0) {
+    startNewOrder();
+  }
+};
+
+const startTimer = () => {
+  isPaused = false;
+  customInterval();
+};
+
+const pauseTimer = () => {
+  clearTimeout(countdownTimer);
+  isPaused = true;
+};
+
+const resumeTimer = () => {
+  startTimer();
+};
+
+const handleTimerPause = () => {
+  if (isPaused) {
+    resumeTimer();
+    pauseButtonMessage.value = "Pause timeout";
+  } else {
+    pauseTimer();
+    pauseButtonMessage.value = "Resume timeout";
+  }
+};
+
+onMounted(async () => {
+  startTimer();
+  orderNumber.value = await fetchOrders.ReturnOrderId(orderStore.order.customerId);
+  console.log('order number: ', orderNumber.value);
+});
+
+onBeforeUnmount(() => {
+  clearTimeout(countdownTimer);
+});
 
 </script>
-
-<!-- <template>
-  <div class="kitchen-queue-page-container">
-    <nav>
-      <TopNav />
-    </nav>
-    <div class="order-container">
-      <div class="order-header">
-        <p>Your order</p>
-        <span>Order number: {{ orderNumber }}</span>
-      </div>
-      <div v-if="orderStore.order.subs.length !== 0">
-        <p class="order-item-heading">Subs:</p>
-        <ul>
-          <li v-for="product in orderProductsSub" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-        </ul>
-
-        <div v-for="(sub, index) in groupedSubList" :key="index">
-          <p>Sub {{ index + 1 }}</p>
-          <ul>
-            <li v-for="product in sub.products" :key="product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }} kr </li>
-          </ul>
-        </div>
-      </div>
-
-    <div v-if="orderProductsDrinks.length !== 0">
-      <p class="order-item-heading">Drinks:</p>
-      <ul>
-        <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div v-if="orderProductsSnacks.length !== 0">
-      <p class="order-item-heading">Snacks:</p>
-      <ul>
-        <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div v-if="orderProductsDesserts.length !== 0">
-      <p class="order-item-heading">Dessert:</p>
-      <ul>
-        <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-      </ul>
-    </div>
-    <div class="order-footer">
-      <p>Total: {{ orderStore.order.totalPrice }}kr</p>
-      <div class="vat-container">
-        <p class="vat">12% VAT:</p>
-        <p>{{(orderStore.order.totalPrice * 0.12).toFixed(2)}}kr </p>
-      </div>
-      <span>Thank you for your order!</span>
-    </div>
-  </div>
-  <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
-  <div class="btn-container">
-    <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
-  </div>
-  <div class="btn-container">
-    <button class="btn eat-here" @click="startNewOrder">Start new order</button>
-  </div>
-  </div>
-</template> -->
 
 <template>
 
   <nav>
-      <TopNav />
-    </nav>
+    <TopNav />
+  </nav>
   <div class="receipt-container">
     <section class="queue-nr-container">
       <p class=" label-bold">Thank you for your order!</p>
-        <span class=" label-bold">Order number: {{ orderNumber }}</span>
-        <p>{{ orderStore.order.takeAway ? 'Take Away' : 'Eat Here' }}</p>
-        <p>{{ today }}</p>
+      <span class=" label-bold">Order number: {{ orderNumber }}</span>
+      <p>{{ orderStore.order.takeAway ? 'Take Away' : 'Eat Here' }}</p>
+      <p>{{ today }}</p>
     </section>
 
     <section class="section-divider text-center">
@@ -231,56 +170,57 @@
     <section class="receipt-section section-divider">
       <ul>
         <div v-if="orderStore.order.subs.length !== 0">
-        <p class="order-item-heading"><strong>Subs:</strong></p>
-        <!--<ul>
-          <li v-for="product in orderProductsSub" :key="product.id" :id="`product-` + product.id">{{ product.name }} — {{ product.quantity }} x {{ product.price }}kr</li>
-        </ul>-->
+          <p class="order-item-heading"><strong>Subs:</strong></p>
+          <div v-for="(sub, index) in groupedSubList" :key="index">
+            <p><u>Sub {{ index + 1 }}</u></p>
+            <ul>
+              <li v-for="product in sub.products" :key="product.id">
+                <div class="receipt-grid">
+                  <span>{{ product.name }} </span>
+                  <span class="text-center">{{ product.price }} kr</span>
+                  <span class="text-right">{{ product.quantity }}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-        <div v-for="(sub, index) in groupedSubList" :key="index">
-          <p><u>Sub {{ index + 1 }}</u></p>
+        <div v-if="orderProductsDrinks.length !== 0">
+          <p class="order-item-heading"><strong>Drinks:</strong></p>
           <ul>
-            <li v-for="product in sub.products" :key="product.id">
+            <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id">
               <div class="receipt-grid">
-              <span>{{ product.name }} </span>
-              <span class="text-center">{{ product.price }} kr</span>
-              <span class="text-right">{{ product.quantity }}</span>
-            </div>
-          </li>
+                <span>{{ product.name }} </span>
+                <span class="text-center">{{ product.price }} kr</span>
+                <span class="text-right">{{ product.quantity }}</span>
+              </div>
+            </li>
           </ul>
         </div>
-      </div>
-
-    <div v-if="orderProductsDrinks.length !== 0">
-      <p class="order-item-heading"><strong>Drinks:</strong></p>
-      <ul>
-        <li v-for="product in orderProductsDrinks" :key="product.id" :id="`product-` + product.id"><div class="receipt-grid">
-              <span>{{ product.name }} </span>
-              <span class="text-center">{{ product.price }} kr</span>
-              <span class="text-right">{{ product.quantity }}</span>
-            </div>
-          </li>
-      </ul>
-    </div>
-    <div v-if="orderProductsSnacks.length !== 0">
-      <p class="order-item-heading"><strong>Snacks:</strong></p>
-      <ul>
-        <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id"><div class="receipt-grid">
-              <span>{{ product.name }} </span>
-              <span class="text-center">{{ product.price }} kr</span>
-              <span class="text-right">{{ product.quantity }}</span>
-            </div></li>
-      </ul>
-    </div>
-    <div v-if="orderProductsDesserts.length !== 0">
-      <p class="order-item-heading"><strong>Dessert:</strong></p>
-      <ul>
-        <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id"><div class="receipt-grid">
-              <span>{{ product.name }} </span>
-              <span class="text-center">{{ product.price }} kr</span>
-              <span class="text-right">{{ product.quantity }}</span>
-            </div></li>
-      </ul>
-    </div>
+        <div v-if="orderProductsSnacks.length !== 0">
+          <p class="order-item-heading"><strong>Snacks:</strong></p>
+          <ul>
+            <li v-for="product in orderProductsSnacks" :key="product.id" :id="`product-` + product.id">
+              <div class="receipt-grid">
+                <span>{{ product.name }} </span>
+                <span class="text-center">{{ product.price }} kr</span>
+                <span class="text-right">{{ product.quantity }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div v-if="orderProductsDesserts.length !== 0">
+          <p class="order-item-heading"><strong>Dessert:</strong></p>
+          <ul>
+            <li v-for="product in orderProductsDesserts" :key="product.id" :id="`product-` + product.id">
+              <div class="receipt-grid">
+                <span>{{ product.name }} </span>
+                <span class="text-center">{{ product.price }} kr</span>
+                <span class="text-right">{{ product.quantity }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </ul>
     </section>
 
@@ -295,22 +235,23 @@
     </section>
     <div class="order-footer">
       <div class="vat-container">
-      <span class="text-left">VAT%</span>
-      <span class="text-center">Total</span>
-      <span class="text-center">VAT</span>
-      <span class="text-right">Subtotal(Net)</span>
+        <span class="text-left">VAT%</span>
+        <span class="text-center">Total</span>
+        <span class="text-center">VAT</span>
+        <span class="text-right">Subtotal(Net)</span>
         <p class="text-left">12,0%</p>
         <p class="text-center">{{ (orderStore.order.totalPrice).toFixed(2) }}</p>
-        <p class="text-center">{{(orderStore.order.totalPrice * 0.12).toFixed(2)}} </p>
-        <p class="text-right">{{(orderStore.order.totalPrice * 0.88).toFixed(2)}} </p>
+        <p class="text-center">{{ (orderStore.order.totalPrice * 0.12).toFixed(2) }} </p>
+        <p class="text-right">{{ (orderStore.order.totalPrice * 0.88).toFixed(2) }} </p>
       </div>
-      <span>Welcome Back</span>
+      <span>We hope to see you again!</span>
     </div>
   </div>
 
   <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
   <div class="btn-container">
-    <button class="btn pause-btn" onclick="alert('The receipt printer is currently out of paper.')">Print receipt</button>
+    <button class="btn pause-btn" onclick="alert('The receipt printer is currently out of paper.')">Print
+      receipt</button>
     <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
   </div>
   <div class="btn-container">
@@ -319,10 +260,11 @@
 </template>
 
 <style scoped>
-  nav {
-    height: 11vh;
-  }
-  .receipt-container ul {
+nav {
+  height: 11vh;
+}
+
+.receipt-container ul {
   list-style: none;
 }
 
@@ -434,195 +376,76 @@
   transform: translate(-50%, -50%);
   padding: 0.5rem;
 }
+
 .redirect-msg {
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-align: center;
-    margin-top: 50px;
-  }
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 50px;
+}
 
-  .btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    height: 20vh;
-  }
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  height: 20vh;
+}
+
 .btn {
-    padding: 30px 40px;
-    border: none;
-    border-radius: 20px;
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 1.2;
-    cursor: pointer;
-    text-align: center;
-    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
-  }
+  padding: 30px 40px;
+  border: none;
+  border-radius: 20px;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.2;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
 
-    .btn:hover {
-      transform: scale(1.05);
-    }
+.btn:hover {
+  transform: scale(1.05);
+}
 
-  .eat-here {
-    background-color: #F4C12C;
-    color: #015643;
-  }
+.eat-here {
+  background-color: #F4C12C;
+  color: #015643;
+}
 
-  .to-go {
-    background-color: #015643;
-    color: #F4C12C;
-  }
+.to-go {
+  background-color: #015643;
+  color: #F4C12C;
+}
 
-  .pause-btn {
-    background-color: #015643;
-    color: #F4C12C;
-  }
-  .vat-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    font-size: 1rem;
-    font-weight: normal;
-  }
+.pause-btn {
+  background-color: #015643;
+  color: #F4C12C;
+}
 
-  .vat {
-    margin-right: 2rem;
-    font-size: 0,5rem;
-  }
-  .order-footer {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-  }
+.vat-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  font-size: 1rem;
+  font-weight: normal;
+}
 
-    .order-footer span {
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-align: center;
-    }
+.vat {
+  margin-right: 2rem;
+  font-size: 0, 5rem;
+}
 
-/*
-  .order-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-self: safe center;
-    width: 90%;
-    max-width: 500px;
-    padding: 0 30px 30px 30px;
-    margin: 20px 0;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+.order-footer {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
 
-    .order-container ul {
-      list-style-type: none;
-      list-style-position: inside;
-    }
-
-    .order-container li {
-      margin-left: 20px;
-    }
-
-    .order-container span {
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-align: center;
-    }
-
-  .order-header {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-  }
-
-    .order-header span {
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-align: center;
-    }
-
-  .order-item {
-    margin-left: 20px;
-  }
-
-  .order-item-heading {
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-align: left;
-  }
-
-  .order-footer {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-  }
-
-    .order-footer span {
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-align: center;
-    }
-
-  .redirect-msg {
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-align: center;
-    margin-top: 50px;
-  }
-
-  .btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    height: 20vh;
-  }
-
-  .btn {
-    padding: 30px 40px;
-    border: none;
-    border-radius: 20px;
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 1.2;
-    cursor: pointer;
-    text-align: center;
-    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
-  }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-  .eat-here {
-    background-color: #F4C12C;
-    color: #015643;
-  }
-
-  .to-go {
-    background-color: #015643;
-    color: #F4C12C;
-  }
-
-  .pause-btn {
-    background-color: #015643;
-    color: #F4C12C;
-  }
-
-  .vat-container {
-    display: flex;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: normal;
-  }
-
-  .vat {
-    margin-right: 2rem;
-  } */
+.order-footer span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+}
 </style>
