@@ -310,6 +310,7 @@
 
   <p class="redirect-msg">You will be redirected in {{ secondsLeft }} seconds.</p>
   <div class="btn-container">
+    <button class="btn pause-btn" onclick="alert('The receipt printer is currently out of paper.')">Print receipt</button>
     <button class="btn pause-btn" @click="handleTimerPause">{{ pauseButtonMessage }}</button>
   </div>
   <div class="btn-container">
