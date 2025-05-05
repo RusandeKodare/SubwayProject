@@ -1,6 +1,7 @@
-﻿namespace subway_shared.DTOs.CategoryDTOs;
-
-public class CategoryDTO
+﻿namespace subway_shared.DTOs.CategoryDTOs
 {
-	public string Name { get; set; } = null!;
+    public class CategoryDTO
+    {
+        public string Name { get; set; } = null!;
+    }
 }

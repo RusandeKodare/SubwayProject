@@ -7,17 +7,17 @@ import { useOrderStore } from "@/stores/useOrderStore";
 import { useOrdersStore } from "@/stores/OrdersStore";
 import { useSubStore } from "@/stores/SubStore";
 
-const orderStore = useOrderStore();
-const fetchOrders = useOrdersStore();
-const orderNumber = ref(0);
-const subStore = useSubStore();
-const router = useRouter();
-const route = useRoute();
-const timeoutSeconds = Number(route.query.timeout) || 30;
-const secondsLeft = ref(timeoutSeconds);
-const timeoutInMilliseconds = timeoutSeconds * 1000;
-let redirectTimer = null;
-let countdownTimer = null;
+  const orderStore = useOrderStore();
+  const fetchOrders = useOrdersStore();
+  const orderNumber = ref(0);
+  const subStore = useSubStore();
+  const router = useRouter();
+  const route = useRoute();
+  const timeoutSeconds = Number(route.query.timeout) || 30;
+  const secondsLeft = ref(timeoutSeconds);
+  const timeoutInMilliseconds = timeoutSeconds * 1000;
+  let redirectTimer = null;
+  let countdownTimer = null;
 
 const today = new Date().toLocaleDateString('se-SV', {
   year: 'numeric',
@@ -58,18 +58,17 @@ const groupedSubList = computed(() => {
   });
 });
 
-//const orderProductsSub = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 2));
-const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
-const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
-const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
+  const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
+  const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
+  const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
 
-const startNewOrder = () => {
-  orderStore.resetOrder();
-  subStore.resetSub(false);
-  clearTimeout(redirectTimer);
-  clearInterval(countdownTimer);
-  router.push("/");
-}
+  const startNewOrder = () => {
+    orderStore.resetOrder();
+    subStore.resetSub(false);
+    clearTimeout(redirectTimer);
+    clearInterval(countdownTimer);
+    router.push("/");
+  };
 
 let isPaused = false;
 const pauseButtonMessage = ref("Pause timeout");

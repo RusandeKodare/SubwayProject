@@ -26,24 +26,20 @@ namespace subway_project.Server.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductGetDTO >>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductGetDTO>>> GetProducts()
         {
-	        var products = await _context.Products.Include(p => p.SubCategory).ToListAsync();
+            var products = await _context.Products.Include(p => p.SubCategory).ToListAsync();
 
-	        var productDTOs = products.Select(p => new ProductGetDTO()
-	        {
-		        Id = p.Id,
-		        Name = p.Name,
-		        Price = p.Price,
+            var productDTOs = products.Select(p => new ProductGetDTO()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
                 CategoryId = p.CategoryId,
                 SubCategoryId = p.SubCategoryId,
-		        //SubCategory = p.SubCategory != null ? new SubCategoryDTO
-		        //{
-			       // Name = p.SubCategory.Name
-		        //} : null,
-				ImageUrl = p.ImageUrl ?? "images\\no-image-available.jpg"
-	        }).ToList();
-	        return Ok(productDTOs);
+                ImageUrl = p.ImageUrl ?? "images\\no-image-available.jpg"
+            }).ToList();
+            return Ok(productDTOs);
         }
 
         // GET: api/Products/5
@@ -54,22 +50,18 @@ namespace subway_project.Server.Controllers
 
             if (product == null)
             {
-	            return NotFound(new { message = "Product not found" });
+                return NotFound(new { message = "Product not found" });
             }
 
-			var productDTO = new ProductGetDTO
+            var productDTO = new ProductGetDTO
             {
-	            Id = product.Id,
-	            Name = product.Name,
-	            Price = product.Price,
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
                 CategoryId = product.CategoryId,
                 SubCategoryId = product.SubCategoryId,
-	            //SubCategory = product.SubCategory != null ? new SubCategoryDTO
-	            //{
-		           // Name = product.SubCategory.Name
-	            //} : null,
-	            ImageUrl = product.ImageUrl
-			};
+                ImageUrl = product.ImageUrl
+            };
 
             return productDTO;
         }
@@ -79,18 +71,18 @@ namespace subway_project.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, ProductPostDTO productDTO)
         {
-	        var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-	        if (product == null)
-	        {
-		        return NotFound(new { message = "Product not found" });
-	        }
+            if (product == null)
+            {
+                return NotFound(new { message = "Product not found" });
+            }
 
-	        product.Name = productDTO.Name;
-	        product.Price = productDTO.Price;
+            product.Name = productDTO.Name;
+            product.Price = productDTO.Price;
             product.CategoryId = productDTO.CategoryId;
             product.SubCategoryId = productDTO.SubCategoryId;
-	        product.ImageUrl = productDTO.ImageUrl;
+            product.ImageUrl = productDTO.ImageUrl;
 
             _context.Entry(product).State = EntityState.Modified;
 
@@ -122,7 +114,7 @@ namespace subway_project.Server.Controllers
 
             if (category == null)
             {
-	            return NotFound(new { message = "Category not found" });
+                return NotFound(new { message = "Category not found" });
             }
 
             var product = new Product
@@ -140,16 +132,12 @@ namespace subway_project.Server.Controllers
 
             var productGetDTO = new ProductGetDTO
             {
-	            Id = product.Id,
-	            Name = product.Name,
-	            Price = product.Price,
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
                 CategoryId = product.CategoryId,
                 SubCategoryId = product.SubCategoryId,
-	            //SubCategory = new SubCategoryDTO
-	            //{
-		           // Name = category.Name
-	            //},
-	            ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl
             };
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, productGetDTO);

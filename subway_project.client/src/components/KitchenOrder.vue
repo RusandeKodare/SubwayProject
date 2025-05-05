@@ -2,11 +2,11 @@
   import { useOrdersStore } from '@/stores/OrdersStore'
   import { defineProps, computed } from 'vue';
 
-  const ordersStore = useOrdersStore()
+  const ordersStore = useOrdersStore();
 
   const props = defineProps({
     type: String // "received", "inProgress", or "completed"
-  })
+  });
 
   const title = computed(() => {
     switch (props.type) {
@@ -21,7 +21,7 @@
       default:
         return ''
     }
-  })
+  });
 
   const filteredOrders = computed(() => {
     switch (props.type) {
@@ -36,7 +36,7 @@
       default:
         return []
     }
-  })
+  });
 
   async function updateOrder(order) {
     if (order.orderInProgress == null && order.orderCompleted == null && order.orderCollected == null) {
@@ -68,8 +68,7 @@
       }
     }
     return Object.values(map)
-  }
-
+  };
 </script>
 
 <template>
@@ -82,14 +81,14 @@
         </div>
 
         <!-- Sub -->
-    <div v-for="(sub, subIndex) in order.subs" :key="sub.id">
-      <p><strong>Sub: {{ subIndex + 1 }}</strong></p>
-      <div v-for="subprod in sub.subProducts" :key="subprod.productId">
-        <ul>
-          <li> {{ subprod.product.name }} x {{ subprod.quantity }}</li>
-        </ul>
-      </div>
-    </div>
+        <div v-for="(sub, subIndex) in order.subs" :key="sub.id">
+          <p><strong>Sub: {{ subIndex + 1 }}</strong></p>
+          <div v-for="subprod in sub.subProducts" :key="subprod.productId">
+            <ul>
+              <li> {{ subprod.product.name }} x {{ subprod.quantity }}</li>
+            </ul>
+          </div>
+        </div>
 
         <!-- Drinks -->
         <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 3)).length">
@@ -136,7 +135,7 @@
     transition: background-color 0.3s ease;
   }
 
-  .order-div:hover {
-    background-color: lightgreen;
-  }
+    .order-div:hover {
+      background-color: lightgreen;
+    }
 </style>
