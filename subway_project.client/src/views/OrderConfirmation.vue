@@ -10,10 +10,14 @@ import { useSubStore } from "@/stores/SubStore";
 const orderStore = useOrderStore();
 const fetchOrders = useOrdersStore();
 const orderNumber = ref(0);
-
 const subStore = useSubStore();
 const router = useRouter();
 const route = useRoute();
+const timeoutSeconds = Number(route.query.timeout) || 30;
+const secondsLeft = ref(timeoutSeconds);
+const timeoutInMilliseconds = timeoutSeconds * 1000;
+let redirectTimer = null;
+let countdownTimer = null;
 
 const today = new Date().toLocaleDateString('se-SV', {
   year: 'numeric',
@@ -22,11 +26,6 @@ const today = new Date().toLocaleDateString('se-SV', {
   hour: '2-digit',
   minute: '2-digit',
 });
-const timeoutSeconds = Number(route.query.timeout) || 30;
-const secondsLeft = ref(timeoutSeconds);
-const timeoutInMilliseconds = timeoutSeconds * 1000;
-let redirectTimer = null;
-let countdownTimer = null;
 
 const groupedList = (products) => {
   const map = {}
