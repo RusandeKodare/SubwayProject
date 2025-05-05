@@ -11,24 +11,6 @@ const orderStore = useOrderStore();
 const fetchOrders = useOrdersStore();
 const orderNumber = ref(0);
 
-//   const fetchOrderNumber = (customerId) => {
-//     console.log(orderStore.order);
-//     console.log(customerId);
-//   fetch(`/api/orders/by-customer/${customerId}`)
-//     .then(response => response.json())
-//     .then(order => {
-//       if (order) {
-//         console.log('Order found:', order);
-//         orderNumber = order.id;
-//       } else {
-//         console.log('Order not found');
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error fetching order:', error);
-//     });
-// };
-
 const subStore = useSubStore();
 const router = useRouter();
 const route = useRoute();
