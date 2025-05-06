@@ -57,18 +57,6 @@
       return;
     }
   }
-
-  const groupedList = (products) => {
-    const map = {}
-    for (const product of products) {
-      if (!map[product.name]) {
-        map[product.name] = { ...product, quantity: 1 }
-      } else {
-        map[product.name].quantity += 1
-      }
-    }
-    return Object.values(map)
-  };
 </script>
 
 <template>
@@ -91,30 +79,30 @@
         </div>
 
         <!-- Drinks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 3)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 3).length">
           <p><strong>Drinks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 3))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 3)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Snacks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 4)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 4).length">
           <p><strong>Snacks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 4))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 4)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Desserts -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.categoryId === 5)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 5).length">
           <p><strong>Desserts:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.categoryId === 5))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 5)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
