@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
             <ul>
               <li v-for="product in sub.products" :key="product.id">
                 <div class="receipt-grid">
-                  <span>{{ product.name }} </span>
+                  <span class="indent">{{ product.name }} </span>
                   <span class="text-center">{{ product.price }} kr</span>
                   <span class="text-right">{{ product.quantity }}</span>
                 </div>
@@ -427,5 +427,9 @@ nav {
   font-size: 1.2rem;
   font-weight: 500;
   text-align: center;
+}
+
+.indent {
+    margin-left: 10px;
 }
 </style>
