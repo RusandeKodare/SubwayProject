@@ -65,7 +65,7 @@
     <li v-for="order in filteredOrders" :key="order.id">
       <button class="order-div" @click="updateOrder(order)">
         <div class="order-heading">
-          Order: {{ order.id }} - {{ order.takeAway ? 'Take Away' : 'Eat Here' }}
+          Order: {{ order.id }} - {{ order.takeAway ? 'Takeaway' : 'Eat Here' }}
         </div>
 
         <!-- Sub -->

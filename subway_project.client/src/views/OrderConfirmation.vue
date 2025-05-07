@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
     <section class="queue-nr-container">
       <p class=" label-bold">Thank you for your order!</p>
       <span class=" label-bold">Order number: {{ orderNumber }}</span>
-      <p>{{ orderStore.order.takeAway ? 'Take Away' : 'Eat Here' }}</p>
+      <p>{{ orderStore.order.takeAway ? 'Takeaway' : 'Eat Here' }}</p>
       <p>{{ today }}</p>
     </section>
 
