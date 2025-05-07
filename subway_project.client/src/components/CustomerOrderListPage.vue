@@ -21,7 +21,7 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress" :show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders In Progress" :orders="[...(ordersStore.FilteredOrdersInProgress || []), ...(ordersStore.FilteredOrdersRecieved || [])]" :show="ordersStore.ShowOrders" />  
       </div>
 
       <br />
@@ -69,7 +69,7 @@
   }
 
   .left-div {
-    border-color: blue;
+    border-color: yellow;
     margin-right: 1rem;
     margin-left: 2rem;
   }
