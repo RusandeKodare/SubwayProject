@@ -4,7 +4,7 @@
   import { useRouter } from "vue-router";
   import TopNav from "@/components/TopNav.vue";
   import { useOrderStore } from "@/stores/useOrderStore";
-  import { useSubStore } from "@/stores/subStore";
+  import { useSubStore } from "@/stores/SubStore";
 
   const orderStore = useOrderStore();
   const subStore = useSubStore();
@@ -28,7 +28,7 @@
     </nav>
     <div class="btn-container">
       <button class="btn eat-here" @click="eatHere">Eat here</button>
-      <button class="btn to-go" @click="takeAway">To Go</button>
+      <button class="btn to-go" @click="takeAway">Takeaway</button>
     </div>
   </div>
 </template>

@@ -144,7 +144,7 @@
           </div>
         </div>
         Total: {{ orderStore.order.totalPrice }} kr
-        <p v-if="orderStore.order.takeAway">To Go</p>
+        <p v-if="orderStore.order.takeAway">Takeaway</p>
         <p v-else>Eat Here</p>
       </span>
       <span v-else>
