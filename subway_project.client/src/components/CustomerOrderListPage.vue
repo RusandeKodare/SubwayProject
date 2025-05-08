@@ -21,7 +21,7 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders In Progress" :orders="[...(ordersStore.FilteredOrdersInProgress || []), ...(ordersStore.FilteredOrdersRecieved || [])]" :show="ordersStore.ShowOrders" />  
+        <CustomerOrder title="Orders" :orders="[...(ordersStore.FilteredOrdersInProgress || []), ...(ordersStore.FilteredOrdersRecieved || [])]" :show="ordersStore.ShowOrders" />  
       </div>
 
       <br />
@@ -81,6 +81,8 @@
   }
 
   ::v-deep(.order-div) {
-    font-size: 35px;
+    font-size: 10rem;
+    padding: 0 30px;
+    margin: 30px;
   }
 </style>

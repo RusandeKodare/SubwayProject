@@ -121,6 +121,7 @@
   .order-div {
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 18px;
   }
 
     .order-div:hover {

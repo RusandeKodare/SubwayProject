@@ -67,8 +67,8 @@
       .then((response) => {
         if (response.ok) {
           console.log("The Pinia-order was saved successfully to database");
-          //router.push("/orderConfirmation"); //using this redirect to the OrderConfirmation page will result in the default timeout of 30 seconds.
-          router.push({ name: 'OrderConfirmation', query: { timeout: 15 } }); //using this redirect to the OrderConfirmation page will result in a timeout of 15 seconds (or whatever you set the timeout value to).
+          router.push("/orderConfirmation"); //using this redirect to the OrderConfirmation page will result in the default timeout of 30 seconds.
+          //router.push({ name: 'OrderConfirmation', query: { timeout: 15 } }); //using this redirect to the OrderConfirmation page will result in a timeout of 15 seconds (or whatever you set the timeout value to).
         }
         else {
           console.log("Something went wrong when saving the PINIA-order to the database");
@@ -135,6 +135,7 @@
   <div class="cart">
 
     <div class="cart-header">
+      <div class="allergy-msg">Om du är allergisk, fråga personalen.</div>
       <span v-if="orderStore.order.products.length > 0 || orderStore.order.subs.length > 0 || subStore.sub.products.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
@@ -418,5 +419,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .allergy-msg {
+    font-size: 1.3rem;
+    color: #e53e3e;
+    font-weight: bold;
+    margin-bottom: 25px;
   }
 </style>
