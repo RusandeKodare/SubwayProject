@@ -2,13 +2,21 @@
   import { ref, reactive, watch, onMounted } from "vue";
   import { useOrderStore } from "@/stores/useOrderStore";
   import { useSubStore } from "@/stores/subStore";
+  import { useSpecialStore } from "@/stores/specialsStore";
 
+  const specialStore = useSpecialStore();
   const orderStore = useOrderStore();
   const subStore = useSubStore();
+  const Specials = ref([]);
+  const showSpecials = ref(false);  
 
   onMounted(() => {
-    getProducts();
-  });
+  getProducts();
+  specialStore.getSpecials();
+  setTimeout(() => {
+    console.log("Specials: ", specialStore.specials);
+  }, 500);
+});
 
   const baseUrl = "https://localhost:7193";
 
@@ -29,20 +37,29 @@
     showProducts.value = !showProducts.value;
   };
 
-  watch(
-    () => props.selectedSubCategory,
-    (newSubCat) => {
-      if (!newSubCat) {
-        filteredProducts.value = [];
-        return;
-      }
-
+watch(
+  () => specialStore.showSpecials,
+  (newVal) => {
+    if (newVal) {
+      filteredProducts.value = specialStore.specials;
+      showProducts.value = true;
+    }
+  }
+);
+watch(
+  () => props.selectedSubCategory?.id,
+  (newId) => {
+    if (!specialStore.showSpecials && newId) {
       filteredProducts.value = products.value.filter(
-        (p) => p.subCategoryId === newSubCat.id
+        (p) => p.subCategoryId === newId
       );
-    },
-    { immediate: true }
-  );
+      showProducts.value = true;
+    }
+  },
+  { immediate: true }
+);
+
+
 
   function AddToCart(emittedProduct) {
     orderStore.addProduct(emittedProduct);

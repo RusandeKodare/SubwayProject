@@ -1,14 +1,21 @@
 <script setup>
   import { ref, onBeforeMount } from "vue";
+  import { useSpecialStore } from "@/stores/specialsStore";
 
   const baseUrl = "https://localhost:7193";
   const categories = ref([]);
   const subCategories = ref([]);
   const subsToShow = ref([]);
   const emit = defineEmits(["subcategorySelected"]);
+  const specialStore = useSpecialStore();
 
   const handleSubCategoryClick = (subCategory) => {
-    emit("subcategorySelected", subCategory);
+    if (subCategory.id === 1) {
+  specialStore.toggleShowSpecials(true);
+} else {
+  specialStore.toggleShowSpecials(false);
+  emit("subcategorySelected", subCategory);
+}
   };
 
   const GetCategories = async () => {
