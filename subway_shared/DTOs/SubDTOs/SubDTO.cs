@@ -1,6 +1,4 @@
-﻿
-
-namespace subway_shared.DTOs.SubDTOs
+﻿namespace subway_shared.DTOs.SubDTOs
 {
     public class SubDTO
     {

@@ -22,5 +22,4 @@
 </template>
 
 <style>
-
 </style>

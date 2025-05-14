@@ -19,17 +19,17 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     }
     finally {
       loading.value = false
-      }
+    }
   }
 
   async function ReturnOrderId(customerId) {
-    try{
-      const res = await fetch (`/api/Orders/by-customer/${customerId}`);
+    try {
+      const res = await fetch(`/api/Orders/by-customer/${customerId}`);
       const order = await res.json();
       console.log(order.id);
       return order.id;
     }
-    catch(error){
+    catch (error) {
       console.log("Error fetching order by customer ID", error);
       return null;
     }
@@ -40,7 +40,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
       const response = await fetch(`/api/Orders/progress-order/${id}`, {
         method: 'PUT'
       });
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error("Failed to update order")
       }
       await getOrders();
@@ -54,7 +54,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
       const response = await fetch(`/api/Orders/complete-order/${id}`, {
         method: 'PUT'
       });
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error("Failed to update order")
       }
       await getOrders();

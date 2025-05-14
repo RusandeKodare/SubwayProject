@@ -45,13 +45,6 @@ namespace subway_project.Server.Data
 
             modelBuilder.Entity<SubProduct>()
                 .HasKey(op => new { op.SubId, op.ProductId });
-
-
-
-
         }
-
     }
-
-
 }

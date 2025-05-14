@@ -7,7 +7,7 @@
 
   onMounted(async () => {
     await ordersStore.getOrders();
-  })
+  });
 </script>
 
 <template>
@@ -87,5 +87,4 @@
     margin-left: 1rem;
     margin-right: 2rem;
   }
-
 </style>

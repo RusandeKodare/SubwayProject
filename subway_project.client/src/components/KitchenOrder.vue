@@ -2,11 +2,11 @@
   import { useOrdersStore } from '@/stores/OrdersStore'
   import { defineProps, computed } from 'vue';
 
-  const ordersStore = useOrdersStore()
+  const ordersStore = useOrdersStore();
 
   const props = defineProps({
     type: String // "received", "inProgress", or "completed"
-  })
+  });
 
   const title = computed(() => {
     switch (props.type) {
@@ -21,7 +21,7 @@
       default:
         return ''
     }
-  })
+  });
 
   const filteredOrders = computed(() => {
     switch (props.type) {
@@ -36,7 +36,7 @@
       default:
         return []
     }
-  })
+  });
 
   async function updateOrder(order) {
     if (order.orderInProgress == null && order.orderCompleted == null && order.orderCollected == null) {
@@ -57,19 +57,6 @@
       return;
     }
   }
-
-  const groupedList = (products) => {
-    const map = {}
-    for (const product of products) {
-      if (!map[product.name]) {
-        map[product.name] = { ...product, quantity: 1 }
-      } else {
-        map[product.name].quantity += 1
-      }
-    }
-    return Object.values(map)
-  }
-
 </script>
 
 <template>
@@ -78,44 +65,44 @@
     <li v-for="order in filteredOrders" :key="order.id">
       <button class="order-div" @click="updateOrder(order)">
         <div class="order-heading">
-          Order: {{ order.id }} - {{ order.takeAway ? 'Take Away' : 'Eat Here' }}
+          Order: {{ order.id }} - {{ order.takeAway ? 'Takeaway' : 'Eat Here' }}
         </div>
 
         <!-- Sub -->
-    <div v-for="(sub, subIndex) in order.subs" :key="sub.id">
-      <p><strong>Sub: {{ subIndex + 1 }}</strong></p>
-      <div v-for="subprod in sub.subProducts" :key="subprod.productId">
-        <ul>
-          <li> {{ subprod.product.name }} x {{ subprod.quantity }}</li>
-        </ul>
-      </div>
-    </div>
+        <div v-for="(sub, subIndex) in order.subs" :key="sub.id">
+          <p><strong>Sub: {{ subIndex + 1 }}</strong></p>
+          <div v-for="subprod in sub.subProducts" :key="subprod.productId">
+            <ul>
+              <li> {{ subprod.product.name }} x {{ subprod.quantity }}</li>
+            </ul>
+          </div>
+        </div>
 
         <!-- Drinks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 3).length">
           <p><strong>Drinks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 6 && op.product.subCategoryId <= 7))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 3)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Snacks -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 4).length">
           <p><strong>Snacks:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 8 && op.product.subCategoryId <= 9))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 4)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
         </div>
 
         <!-- Desserts -->
-        <div v-if="groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11)).length">
+        <div v-if="order.orderProducts.filter(op => op.product.categoryId === 5).length">
           <p><strong>Desserts:</strong></p>
           <ul>
-            <li v-for="op in groupedList(order.orderProducts.filter(op => op.product.subCategoryId >= 10 && op.product.subCategoryId <= 11))" :key="op.product.id">
+            <li v-for="op in order.orderProducts.filter(op => op.product.categoryId === 5)" :key="op.product.id">
               {{ op.product.name }} x {{ op.quantity }}
             </li>
           </ul>
@@ -123,12 +110,21 @@
       </button>
     </li>
   </ul>
-
 </template>
 
-<style>
+<style scoped>
   .order-heading {
     margin-bottom: 0.5rem;
     font-weight: bold;
   }
+
+  .order-div {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+  }
+
+    .order-div:hover {
+      background-color: lightgreen;
+    }
 </style>

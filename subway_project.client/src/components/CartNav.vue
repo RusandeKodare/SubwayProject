@@ -1,30 +1,29 @@
 <script setup>
-import { ref, reactive, watch, computed } from "vue";
-import { useRouter } from "vue-router";
+  import { ref, reactive, watch, computed } from "vue";
+  import { useRouter } from "vue-router";
   import { useOrderStore } from "@/stores/useOrderStore";
-  import { useSubStore } from "@/stores/subStore";
+  import { useSubStore } from "@/stores/SubStore";
 
-const orderStore = useOrderStore();
-  // let storedOrder = JSON.parse(localStorage.getItem("order"));
+  const orderStore = useOrderStore();
   const subStore = useSubStore();
 
-const props = defineProps({
-  cartLimits: Object
-});
+  const props = defineProps({
+    cartLimits: Object
+  });
 
-const router = useRouter();
+  const router = useRouter();
 
-const groupedList = computed(() => {
-  const map = {}
-  for (const item of orderStore.order.products) {
-    if (!map[item.name]) {
-      map[item.name] = { ...item, quantity: 1 }
-    } else {
-      map[item.name].quantity += 1
+  const groupedList = computed(() => {
+    const map = {}
+    for (const item of orderStore.order.products) {
+      if (!map[item.name]) {
+        map[item.name] = { ...item, quantity: 1 }
+      } else {
+        map[item.name].quantity += 1
+      }
     }
-  }
-  return Object.values(map)
-});
+    return Object.values(map)
+  });
 
   const groupedCartSubList = computed(() => {
     return orderStore.order.subs.map(sub => {
@@ -57,79 +56,27 @@ const groupedList = computed(() => {
     return Object.values(map)
   });
 
-const checkout = () => {
-  // storedOrder = JSON.parse(localStorage.getItem("order"));
-  // console.log(storedOrder);
+  const checkout = () => {
+    fetch("api/Orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderStore.order),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("The Pinia-order was saved successfully to database");
+          router.push("/orderConfirmation"); //using this redirect to the OrderConfirmation page will result in the default timeout of 30 seconds.
+          //router.push({ name: 'OrderConfirmation', query: { timeout: 15 } }); //using this redirect to the OrderConfirmation page will result in a timeout of 15 seconds (or whatever you set the timeout value to).
+        }
+        else {
+          console.log("Something went wrong when saving the PINIA-order to the database");
+          console.log('Tried to save following order: ', orderStore.order);
+        }
 
-  // fetch("api/Orders", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(storedOrder),
-  // })
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       console.log("order was saved successfully to database");
-  //       localStorage.removeItem("order");
-  //     }
-  //     else {
-  //       console.log("Something went wrong when saving the order to the database");
-  //     }
-
-  //   });
-
-
-  fetch("api/Orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(orderStore.order),
-  })
-    .then((response) => {
-      if (response.ok) {
-        console.log("The Pinia-order was saved successfully to database");
-        //orderStore.resetOrder();
-        //router.push("/orderConfirmation"); //using this redirect to the OrderConfirmation page will result in the default timeout of 30 seconds.
-        router.push({ name: 'OrderConfirmation', query: { timeout: 15 } }); //using this redirect to the OrderConfirmation page will result in a timeout of 15 seconds (or whatever you set the timeout value to).
-      }
-      else {
-        console.log("Something went wrong when saving the PINIA-order to the database");
-        console.log('Tried to save following order: ', orderStore.order);
-      }
-
-    });
-
-
-};
-
-
-//   // The removeItem method can be removed once adding and removing procucts from Pinia cart is implemented.
-// const removeItem = (item) => {
-//   // storedOrder = JSON.parse(localStorage.getItem("order"));
-//   // const index = storedOrder.findIndex(i => i.name === item.name && i.subCategoryId === item.subCategoryId);
-//   // if (index === -1) {
-//   //   console.error("Item not found in receivedList");
-//   //   return;
-//   // }
-//   orderStore.order.totalPrice -= item.price;
-//   orderStore.order.products.splice(index, 1);
-
-//   // storedOrder.products.splice(index, 1);
-//   // localStorage.setItem("order", JSON.stringify(storedOrder));
-//   console.log(orderStore.order);
-// };
-
-//   // The addItem method can be removed once adding and removing procucts from Pinia cart is implemented.
-// const addItem = (item) => {
-//   storedOrder = JSON.parse(localStorage.getItem("order"));
-//   storedOrder.products.push(item);
-//   storedOrder.totalPrice += item.price;
-//   localStorage.setItem("order", JSON.stringify(storedOrder));
-//   console.log(storedOrder);
-// };
-
+      });
+  };
 
   const isAddToSubDisabled = (subCatId) => {
     if (!props.cartLimits || !subStore.sub.products) {
@@ -158,23 +105,23 @@ const checkout = () => {
 
   };
 
-const IsCheckoutDisabled = () => {
-  if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
-    if (subStore.sub.products.length > 0) {
+  const IsCheckoutDisabled = () => {
+    if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
+      if (subStore.sub.products.length > 0) {
+        return true;
+      }
+      return false;
+    }
+    else {
       return true;
     }
-    return false;
-  }
-  else {
-    return true;
-  }
-};
+  };
 
   const startNewOrder = () => {
     orderStore.resetOrder();
     subStore.resetSub(false);
     router.push("/");
-  }
+  };
 
   const addSubToCart = () => {
     orderStore.addSubToOrder(subStore.sub);
@@ -188,6 +135,7 @@ const IsCheckoutDisabled = () => {
   <div class="cart">
 
     <div class="cart-header">
+      <div class="allergy-msg">Om du är allergisk, fråga personalen.</div>
       <span v-if="orderStore.order.products.length > 0 || orderStore.order.subs.length > 0 || subStore.sub.products.length > 0">
         <div class="cart-footer">
           <button @click="checkout" :disabled="IsCheckoutDisabled()">Finalize order</button>
@@ -197,7 +145,7 @@ const IsCheckoutDisabled = () => {
           </div>
         </div>
         Total: {{ orderStore.order.totalPrice }} kr
-        <p v-if="orderStore.order.takeAway">To Go</p>
+        <p v-if="orderStore.order.takeAway">Takeaway</p>
         <p v-else>Eat Here</p>
       </span>
       <span v-else>
@@ -218,7 +166,7 @@ const IsCheckoutDisabled = () => {
           <button @click="subStore.removeProduct(product)">-</button>
           <button @click="subStore.addProduct(product)" :disabled="isAddToSubDisabled(product.subCategoryId)">+</button>
           <!-- Visual Studio says "'isAddToSubDisabled(product.subCategoryId)' is not a valid value of attribute 'disabled'",
-        but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
+          but the functionality works as intended (i.e. the button is disabled if a certain amount of a product is in "groupedList").-->
         </div>
       </div>
       <button class="btn" @click="addSubToCart" :disabled="isAddSubToCartDisabled()">Add sub to cart</button>
@@ -264,28 +212,14 @@ const IsCheckoutDisabled = () => {
 </template>
 
 <style scoped>
-
-.PiniaCart{
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  max-width: 600px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.cart {
-  width: 90%;
-  max-width: 600px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+  .cart {
+    width: 90%;
+    max-width: 600px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 
   .sub-container {
     display: flex;
@@ -294,32 +228,32 @@ const IsCheckoutDisabled = () => {
     flex-direction: column;
   }
 
-  .sub-container span {
+    .sub-container span {
       font-size: 1.5em;
       font-weight: bold;
-  }
-
-  .sub-container button {
-    background-color: #38a169;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    margin: 0 10px;
-  }
-
-    .sub-container button:hover {
-      background-color: #2f855a;
     }
 
-    .sub-container button:disabled {
-      background-color: #e2e8f0;
-      color: #a0aec0;
-      cursor: not-allowed;
+    .sub-container button {
+      background-color: #38a169;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      margin: 0 10px;
     }
+
+      .sub-container button:hover {
+        background-color: #2f855a;
+      }
+
+      .sub-container button:disabled {
+        background-color: #e2e8f0;
+        color: #a0aec0;
+        cursor: not-allowed;
+      }
 
     .sub-container .cancel-button {
       background-color: #e53e3e;
@@ -336,51 +270,51 @@ const IsCheckoutDisabled = () => {
     text-align: center;
   }
 
-.cart-header {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 10px;
-  color: #333;
-}
+  .cart-header {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px;
+    color: #333;
+  }
 
-.cart-header p {
-  font-size: 1.0rem;
-  font-weight: normal;
-}
+    .cart-header p {
+      font-size: 1.0rem;
+      font-weight: normal;
+    }
 
-.cart-footer {
-  display: flex;
-  justify-content: center;
-  margin: 20px 5px;
-  flex-direction: column;
-}
+  .cart-footer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 5px;
+    flex-direction: column;
+  }
 
-.cart-footer button {
-  background-color: #38a169;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
+    .cart-footer button {
+      background-color: #38a169;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
 
-.cart-footer button:hover {
-  background-color: #2f855a;
-}
+      .cart-footer button:hover {
+        background-color: #2f855a;
+      }
 
-.cart-footer button:disabled {
-  background-color: #e2e8f0;
-  color: #a0aec0;
-  cursor: not-allowed;
-}
+      .cart-footer button:disabled {
+        background-color: #e2e8f0;
+        color: #a0aec0;
+        cursor: not-allowed;
+      }
 
-.cart-footer p {
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
+    .cart-footer p {
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
 
   .cancel-button button {
     background-color: #e53e3e;
@@ -398,59 +332,56 @@ const IsCheckoutDisabled = () => {
       background-color: #c53030;
     }
 
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: white;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      font-size: 1.1rem;
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+  }
+
+    .cart-item span {
+      color: #555;
     }
 
-.cart-item span {
-/*  font-weight: 500;*/
-  color: #555;
-}
+    .cart-item button {
+      background-color: #e2e8f0;
+      border: none;
+      color: #333;
+      padding: 6px 12px;
+      margin: 0 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-.cart-item button {
-  background-color: #e2e8f0;
-  border: none;
-  color: #333;
-  padding: 6px 12px;
-  margin: 0 2px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+      .cart-item button:hover {
+        background-color: #edf2f7;
+        color: #2d3748;
+      }
 
-.cart-item button:hover {
-  background-color: #edf2f7;
-  color: #2d3748;
-}
+      .cart-item button:active {
+        background-color: #cbd5e0;
+      }
 
-.cart-item button:active {
-  background-color: #cbd5e0;
-}
+      .cart-item button:disabled {
+        background-color: #e2e8f0;
+        color: #a0aec0;
+        cursor: not-allowed;
+      }
 
-  .cart-item button:disabled {
-    background-color: #e2e8f0;
-    color: #a0aec0;
-    cursor: not-allowed;
-  }
-
-  .cart-item div {
+    .cart-item div {
       display: flex;
       flex-wrap: nowrap;
-  }
+    }
 
   .cart-item-sub {
     display: flex;
-/*    justify-content: space-between;*/
-flex-direction:column;
-/*    align-items: center;*/
+    flex-direction: column;
     background-color: white;
     padding: 12px;
     margin-bottom: 10px;
@@ -470,10 +401,10 @@ flex-direction:column;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-  .cart-item-sub p {
-    font-weight: 500;
-    font-size: 1.1rem;
-  }
+    .cart-item-sub p {
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
 
     .cart-item-sub ul {
       list-style-type: none;
@@ -484,9 +415,16 @@ flex-direction:column;
       margin-left: 20px;
     }
 
-    .cart-item-sub-heading {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
+  .cart-item-sub-heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .allergy-msg {
+    font-size: 1.3rem;
+    color: #e53e3e;
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
 </style>

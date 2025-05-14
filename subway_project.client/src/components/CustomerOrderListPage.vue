@@ -3,13 +3,11 @@
   import { useOrdersStore } from '@/stores/OrdersStore';
   import CustomerOrder from './CustomerOrder.vue';
 
-
   const ordersStore = useOrdersStore();
 
   onMounted(async () => {
     await ordersStore.getOrders();
-  })
-
+  });
 </script>
 
 <template>
@@ -23,19 +21,13 @@
     <div class="header-div"></div>
     <div class="main-content">
       <div class="left-div">
-        <CustomerOrder title="Orders Received" :orders="ordersStore.FilteredOrdersRecieved":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders" :orders="[...(ordersStore.FilteredOrdersInProgress || []), ...(ordersStore.FilteredOrdersRecieved || [])]" :show="ordersStore.ShowOrders" />  
       </div>
 
-      <br />
-
-      <div class="middle-div">
-        <CustomerOrder title="Orders In Progress" :orders="ordersStore.FilteredOrdersInProgress":show="ordersStore.ShowOrders" />
-      </div>
-      
       <br />
 
       <div class="right-div">
-        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersCompleted":show="ordersStore.ShowOrders" />
+        <CustomerOrder title="Orders Completed" :orders="ordersStore.FilteredOrdersCompleted" :show="ordersStore.ShowOrders" />
       </div>
 
     </div>
@@ -65,8 +57,8 @@
     overflow: hidden;
   }
 
-  .left-div, .middle-div, .right-div {
-    width: 30%;
+  .left-div, .right-div {
+    width: 50%;
     background-color: #e0e0e0;
     padding: 20px;
     margin-bottom: 2rem;
@@ -77,15 +69,9 @@
   }
 
   .left-div {
-    border-color: blue;
+    border-color: yellow;
     margin-right: 1rem;
     margin-left: 2rem;
-  }
-
-  .middle-div {
-    border-color: yellow;
-    margin-left: 1rem;
-    margin-right: 1rem;
   }
 
   .right-div {
@@ -95,6 +81,8 @@
   }
 
   ::v-deep(.order-div) {
-    font-size: 35px;
-  } 
+    font-size: 10rem;
+    padding: 0 30px;
+    margin: 30px;
+  }
 </style>
