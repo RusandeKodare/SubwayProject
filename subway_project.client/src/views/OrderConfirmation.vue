@@ -57,7 +57,7 @@ const groupedSubList = computed(() => {
     };
   });
 });
-
+  const orderProductsSpecials = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 1));
   const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
   const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
   const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
@@ -164,7 +164,19 @@ onBeforeUnmount(() => {
             </ul>
           </div>
         </div>
-
+        <div v-if=" orderProductsSpecials.length !== 0">
+          <p class="order-item-heading"><strong>Drinks:</strong></p>
+          <ul>
+            <li v-for="product in  orderProductsSpecials" :key="product.id" :id="`product-` + product.id">
+              <div class="receipt-grid">
+                <span>{{ product.name }} </span>
+                <span class="text-center">{{ product.price }} kr</span>
+                <span class="text-right">{{ product.quantity }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+       
         <div v-if="orderProductsDrinks.length !== 0">
           <p class="order-item-heading"><strong>Drinks:</strong></p>
           <ul>
