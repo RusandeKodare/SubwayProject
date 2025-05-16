@@ -6,7 +6,9 @@ import TopNav from "@/components/TopNav.vue";
 import { useOrderStore } from "@/stores/useOrderStore";
 import { useOrdersStore } from "@/stores/OrdersStore";
 import { useSubStore } from "@/stores/SubStore";
+import { useSpecialStore } from "@/stores/specialsStore";
 
+  const specialStore = useSpecialStore();
   const orderStore = useOrderStore();
   const fetchOrders = useOrdersStore();
   const orderNumber = ref(0);
@@ -57,7 +59,8 @@ const groupedSubList = computed(() => {
     };
   });
 });
-  const orderProductsSpecials = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 1));
+
+  const orderProductsSpecials = groupedList(orderStore.order.specials.filter(prod => prod.categoryId === 1));
   const orderProductsDrinks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 3));
   const orderProductsSnacks = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 4));
   const orderProductsDesserts = groupedList(orderStore.order.products.filter(prod => prod.categoryId === 5));
@@ -65,6 +68,7 @@ const groupedSubList = computed(() => {
   const startNewOrder = () => {
     orderStore.resetOrder();
     subStore.resetSub(false);
+    specialStore.resetShowSpecials();
     clearTimeout(redirectTimer);
     clearInterval(countdownTimer);
     router.push("/");
@@ -164,8 +168,12 @@ onBeforeUnmount(() => {
             </ul>
           </div>
         </div>
+
+
+
+
         <div v-if=" orderProductsSpecials.length !== 0">
-          <p class="order-item-heading"><strong>Drinks:</strong></p>
+          <p class="order-item-heading"><strong>Specials:</strong></p>
           <ul>
             <li v-for="product in  orderProductsSpecials" :key="product.id" :id="`product-` + product.id">
               <div class="receipt-grid">
