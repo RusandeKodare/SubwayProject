@@ -6,7 +6,8 @@
         public bool TakeAway { get; set; }
         public decimal TotalPrice { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; } = [];
-        public List<Sub> Subs { get; set; } = new();
+        public ICollection<OrderSpecials> OrderSpecials { get; set; } = [];
+        public List<Sub> Subs { get; set; } = [];
         public DateTime OrderReceived { get; set; } = DateTime.Now;
         public DateTime? OrderInProgress { get; set; }
         public DateTime? OrderCompleted { get; set; }
