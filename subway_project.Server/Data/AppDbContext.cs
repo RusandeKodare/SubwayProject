@@ -18,6 +18,7 @@ namespace subway_project.Server.Data
         public DbSet<OrderProduct> OrderProduct { get; set; }
         public DbSet<SubProduct> SubProduct { get; set; }
         public DbSet<Specials> Specials { get; set; }
+        public DbSet<OrderSpecials> OrderSpecials { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,6 +48,22 @@ namespace subway_project.Server.Data
 
             modelBuilder.Entity<SubProduct>()
                 .HasKey(op => new { op.SubId, op.ProductId });
+
+            modelBuilder.Entity<OrderSpecials>()
+               .HasKey(op => new { op.OrderId, op.SpecialId });
+
+            modelBuilder.Entity<SpecialProduct>()
+                .HasKey(sp => new { sp.SpecialId, sp.ProductId });
+
+            modelBuilder.Entity<SpecialProduct>()
+                .HasOne(sp => sp.Special)
+                .WithMany(s => s.SpecialProducts)
+                .HasForeignKey(sp => sp.SpecialId);
+
+            modelBuilder.Entity<SpecialProduct>()
+                .HasOne(sp => sp.Product)
+                .WithMany()
+                .HasForeignKey(sp => sp.ProductId);
         }
     }
 }
