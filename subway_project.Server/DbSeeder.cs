@@ -28,9 +28,6 @@ namespace subway_project.Server
 
                 context.SubCategories.AddRange(
                     new SubCategory { Name = "Subways Favorite Subs", CategoryId = 1 },
-                    //new SubCategory { Name = "Ricky Rick", CategoryId = 1 },
-                    //new SubCategory { Name = "Kids Menu", CategoryId = 1 },
-
                     new SubCategory { Name = "Bread", CategoryId = 2 },
                     new SubCategory { Name = "Proteins", CategoryId = 2 },
                     new SubCategory { Name = "Vegetables", CategoryId = 2 },
@@ -53,19 +50,6 @@ namespace subway_project.Server
             if (!context.Products.Any())
             {
                 context.Products.AddRange(
-
-                    //new Product { Name = "Superman Special", Price = 95.00m, SubCategoryId = 1, CategoryId = 1, ImageUrl = "https://img.cdn4dd.com/p/fit=cover,width=1200,height=600,format=auto,quality=90/media/photosV2/85065134-4444-4899-ba41-189dda856daf-retina-large.jpg" },
-                    //new Product { Name = "Spiderman Swing Swing", Price = 120.00m, SubCategoryId = 1, CategoryId = 1, ImageUrl = "https://media.tenor.com/gZno2j_0KpMAAAAe/spodermen-funny.png" },
-                    //new Product { Name = "Let It Go Sandwich & Co", Price = 115.00m, SubCategoryId = 1, CategoryId = 1, ImageUrl = "https://wallpapers.com/images/featured/elsa-6y186zhilmcjl7ke.jpg" },
-
-                    //new Product { Name = "Shwarma Deluxe Explosion", Price = 233.00m, SubCategoryId = 2, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-                    //new Product { Name = "Insane In The Membrane", Price = 355.00m, SubCategoryId = 2, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-                    //new Product { Name = "UnderRated Serious SAM Phantom", Price = 500.00m, SubCategoryId = 2, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-
-                    //new Product { Name = "Just Cheeeeeeeeeese", Price = 150.00m, SubCategoryId = 3, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-                    //new Product { Name = "Too Much Meat", Price = 220.00m, SubCategoryId = 3, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-                    //new Product { Name = "What Even In This", Price = 50.00m, SubCategoryId = 3, CategoryId = 1, ImageUrl = "https://cdn.vox-cdn.com/thumbor/v5MOxdUdtffU4E1zkMM80jetZ2c=/0x0:1080x1350/1200x800/filters:focal(477x802:649x974)/cdn.vox-cdn.com/uploads/chorus_image/image/72447167/358101373_292422893350341_630677683818333789_n.0.jpg" },
-
 
                     new Product { Name = "White Bread", Price = 15.00m, SubCategoryId = 2, CategoryId = 2, ImageUrl = "https://okfrozendough.com/wp-content/uploads/2019/10/OK340_9_inc_white_bun.jpg" },
                     new Product { Name = "Whole Wheat Bread", Price = 20.00m, SubCategoryId = 2, CategoryId = 2, ImageUrl = "https://okfrozendough.com/wp-content/uploads/2019/10/OK345_9_inc_ww_sub_bun.jpg" },
