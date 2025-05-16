@@ -25,7 +25,7 @@ namespace subway_project.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Specials>>> GetSpecials()
         {
-            return await _context.Specials.ToListAsync();
+            return await _context.Specials.Include(_=>_.SpecialProducts).ThenInclude(_=>_.Product).ToListAsync();
         }
 
         // GET: api/Specials/5
