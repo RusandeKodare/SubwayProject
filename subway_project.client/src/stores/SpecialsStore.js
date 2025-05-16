@@ -28,7 +28,12 @@ export const useSpecialStore = defineStore('specialStore', {
     toggleShowSpecials(value) {
       this.showSpecials = value;
     },
+      resetShowSpecials(){
+    this.showSpecials = false;
+    console.log("PINIA: reset show specials to false");
   },
+  },
+
 
   getters: {
     specialsCount: (state) => state.specials.length,

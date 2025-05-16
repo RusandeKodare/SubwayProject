@@ -8,6 +8,7 @@ export const useOrderStore = defineStore('order', {
       totalPrice: 0,
       products: [],
       subs: [],
+      specials: [],
       customerId: uuidv4(),
     }
   }),
@@ -17,7 +18,7 @@ export const useOrderStore = defineStore('order', {
       this.order.products.push(product);
       this.order.totalPrice += product.price;
       console.log('PINIA: price added: ', product.price, 'new total: ', this.order.totalPrice)
-      console.log('PINIA: added product', product, 'to order:', this.order.products)
+      console.log('PINIA: added product', product, 'to order:', this.order)
     },
 
     removeProduct(product) {
@@ -31,7 +32,12 @@ export const useOrderStore = defineStore('order', {
         console.log('PINIA: product not found in order:', product)
       }
     },
-
+    
+    addSpecialToOrder(special) {
+      this.order.specials.push(special);
+      this.order.totalPrice += special.price;
+      console.log('PINIA: added special', special, 'to order:', this.order)
+    },
     changeTakeAway(boolean) {
       this.order.takeAway = boolean;
       console.log('PINIA: changed take away to:', boolean)
@@ -45,7 +51,7 @@ export const useOrderStore = defineStore('order', {
 
     addSubToOrder(sub) {
       this.order.subs.push(sub);
-      console.log('PINIA: added sub', sub, 'to order:', this.order.subs)
+      console.log('PINIA: added sub', sub, 'to order:', this.order)
     },
 
     removeSub(sub) {
@@ -65,6 +71,7 @@ export const useOrderStore = defineStore('order', {
         totalPrice: 0,
         products: [],
         subs: [],
+        specials: [],
         customerId: uuidv4(),
       }
       console.log('PINIA: order has been reset')
