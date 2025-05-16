@@ -37,6 +37,10 @@ namespace subway_project.Server.Controllers
                 .Include(o => o.Subs)
                     .ThenInclude(s => s.SubProducts)
                         .ThenInclude(sp => sp.Product)
+                 .Include(_=>_.OrderSpecials)
+                     .ThenInclude(_=>_.Special)
+                        .ThenInclude(_=>_.SpecialProducts)
+                            .ThenInclude(_ => _.Product)
                 .ToListAsync();
 
             return Ok(orders);
@@ -255,6 +259,47 @@ namespace subway_project.Server.Controllers
                     }
                 }
             }
+
+            foreach (var specialDTO in orderDTO.Specials)
+            {
+                var specialToFind = await _context.Specials.FirstOrDefaultAsync(s => s.Name == specialDTO.Name);
+
+                if (specialToFind != null)
+                {
+                    // Kolla om entiteten redan är spårad i ChangeTracker
+                    var existingOrderSpecial = _context.ChangeTracker
+                        .Entries<OrderSpecials>()
+                        .Select(e => e.Entity)
+                        .FirstOrDefault(os => os.OrderId == order.Id && os.SpecialId == specialToFind.Id);
+
+                    if (existingOrderSpecial != null)
+                    {
+                        existingOrderSpecial.Quantity++;
+                    }
+                    else
+                    {
+                        var orderSpecialInDb = await _context.OrderSpecials
+                            .FirstOrDefaultAsync(os => os.SpecialId == specialToFind.Id && os.OrderId == order.Id);
+
+                        if (orderSpecialInDb != null)
+                        {
+                            orderSpecialInDb.Quantity++;
+                        }
+                        else
+                        {
+                            var orderSpecial = new OrderSpecials
+                            {
+                                OrderId = order.Id,
+                                SpecialId = specialToFind.Id,
+                                Quantity = 1
+                            };
+                            _context.OrderSpecials.Add(orderSpecial);
+                            order.OrderSpecials.Add(orderSpecial);
+                        }
+                    }
+                }
+            }
+
 
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
