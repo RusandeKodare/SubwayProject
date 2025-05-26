@@ -15,9 +15,8 @@ import { useSpecialStore } from "@/stores/specialsStore";
   const subStore = useSubStore();
   const router = useRouter();
   const route = useRoute();
-  const timeoutSeconds = Number(route.query.timeout) || 30;
+  const timeoutSeconds = Number(route.query.timeout) || 5;
   const secondsLeft = ref(timeoutSeconds);
-  const timeoutInMilliseconds = timeoutSeconds * 1000;
   let redirectTimer = null;
   let countdownTimer = null;
 
