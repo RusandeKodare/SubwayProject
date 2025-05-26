@@ -38,6 +38,12 @@ export const useOrderStore = defineStore('order', {
       this.order.totalPrice += special.price;
       console.log('PINIA: added special', special, 'to order:', this.order)
     },
+    removeSpecialFromOrder(special) {
+      this.order.specials.splice(this.order.specials.indexOf(special), 1);
+      this.order.totalPrice -= special.price;
+      console.log('PINIA: removed special', special, 'from order:', this.order.specials)
+      console.log('PINIA: new total price:', this.order.totalPrice)
+    },
     changeTakeAway(boolean) {
       this.order.takeAway = boolean;
       console.log('PINIA: changed take away to:', boolean)
