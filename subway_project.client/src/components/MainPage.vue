@@ -7,8 +7,6 @@ import { useSpecialStore } from "@/stores/specialsStore";
 const specialStore = useSpecialStore();
 const orderStore = useOrderStore();
 const subStore = useSubStore();
-// const Specials = ref([]);
-// const showSpecials = ref(false);
 
 onMounted(() => {
   getProducts();

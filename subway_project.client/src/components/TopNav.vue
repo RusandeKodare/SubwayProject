@@ -1,13 +1,16 @@
 <script setup>
   import { useOrderStore } from "@/stores/useOrderStore";
   import { useSubStore } from "@/stores/SubStore";
+  import { useSpecialStore } from "@/stores/specialsStore";
 
   const orderStore = useOrderStore();
   const subStore = useSubStore();
+  const specialStore = useSpecialStore();
 
   const resetCart = () => {
-    if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0) {
+    if (orderStore.order.products.length > 0 || orderStore.order.subs.length > 0 || orderStore.order.specials.length > 0) {
       orderStore.resetOrder();
+      specialStore.resetShowSpecials();
       subStore.resetSub(false);
     }
   };
