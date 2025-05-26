@@ -202,6 +202,8 @@ const addSubToCart = () => {
       <h3>Specials</h3>
       <div v-for="special in groupedSpecialsList" :key="special.id" class="cart-item">
         <p>{{ special.name }} — {{ special.quantity }} x {{ special.price }} kr</p>
+        <button @click="orderStore.removeSpecialFromOrder(special)">-</button>
+        <button @click="orderStore.addSpecialToOrder(special)">+</button>
         <div>
         </div>
       </div>
